@@ -1,7 +1,7 @@
 <h3 align="center">
   <a name="readme-top"></a>
   <img
-    src="https://raw.githubusercontent.com/Idee8/codecrawl/refs/heads/main/assets/logo.svg"
+    src="https://raw.githubusercontent.com/revokslab/codecrawl/refs/heads/main/assets/logo.svg"
     height="200"
     width="200"
   >
@@ -16,22 +16,22 @@ Empower your AI apps with clean data from any repository. Featuring advanced cod
 
 ## What is Codecrawl?
 
-[Codecrawl](https://crawl.irere.dev?ref=github) is an API service that takes a repository URL, crawls it, and converts it into clean markdown or structured data, generate embeddings then store them in a vector database. We currently support only public codebases accessible on different codehosts like GitHub and Gitlab and give you clean data for each.
+[Codecrawl](https://crawl.revoks.dev?ref=github) is an API service that takes a repository URL, crawls it, and converts it into clean markdown or structured data, generate embeddings then store them in a vector database. We currently support only public codebases accessible on different codehosts like GitHub and Gitlab and give you clean data for each.
 
 ## How to use it?
 
-We will provide an easy to use API with our hosted version. You can find the playground and documentation [here](https://crawl.irere.dev/playground). You can also self host the backend if you'd like.
+We will provide an easy to use API with our hosted version. You can find the playground and documentation [here](https://crawl.revoks.dev/playground). You can also self host the backend if you'd like.
 
 Check out the following resources to get started:
 - [x] **API**: [Documentation](#cooming-soon)
-- [x] **SDKs**: [Node](https://github.com/Idee8/codecrawl/blob/main/packages/sdk)
+- [x] **SDKs**: [Node](https://github.com/revokslab/codecrawl/blob/main/packages/sdk)
 - [ ] Want an SDK or Integration? Let us know by opening an issue.
 
-To run locally, refer to guide [here](https://github.com/Idee8/codecrawl/blob/main/CONTRIBUTING.md).
+To run locally, refer to guide [here](https://github.com/revokslab/codecrawl/blob/main/CONTRIBUTING.md).
 
 ### API Key
 
-To use the API, you need to sign up on [Codecrawl](https://crawl.irere.dev) and get an API key.
+To use the API, you need to sign up on [Codecrawl](https://api.revoks.dev) and get an API key.
 
 ### Features
 
@@ -55,7 +55,7 @@ To use the API, you need to sign up on [Codecrawl](https://crawl.irere.dev) and 
 Generate a `llms.txt` file for a repository, optimized for feeding Language Model training. This endpoint initiates a job to create the `llms.txt` file and returns a job ID to track its progress.
 
 ```bash
-curl -X POST https://api.irere.dev/v1/llmstxt \
+curl -X POST https://api.revoks.dev/v1/llmstxt \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -d '{
@@ -77,7 +77,7 @@ Returns a job ID to check the status of the `llms.txt` generation.
 Check the status and retrieve the content of a `llms.txt` generation job using the job ID.
 
 ```bash
-curl -X GET https://api.irere.dev/v1/llmstxt/123-456-789 \
+curl -X GET https://api.revoks.dev/v1/llmstxt/123-456-789 \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer YOUR_API_KEY'
 ```
@@ -98,11 +98,11 @@ Returns the status and data of the `llms.txt` generation job.
 
 Used to get the file tree of the whole repository using its URL. This returns plain tree for given repository. 
 ```bash cURL
-curl -X POST https://api.irere.dev/v1/tree \
+curl -X POST https://api.revoks.dev/v1/tree \
     -H 'Content-Type: application/json' \
     -H 'Authorization: Bearer YOUR_API_KEY' \
     -d '{
-      "url": "https://github.com/irere123/run-lang", 
+      "url": "https://github.com/revoks123/run-lang", 
     }'
 ```
 
@@ -111,7 +111,7 @@ curl -X POST https://api.irere.dev/v1/tree \
 Check the status and retrieve the content of a `/v1/tree` generation job using the job ID.
 
 ```bash
-curl -X GET https://api.irere.dev/v1/tree/123-456-789 \
+curl -X GET https://api.revoks.dev/v1/tree/123-456-789 \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer YOUR_API_KEY'
 ```
@@ -136,7 +136,7 @@ _It is the sole responsibility of the end users to respect repositories' policie
 
 ## Contributors
 
-<a href="https://github.com/Idee8/codecrawl/graphs/contributors">
+<a href="https://github.com/revokslab/codecrawl/graphs/contributors">
   <img alt="contributors" src="https://contrib.rocks/image?repo=Idee8/codecrawl"/>
 </a>
 
