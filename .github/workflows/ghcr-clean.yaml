@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: bots-house/ghcr-delete-image-action@v1.1.0
         with:
-          owner: idee8
+          owner: revokslab
           name: codecrawl
           # NOTE: using Personal Access Token
           token: ${{secrets.GITHUB_TOKEN}}

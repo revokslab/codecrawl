@@ -35,5 +35,5 @@ jobs:
 
           - name: 'Build Inventory Image'
             run: |
-              docker build . --tag ghcr.io/idee8/codecrawl:latest
-              docker push ghcr.io/idee8/codecrawl:latest
+              docker build . --tag ghcr.io/revokslab/codecrawl:latest
+              docker push ghcr.io/revokslab/codecrawl:latest
