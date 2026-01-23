@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
-import * as React from 'react';
+import { Theme } from '@radix-ui/themes';
+import { type QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   HeadContent,
   Outlet,
@@ -7,15 +8,14 @@ import {
   createRootRouteWithContext,
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import { Theme } from '@radix-ui/themes';
+import * as React from 'react';
 import { Toaster } from 'sonner';
-import { type QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { DefaultCatchBoundary } from '~/components/catch-boundary';
 import { NotFound } from '~/components/not-found';
+import { queryClient } from '~/lib/query-client';
 import appCss from '~/styles/app.css?url';
 import { seo } from '~/utils/seo';
-import { queryClient } from '~/lib/query-client';
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   {

@@ -1,10 +1,9 @@
 import { Flex } from '@radix-ui/themes';
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 import { createServerFn } from '@tanstack/react-start';
+
 import { Footer } from '~/components/marketing/footer';
 import { Header } from '~/components/marketing/header';
-import type { User } from '~/contexts/auth-context';
 
 export const getGithubStars = createServerFn({
   method: 'GET',

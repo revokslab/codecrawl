@@ -1,3 +1,5 @@
+import { EnvelopeIcon, LockClosedIcon } from '@heroicons/react/24/outline';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Avatar,
   Box,
@@ -7,16 +9,14 @@ import {
   Text,
   TextField,
 } from '@radix-ui/themes';
+import { useMutation } from '@tanstack/react-query';
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
-import { EnvelopeIcon, LockClosedIcon } from '@heroicons/react/24/outline';
-import { SvgLogo } from '~/components/svgs';
-import { z } from 'zod';
 import { fallback } from '@tanstack/zod-adapter';
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
-import { API_BASE_URL } from '~/lib/constants';
+import { z } from 'zod';
+import { SvgLogo } from '~/components/svgs';
 import { toast } from '~/components/ui/toast';
+import { API_BASE_URL } from '~/lib/constants';
 import { useTokenStore } from '~/store/use-token-store';
 
 const authSearchSchema = z.object({
