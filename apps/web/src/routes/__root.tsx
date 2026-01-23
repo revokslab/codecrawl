@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import * as React from 'react';
 import {
   HeadContent,
@@ -15,7 +16,6 @@ import { NotFound } from '~/components/not-found';
 import appCss from '~/styles/app.css?url';
 import { seo } from '~/utils/seo';
 import { queryClient } from '~/lib/query-client';
-import { TeamsProvider } from '~/contexts/teams-context';
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   {
@@ -83,20 +83,18 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body suppressHydrationWarning className="font-sans antialiased">
         <QueryClientProvider client={queryClient}>
-        
-            <Theme
-              accentColor="tomato"
-              radius="large"
-              grayColor="slate"
-              panelBackground="solid"
-              appearance="dark"
-            >
-              <main className="flex min-h-screen flex-col">{children}</main>
-              <TanStackRouterDevtools position="bottom-right" />
-              <Scripts />
-              <Toaster />
-            </Theme>
-          
+          <Theme
+            accentColor="tomato"
+            radius="large"
+            grayColor="slate"
+            panelBackground="solid"
+            appearance="dark"
+          >
+            <main className="flex min-h-screen flex-col">{children}</main>
+            <TanStackRouterDevtools position="bottom-right" />
+            <Scripts />
+            <Toaster />
+          </Theme>
         </QueryClientProvider>
       </body>
     </html>
