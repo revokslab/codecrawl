@@ -1,0 +1,20 @@
+{
+  "name": "@codecrawl/common",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./scopes": "./src/scopes.ts"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "keywords": [],
+  "author": "Irere Emmanuel <irere2020@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/revokslab/codecrawl/issues"
+  },
+  "homepage": "https://github.com/revokslab/codecrawl#readme"
+}
