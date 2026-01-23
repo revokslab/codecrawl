@@ -1,75 +1,112 @@
-import 'dotenv/config';
-import cors from 'cors';
-import express from 'express';
-import expressWs from 'express-ws';
-import CacheableLookup from 'cacheable-lookup';
-import http from 'node:http';
-import https from 'node:https';
-import os from 'node:os';
+import { serve } from '@hono/node-server';
+import { Scalar } from '@scalar/hono-api-reference';
+import dotenv from 'dotenv';
+import { cors } from 'hono/cors';
+import { secureHeaders } from 'hono/secure-headers';
 
-import { v1Router } from '~/routes/v1';
+import { auth } from '~/lib/auth';
+import { BASE_URL } from '~/lib/constants';
 import { logger } from '~/lib/logger';
+import { routers } from '~/rest/routers';
+import { createRouter } from '~/utils';
 
-const numCPUs = process.env.NODE_ENV === 'production' ? os.cpus().length : 2;
+dotenv.config();
 
-logger.info(`Number of CPUs: ${numCPUs} available`);
+const app = createRouter();
 
-const cacheable = new CacheableLookup();
-
-cacheable.install(http.globalAgent);
-cacheable.install(https.globalAgent);
-
-const ws = expressWs(express());
-const app = ws.app;
-
-declare global {
-  var isProduction: boolean;
-}
-
-global.isProduction = process.env.IS_PRODUCTION === 'true';
+app.use(secureHeaders());
 
 app.use(
+  '*',
   cors({
+    origin: '*',
     credentials: true,
+    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowHeaders: [
+      'Authorization',
+      'Access-Control-Allow-Credentials',
+      'Cookie',
+      'Content-Type',
+      'accept-language',
+      'x-trpc-source',
+      'x-user-locale',
+      'x-user-timezone',
+      'x-user-country',
+      'X-Retry-After',
+    ],
+    exposeHeaders: ['Content-Length'],
+    maxAge: 86400,
   }),
 );
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (_req, res) => {
-  res.send('CRAWLERS: Hello World');
+app.doc('/openapi', {
+  openapi: '3.1.0',
+  info: {
+    version: '0.0.1',
+    title: 'Codecrawl API',
+    description: 'Codecrawl API',
+    contact: {
+      name: 'Support',
+      email: 'hi@revoks.dev',
+      url: 'revoks.dev',
+    },
+    license: {
+      name: 'AGPL-3.0 license',
+      url: 'https://github.com/revokslab/codecrawl/blob/main/LICENSE',
+    },
+  },
+  servers: [
+    {
+      url: BASE_URL,
+      description: 'Production API',
+    },
+  ],
+  security: [{ token: [] }],
 });
 
-// register router
-app.use('/v1', v1Router);
+// Register security scheme
+app.openAPIRegistry.registerComponent('securitySchemes', 'token', {
+  type: 'http',
+  scheme: 'bearer',
+  description: 'Default authenticaton mechanism',
+  'x-api-key-example': 'CC_API_KEY',
+});
+
+app.get(
+  '/',
+  Scalar({ url: '/openapi', pageTitle: 'Codecrawl API', theme: 'saturn' }),
+);
+
+app.get('/', (c) => {
+  return c.json({
+    remoteAddress: c.env.incoming.socket.remoteAddress,
+  });
+});
+
+app.on(['POST', 'GET'], '/auth/*', (c) => {
+  return auth.handler(c.req.raw);
+});
+
+app.route('/v1', routers);
 
 const DEFAULT_PORT = process.env.PORT ?? 4000;
-const HOST = process.env.HOST ?? 'localhost';
 
-function startServer(port = DEFAULT_PORT) {
-  const server = app.listen(Number(port), HOST, () => {
-    logger.info(`Worker ${process.pid} listening on port ${port}`);
-  });
+// Graceful shutdown handling
+const shutdown = async (signal: string) => {
+  logger.info(`Received ${signal}, shutting down gracefully...`);
 
-  const exitHandler = () => {
-    logger.info('SIGTERM signal received closing: HTTP server');
-    server.close(() => {
-      logger.info('Server closed.');
-      process.exit(0);
-    });
-  };
+  process.exit(0);
+};
 
-  process.on('SIGTERM', exitHandler);
-  process.on('SIGINT', exitHandler);
-  return server;
-}
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
 
-if (require.main === module) {
-  startServer();
-}
-
-app.get('/is-production', (_req, res) => {
-  res.send({ isProduction: global.isProduction });
-});
+logger.info(`Server starting on port ${DEFAULT_PORT}`);
 
 logger.info(`Worker ${process.pid} started`);
+
+serve({
+  fetch: app.fetch,
+  port: Number(DEFAULT_PORT),
+  hostname: '0.0.0.0',
+});

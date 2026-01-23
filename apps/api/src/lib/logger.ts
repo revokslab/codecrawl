@@ -1,5 +1,5 @@
-import * as winston from 'winston';
 import { configDotenv } from 'dotenv';
+import * as winston from 'winston';
 
 configDotenv();
 
@@ -16,7 +16,6 @@ const logFormat = winston.format.printf(
                 name: value.name,
                 message: value.message,
                 stack: value.stack,
-                cause: value.cause,
               };
             } else {
               return value;
@@ -36,7 +35,6 @@ export const logger = winston.createLogger({
           name: value.name,
           message: value.message,
           stack: value.stack,
-          cause: value.cause,
         };
       } else {
         return value;

@@ -1,3 +1,4 @@
+import type { HttpBindings } from '@hono/node-server';
 import type { OutputStyle } from './config/configSchema';
 
 export type CrawlProgressCallback = (message: string) => void;
@@ -11,6 +12,14 @@ declare global {
     }
   }
 }
+
+export type HonoVariables = {};
+
+type Bindings = HttpBindings & {
+  /* ... */
+};
+
+export type AppBindings = { Variables: HonoVariables; Bindings: Bindings };
 
 export interface CrawlOptions {
   // Codecrawl Cloud Options
