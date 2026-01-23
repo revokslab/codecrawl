@@ -1,12 +1,12 @@
-import type { PlanType } from '../../types';
-import { createLlmsTxt, updateLlmsTxtByRepoUrl } from '../../db/mutations';
+import { runRemoteAction } from '~/core/actions/remoteAction';
 import {
+  createLlmsTxt,
   getLlmsTxtByRepoUrl,
   getOrderedLlmsTxtByRepoUrl,
-} from '../../db/queries';
-import { logger as _logger } from '../logger';
+  updateLlmsTxtByRepoUrl,
+} from '~/db/queries';
+import { logger as _logger } from '~/lib/logger';
 import { updateGeneratedLlmsTxt } from './redis';
-import { runRemoteAction } from '../../core/actions/remoteAction';
 
 interface LlmsTextCache {
   repoUrl: string;
@@ -90,8 +90,6 @@ export async function saveLlmsTxtToCache(
 
 interface GenerateLLMsTextServiceOptions {
   generationId: string;
-  teamId: string;
-  plan: PlanType;
   url: string;
   maxUrls: number;
   showFullText: boolean;
@@ -101,14 +99,13 @@ interface GenerateLLMsTextServiceOptions {
 export async function performGenerateLlmsTxt(
   options: GenerateLLMsTextServiceOptions,
 ) {
-  const { generationId, maxUrls, showFullText, teamId, url } = options;
+  const { generationId, maxUrls, showFullText, url } = options;
 
   const startTime = Date.now();
   const logger = _logger.child({
     module: 'generate-llmstxt',
     method: 'performGenerateLlmsTxt',
     generationId,
-    teamId,
   });
 
   try {

@@ -1,7 +1,24 @@
-import 'dotenv/config';
 import { Worker, type Job, type Queue } from 'bullmq';
+import 'dotenv/config';
 import { v4 as uuidv4 } from 'uuid';
 
+import {
+  runComprehensiveLlmsTxtAction,
+  runFileTreeAction,
+  runLlmsTxtAction,
+} from '~/core/actions';
+import {
+  cleanOldConcurrencyLimitEntries,
+  pushConcurrencyLimitActiveJob,
+  removeConcurrencyLimitActiveJob,
+  takeConcurrencyLimitedJob,
+} from '~/lib/concurrency-limit';
+import {
+  getLlmsTextFromCache,
+  saveLlmsTxtToCache,
+} from '~/lib/generate-llms-txt';
+import { updateGeneratedLlmsTxt } from '~/lib/generate-llms-txt/redis';
+import { updateTreeGenerationDataStatus } from '~/lib/generate-tree';
 import { logger as _logger } from '~/lib/logger';
 import {
   getGenerateLlmsTxtQueue,
@@ -9,23 +26,6 @@ import {
   redisConnection,
 } from './queue-service';
 import systemMonitor from './system-monitor';
-import {
-  cleanOldConcurrencyLimitEntries,
-  pushConcurrencyLimitActiveJob,
-  removeConcurrencyLimitActiveJob,
-  takeConcurrencyLimitedJob,
-} from '~/lib/concurrency-limit';
-import { updateGeneratedLlmsTxt } from '~/lib/generate-llms-txt/redis';
-import {
-  getLlmsTextFromCache,
-  saveLlmsTxtToCache,
-} from '~/lib/generate-llms-txt';
-import {
-  runLlmsTxtAction,
-  runComprehensiveLlmsTxtAction,
-  runFileTreeAction,
-} from '~/core/actions';
-import { updateTreeGenerationDataStatus } from '~/lib/generate-tree';
 
 /**
  * Globals

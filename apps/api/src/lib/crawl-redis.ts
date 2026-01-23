@@ -1,12 +1,11 @@
-import type { CrawlOptions } from '~/types';
 import { logger as _logger } from '~/lib/logger';
 import { redisConnection } from '~/services/queue-service';
+import type { CrawlOptions } from '~/types';
 
 export type StoredCrawl = {
   repoUrl: string;
   crawlerOptions: CrawlOptions;
-  team_id: string;
-  plan?: string;
+  userId: string;
   cancelled?: boolean;
   createdAt: number;
 };
@@ -17,8 +16,7 @@ export async function saveCrawl(id: string, crawl: StoredCrawl) {
     module: 'crawl-redis',
     method: 'saveCrawl',
     crawlId: id,
-    teamId: crawl.team_id,
-    plan: crawl.plan,
+    userId: crawl.userId,
   });
   await redisConnection.set(`crawl:${id}`, JSON.stringify(crawl));
   await redisConnection.expire(`crawl:${id}`, 24 * 60 * 60);

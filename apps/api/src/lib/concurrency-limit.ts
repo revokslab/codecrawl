@@ -2,46 +2,46 @@ import type { JobsOptions } from 'bullmq';
 
 import { redisConnection } from '~/services/queue-service';
 
-const constructKey = (teamId: string) => `concurrency-limiter:${teamId}`;
-const constructQueueKey = (teamId: string) =>
-  `concurrency-limit-queue:${teamId}`;
+const constructKey = (userId: string) => `concurrency-limiter:${userId}`;
+const constructQueueKey = (userId: string) =>
+  `concurrency-limit-queue:${userId}`;
 
 export async function cleanOldConcurrencyLimitEntries(
-  teamId: string,
+  userId: string,
   now: number = Date.now(),
 ) {
   await redisConnection.zremrangebyscore(
-    constructKey(teamId),
+    constructKey(userId),
     Number.NEGATIVE_INFINITY,
     now,
   );
 }
 
 export async function getConcurrencyLimitActiveJobs(
-  teamId: string,
+  userId: string,
   now: number = Date.now(),
 ): Promise<string[]> {
   return await redisConnection.zrangebyscore(
-    constructKey(teamId),
+    constructKey(userId),
     now,
     Number.POSITIVE_INFINITY,
   );
 }
 
 export async function pushConcurrencyLimitActiveJob(
-  teamId: string,
+  userId: string,
   id: string,
   timeout: number,
   now: number = Date.now(),
 ) {
-  await redisConnection.zadd(constructKey(teamId), now + timeout, id);
+  await redisConnection.zadd(constructKey(userId), now + timeout, id);
 }
 
 export async function removeConcurrencyLimitActiveJob(
-  teamId: string,
+  userId: string,
   id: string,
 ) {
-  await redisConnection.zrem(constructKey(teamId), id);
+  await redisConnection.zrem(constructKey(userId), id);
 }
 
 export type ConcurrencyLimitedJob = {
@@ -54,9 +54,9 @@ export type ConcurrencyLimitedJob = {
 type ZMPopResult = [string, [string, string]]; // [key, [member, score]]
 
 export async function takeConcurrencyLimitedJob(
-  teamId: string,
+  userId: string,
 ): Promise<ConcurrencyLimitedJob | null> {
-  const res = await redisConnection.zmpop(1, constructQueueKey(teamId), 'MIN');
+  const res = await redisConnection.zmpop(1, constructQueueKey(userId), 'MIN');
   if (res === null || res === undefined) {
     return null;
   }
@@ -67,27 +67,27 @@ export async function takeConcurrencyLimitedJob(
 }
 
 export async function pushConcurrencyLimitedJob(
-  teamId: string,
+  userId: string,
   job: ConcurrencyLimitedJob,
 ) {
   await redisConnection.zadd(
-    constructQueueKey(teamId),
+    constructQueueKey(userId),
     job.priority ?? 1,
     JSON.stringify(job),
   );
 }
 
-export async function getConcurrencyLimitedJobs(teamId: string) {
+export async function getConcurrencyLimitedJobs(userId: string) {
   return new Set(
-    (await redisConnection.zrange(constructQueueKey(teamId), 0, -1)).map(
+    (await redisConnection.zrange(constructQueueKey(userId), 0, -1)).map(
       (x) => JSON.parse(x).id,
     ),
   );
 }
 
 export async function getConcurrencyQueueJobsCount(
-  teamId: string,
+  userId: string,
 ): Promise<number> {
-  const count = await redisConnection.zcard(constructQueueKey(teamId));
+  const count = await redisConnection.zcard(constructQueueKey(userId));
   return count;
 }

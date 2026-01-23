@@ -1,28 +1,17 @@
-import Redis from 'ioredis';
+import type Redis from 'ioredis';
+import { redisConnection } from '~/services/queue-service';
 
 export class RedisCache {
   private prefix: string;
   private defaultTTL: number;
-  private redis: Redis | null = null;
 
   constructor(prefix: string, defaultTTL: number = 30 * 60) {
     this.prefix = prefix;
     this.defaultTTL = defaultTTL;
-    this.redis = null;
   }
 
   private getRedisClient(): Redis {
-    if (this.redis) {
-      return this.redis;
-    }
-
-    const client = new Redis(process.env.REDIS_URL as string, {
-      maxRetriesPerRequest: null,
-    });
-
-    this.redis = client;
-
-    return client;
+    return redisConnection;
   }
 
   private parseValue<T>(value: string | null): T | undefined {

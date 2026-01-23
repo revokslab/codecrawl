@@ -1,10 +1,8 @@
-import { redisConnection } from '../../services/queue-service';
-import { logger as _logger } from '../logger';
+import { logger as _logger } from '~/lib/logger';
+import { redisConnection } from '~/services/queue-service';
 
 export interface GenerationData {
   id: string;
-  teamId: string;
-  plan: string;
   createdAt: number;
   status: 'processing' | 'completed' | 'failed';
   url: string;

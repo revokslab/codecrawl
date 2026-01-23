@@ -1,5 +1,9 @@
+import type { Scope } from '@codecrawl/common/scopes';
 import type { HttpBindings } from '@hono/node-server';
+import type { Session } from 'better-auth';
 import type { OutputStyle } from './config/configSchema';
+
+import type { Database } from '~/db';
 
 export type CrawlProgressCallback = (message: string) => void;
 
@@ -13,7 +17,11 @@ declare global {
   }
 }
 
-export type HonoVariables = {};
+export type HonoVariables = {
+  session: Session;
+  scopes: Scope[];
+  db: Database;
+};
 
 type Bindings = HttpBindings & {
   /* ... */
