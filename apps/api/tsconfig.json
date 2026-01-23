@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2020",
-    "module": "CommonJS",
+    "module": "NodeNext",
     "allowJs": true,
     "removeComments": true,
     "resolveJsonModule": true,
@@ -11,11 +11,12 @@
     "strict": true,
     "lib": ["es2020"],
     "baseUrl": ".",
+    "types": ["node"],
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "nodenext",
     "skipLibCheck": true,
     "paths": {
       "~/*": ["src/*"]

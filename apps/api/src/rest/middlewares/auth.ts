@@ -1,3 +1,4 @@
+import { expandScopes } from '@codecrawl/common/scopes';
 import { getSessionCookie } from 'better-auth/cookies';
 import type { MiddlewareHandler } from 'hono';
 import { HTTPException } from 'hono/http-exception';
@@ -41,7 +42,7 @@ export const withAuth: MiddlewareHandler = async (c, next) => {
       }
 
       c.set('session', session);
-      //   c.set('scopes', expandScopes(['apis.all']));
+      c.set('scopes', expandScopes(['apis.all']));
 
       middlewareLogger.debug('Session authentication successful', {
         userId: session.user.id,
@@ -125,7 +126,7 @@ export const withAuth: MiddlewareHandler = async (c, next) => {
     };
 
     c.set('session', session);
-    // c.set('scopes', expandScopes(apiKey.scopes ?? []));
+    c.set('scopes', expandScopes(apiKey.scopes ?? []));
 
     // Update last used at
     updatedApiKeyLastUsedAt(db, apiKey.id);

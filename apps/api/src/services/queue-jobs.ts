@@ -1,16 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { logger } from '~/lib/logger';
 import {
   cleanOldConcurrencyLimitEntries,
-  getConcurrencyQueueJobsCount,
   getConcurrencyLimitActiveJobs,
+  getConcurrencyQueueJobsCount,
   pushConcurrencyLimitActiveJob,
   pushConcurrencyLimitedJob,
 } from '~/lib/concurrency-limit';
+import { logger } from '~/lib/logger';
+import type { CrawlOptions, PlanType } from '~/types';
 import { getCrawlQueue } from './queue-service';
 import { getConcurrencyLimitMax } from './rate-limiter';
-import type { CrawlOptions, PlanType } from '~/types';
 
 async function _addCrawlJobToConcurrencyQueue(
   codeCrawlOptions: any,
@@ -212,7 +212,7 @@ export function waitForJob<T = unknown>(
 
         if (state === 'completed') {
           clearInterval(int);
-          resolve((await getCrawlQueue().getJob(jobId)).returnValue);
+          resolve((await getCrawlQueue().getJob(jobId))?.returnvalue);
         } else if (state === 'failed') {
           const job = await getCrawlQueue().getJob(jobId);
           if (job && job.failedReason !== 'Concurrency limit hit') {
