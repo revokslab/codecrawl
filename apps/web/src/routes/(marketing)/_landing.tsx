@@ -17,9 +17,6 @@ export const getGithubStars = createServerFn({
 export const Route = createFileRoute('/(marketing)/_landing')({
   component: RouteComponent,
   loader: async ({ context }) => {
-    await context.queryClient.prefetchQuery({
-      queryKey: ['users/me'],
-    });
     const stars = await getGithubStars();
     return { stars };
   },
@@ -27,9 +24,6 @@ export const Route = createFileRoute('/(marketing)/_landing')({
 
 function RouteComponent() {
   const state = Route.useLoaderData();
-  const { data } = useSuspenseQuery<{ user: User | null }>({
-    queryKey: ['users/me'],
-  });
 
   return (
     <Flex
@@ -38,7 +32,7 @@ function RouteComponent() {
       flexGrow={'1'}
       style={{ backgroundColor: 'white' }}
     >
-      <Header stars={state.stars} user={data.user} />
+      <Header stars={state.stars} user={null} />
       <div className="custom-container space-y-12 pt-16 min-h-screen flex flex-col justify-between">
         <main className="flex-1">
           <Outlet />

@@ -34,27 +34,27 @@ export default AuthContext;
 export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({
   children,
 }) => {
-  const queryClient = useQueryClient();
-  const { data } = useQuery<{ user: User | null }>({
-    queryKey: ['users/me'],
-    retry: false,
-    refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000, // Keep prefetched data fresh for 5 mins
-  });
+  // const queryClient = useQueryClient();
+  // const { data } = useQuery<{ user: User | null }>({
+  //   queryKey: ['users/me'],
+  //   retry: false,
+  //   refetchOnWindowFocus: false,
+  //   staleTime: 5 * 60 * 1000, // Keep prefetched data fresh for 5 mins
+  // });
 
-  const updateUser = () => {
-    queryClient.invalidateQueries({ queryKey: ['users/me'] });
-  };
+  // const updateUser = () => {
+  //   queryClient.invalidateQueries({ queryKey: ['users/me'] });
+  // };
 
   return (
-    <AuthContext.Provider value={{ user: data?.user, updateUser }}>
+    <AuthContext.Provider value={{ user:null, updateUser:() => {} }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const prefetchUserMe = async (queryClient: QueryClient) => {
-  await queryClient.prefetchQuery({
-    queryKey: ['users/me'],
-  });
-};
+// export const prefetchUserMe = async (queryClient: QueryClient) => {
+//   await queryClient.prefetchQuery({
+//     queryKey: ['users/me'],
+//   });
+// };

@@ -1,5 +1,4 @@
 import { isServer, QueryClient } from '@tanstack/react-query';
-import { defaultQueryFn } from './default-query-fn';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -9,7 +8,6 @@ export const queryClient = new QueryClient({
       },
     },
     queries: {
-      queryFn: defaultQueryFn,
       enabled: !isServer,
     },
   },

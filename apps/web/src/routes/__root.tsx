@@ -83,7 +83,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body suppressHydrationWarning className="font-sans antialiased">
         <QueryClientProvider client={queryClient}>
-          <TeamsProvider>
+        
             <Theme
               accentColor="tomato"
               radius="large"
@@ -96,7 +96,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               <Scripts />
               <Toaster />
             </Theme>
-          </TeamsProvider>
+          
         </QueryClientProvider>
       </body>
     </html>
