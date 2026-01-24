@@ -25,8 +25,6 @@ function RouteComponent() {
         </Flex>
       </Flex>
 
-     
-
       <Flex direction={'column'} gap={'4'}>
         <Tabs.Root defaultValue='filetree'>
           <Tabs.List>

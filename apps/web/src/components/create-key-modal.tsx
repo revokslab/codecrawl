@@ -4,11 +4,9 @@ import { Button, Dialog, Flex, Text, TextField } from '@radix-ui/themes'
 import { useState } from 'react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 
-
-
 export function CreateKeyModal() {
   const [open, setOpen] = useState(false)
-  
+
   const {
     register,
     handleSubmit,
@@ -16,9 +14,7 @@ export function CreateKeyModal() {
     clearErrors,
   } = useForm<{ name: string }>()
 
-  const onSubmit: SubmitHandler<{ name: string }> = async (values) => {
-    
-  }
+  const onSubmit: SubmitHandler<{ name: string }> = async (values) => {}
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>

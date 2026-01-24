@@ -3,8 +3,6 @@ import { Avatar, DropdownMenu, Flex, Text } from '@radix-ui/themes'
 import { Link } from '@tanstack/react-router'
 
 export function Sidebar() {
- 
-
   return (
     <Flex gap={'4'} direction={'column'} width={'250px'} height={'100%'} px={'4'} py={'5'}>
       <Flex direction={'column'} flexGrow={'1'}>

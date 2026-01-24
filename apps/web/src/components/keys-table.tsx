@@ -5,14 +5,13 @@ import { format } from 'date-fns'
 import { toast } from 'sonner'
 import { useCopyToClipboard } from 'usehooks-ts'
 
-
 export function KeysTable() {
   const { data, isLoading } = useQuery<{
     keys: { id: string; name: string; key: string; createdAt: string }[]
   }>({
     queryKey: ['users/keys'],
   })
-  
+
   const [copiedText, copy] = useCopyToClipboard()
 
   const handleCopy = (text: string) => () => {
@@ -99,11 +98,7 @@ export function KeysTable() {
               </Text>
             </Table.Cell>
             <Table.Cell align={'center'}>
-              <Button
-                variant={'ghost'}
-                onClick={() => {}}
-                disabled={isDeleteDisabled}
-              >
+              <Button variant={'ghost'} onClick={() => {}} disabled={isDeleteDisabled}>
                 <TrashIcon className='w-4 h-4' />
               </Button>
             </Table.Cell>

@@ -1,4 +1,3 @@
-
 export function Hero() {
   return (
     <div className='flex flex-col justify-between mb-12'>
