@@ -10,7 +10,7 @@ export const getGithubStars = createServerFn({
 }).handler(async () => {
   const response = await fetch('https://api.github.com/repos/Idee8/codecrawl')
   const data = await response.json()
-  return data.stargazers_count
+  return (data as { stargazers_count: number }).stargazers_count
 })
 
 export const Route = createFileRoute('/(marketing)/_landing')({
