@@ -1,7 +1,7 @@
+import { cloudflare } from '@cloudflare/vite-plugin'
 import contentCollections from '@content-collections/vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
-import { nitro } from 'nitro/vite'
 import { defineConfig } from 'vite'
 import tsConfigPaths from 'vite-tsconfig-paths'
 
@@ -10,11 +10,11 @@ export default defineConfig({
     port: 3000,
   },
   plugins: [
+    cloudflare({ viteEnvironment: { name: 'ssr' } }),
     tsConfigPaths({
       projects: ['./tsconfig.json'],
     }),
     tanstackStart(),
-    nitro(),
     viteReact(),
     contentCollections(),
   ],

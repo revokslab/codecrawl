@@ -1,11 +1,11 @@
-import { defineCollection, defineConfig } from '@content-collections/core';
-import { compileMDX } from '@content-collections/mdx';
-import { z } from "zod";
+import { defineCollection, defineConfig } from '@content-collections/core'
+import { compileMDX } from '@content-collections/mdx'
+import { z } from 'zod'
 
 const posts = defineCollection({
   name: 'posts',
   directory: 'content/posts',
-  parser: "frontmatter",
+  parser: 'frontmatter',
   include: '**/*.mdx',
   schema: z.object({
     title: z.string(),
@@ -28,7 +28,7 @@ const posts = defineCollection({
 const updates = defineCollection({
   name: 'updates',
   directory: 'content/updates',
-  parser: "frontmatter",
+  parser: 'frontmatter',
   include: '**/*.mdx',
   schema: z.object({
     title: z.string(),
