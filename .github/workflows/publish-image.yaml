@@ -2,6 +2,9 @@ name: Deploy Images to GHCR
 
 env:
   DOTNET_VERSION: '6.0.x'
+  REGISTRY: ghcr.io
+  API_IMAGE_NAME: revokslab/codecrawl-api
+  WORKER_IMAGE_NAME: revokslab/codecrawl-worker
 
 on:
   push:
@@ -9,31 +12,85 @@ on:
       - main
     paths:
       - apps/api/**
+      - packages/common/**
+      - infra/docker/**
+      - package.json
+      - bun.lock
   workflow_dispatch:
 
 jobs:
-      push-app-image:
-        permissions:
-          contents: read
-          packages: write
-          attestations: write
-          id-token: write
-        runs-on: ubuntu-latest
-        defaults:
-          run:
-            working-directory: './apps/api'
-        steps:
-          - name: 'Checkout GitHub Action'
-            uses: actions/checkout@main
+  build-and-push:
+    name: Build and Push Images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
-          - name: 'Login to GitHub Container Registry'
-            uses: docker/login-action@v1
-            with:
-              registry: ghcr.io
-              username: ${{github.actor}}
-              password: ${{secrets.GITHUB_TOKEN}}
+    outputs:
+      api_image: ${{ steps.meta-api.outputs.tags }}
+      worker_image: ${{ steps.meta-worker.outputs.tags }}
+      version: ${{ steps.version.outputs.version }}
 
-          - name: 'Build Inventory Image'
-            run: |
-              docker build . --tag ghcr.io/revokslab/codecrawl:latest
-              docker push ghcr.io/revokslab/codecrawl:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate version
+        id: version
+        run: echo "version=$(date +'%Y%m%d%H%M%S')-${GITHUB_SHA::8}" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for API
+        id: meta-api
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.API_IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix=
+            type=raw,value=${{ steps.version.outputs.version }}
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+
+      - name: Extract metadata for Worker
+        id: meta-worker
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.WORKER_IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix=
+            type=raw,value=${{ steps.version.outputs.version }}
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+
+      - name: Build and push API image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./infra/docker/api.Dockerfile
+          push: true
+          tags: ${{ steps.meta-api.outputs.tags }}
+          labels: ${{ steps.meta-api.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64,linux/arm64
+
+      - name: Build and push Worker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./infra/docker/worker.Dockerfile
+          push: true
+          tags: ${{ steps.meta-worker.outputs.tags }}
+          labels: ${{ steps.meta-worker.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64,linux/arm64  
