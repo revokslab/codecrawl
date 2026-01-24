@@ -1,6 +1,6 @@
-import { protectedMiddleware, publicMiddleware } from '~/rest/middlewares';
 import { createRouter } from '~/utils';
 
+import { protectedMiddleware, publicMiddleware } from '../middlewares';
 import { fileTreeRouter } from './file-tree';
 import { keysRouter } from './keys';
 import { llmsTxtRouter } from './llms-txt';

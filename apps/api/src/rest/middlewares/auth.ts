@@ -12,13 +12,7 @@ import {
 } from '~/db/queries';
 import { auth } from '~/lib/auth';
 import { hash } from '~/lib/encryption';
-import { logger } from '~/lib/logger';
 import { isValidApiKeyFormat } from '~/utils/api-keys';
-
-const middlewareLogger = logger.child({
-  component: 'rest',
-  subcomponent: 'auth-middleware',
-});
 
 export const withAuth: MiddlewareHandler = async (c, next) => {
   const sessionCookie = getSessionCookie(c.req.raw.headers, {
@@ -33,9 +27,6 @@ export const withAuth: MiddlewareHandler = async (c, next) => {
       });
 
       if (!session || !session.user) {
-        middlewareLogger.warn('Authentication failed: invalid session', {
-          hasCookie: !!sessionCookie,
-        });
         throw new HTTPException(401, {
           message: 'Not authenticated',
         });
@@ -44,15 +35,11 @@ export const withAuth: MiddlewareHandler = async (c, next) => {
       c.set('session', session);
       c.set('scopes', expandScopes(['apis.all']));
 
-      middlewareLogger.debug('Session authentication successful', {
-        userId: session.user.id,
-      });
       await next();
       return;
     }
 
     if (!authHeader) {
-      middlewareLogger.warn('Authentication failed: no authorization header');
       throw new HTTPException(401, {
         message: 'Authorization header required',
       });
@@ -61,20 +48,15 @@ export const withAuth: MiddlewareHandler = async (c, next) => {
     const [scheme, token] = authHeader.split(' ');
 
     if (scheme !== 'Bearer') {
-      middlewareLogger.warn('Authentication failed: invalid scheme', {
-        scheme,
-      });
       throw new HTTPException(401, { message: 'Invalid authorization scheme' });
     }
 
     if (!token) {
-      middlewareLogger.warn('Authentication failed: no token');
       throw new HTTPException(401, { message: 'Token required' });
     }
 
-    // Handle API keys (start with lemma_ but not lemma_access_token_)
-    if (!token.startsWith('lemma_') || !isValidApiKeyFormat(token)) {
-      middlewareLogger.warn('Authentication failed: invalid token format');
+    // Handle API keys (start with cc_ but not cc_access_token_)
+    if (!token.startsWith('cc_') || !isValidApiKeyFormat(token)) {
       throw new HTTPException(401, { message: 'Invalid token format' });
     }
 
@@ -94,7 +76,6 @@ export const withAuth: MiddlewareHandler = async (c, next) => {
     }
 
     if (!apiKey) {
-      middlewareLogger.warn('Authentication failed: invalid API key');
       throw new HTTPException(401, { message: 'Invalid API key' });
     }
 
@@ -111,9 +92,6 @@ export const withAuth: MiddlewareHandler = async (c, next) => {
     }
 
     if (!user) {
-      middlewareLogger.warn('Authentication failed: user not found', {
-        userId: apiKey.userId,
-      });
       throw new HTTPException(401, { message: 'User not found' });
     }
 
@@ -131,15 +109,11 @@ export const withAuth: MiddlewareHandler = async (c, next) => {
     // Update last used at
     updatedApiKeyLastUsedAt(db, apiKey.id);
 
-    middlewareLogger.debug('API key authentication successful', {
-      userId: user.id,
-    });
     await next();
   } catch (error) {
     if (error instanceof HTTPException) {
       throw error;
     }
-    middlewareLogger.error('Auth middleware error', error as Error);
     throw error;
   }
 };

@@ -47,12 +47,12 @@ app.doc('/openapi', {
     description: 'Codecrawl API',
     contact: {
       name: 'Support',
-      email: 'hi@revoks.dev',
-      url: 'revoks.dev',
+      email: 'hello@codecrawl.com',
+      url: 'codecrawl.com',
     },
     license: {
       name: 'AGPL-3.0 license',
-      url: 'https://github.com/revokslab/codecrawl/blob/main/LICENSE',
+      url: 'https://github.com/irere123/codecrawl/blob/main/LICENSE',
     },
   },
   servers: [
@@ -76,12 +76,6 @@ app.get(
   '/',
   Scalar({ url: '/openapi', pageTitle: 'Codecrawl API', theme: 'saturn' }),
 );
-
-app.get('/', (c) => {
-  return c.json({
-    remoteAddress: c.env.incoming.socket.remoteAddress,
-  });
-});
 
 app.on(['POST', 'GET'], '/auth/*', (c) => {
   return auth.handler(c.req.raw);

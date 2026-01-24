@@ -33,7 +33,7 @@ llmsTxtRouter.openapi(
     },
     responses: {
       200: {
-        description: 'LLMs.txt generated',
+        description: 'LLMs.txt generation job created',
         content: {
           'application/json': {
             schema: llmsTxtResponseSchema,
@@ -99,8 +99,6 @@ llmsTxtRouter.openapi(
   }),
   async (c) => {
     const { jobId } = c.req.param();
-    const generation = await getGeneratedLLmsTxt(jobId);
-    const showFullText = generation?.showFullText ?? false;
 
     if (!jobId) {
       return c.json(
@@ -114,6 +112,8 @@ llmsTxtRouter.openapi(
       );
     }
 
+    const generation = await getGeneratedLLmsTxt(jobId);
+
     if (!generation) {
       return c.json(
         validateResponse(
@@ -126,27 +126,27 @@ llmsTxtRouter.openapi(
       );
     }
 
-    let data: any = null;
+    const showFullText = generation.showFullText ?? false;
 
-    if (showFullText) {
-      data = {
-        llmstxt: generation.generatedText,
-        llmsfulltxt: generation.fullText,
-      };
-    } else {
-      data = {
-        llmstxt: generation.generatedText,
-      };
-    }
+    const data = showFullText
+      ? {
+          llmstxt: generation.generatedText,
+          llmsfulltxt: generation.fullText,
+        }
+      : {
+          llmstxt: generation.generatedText,
+        };
+
+    const expiry = await getGeneratedLlmsTxtExpiry(jobId);
 
     return c.json(
       validateResponse(
         {
           success: generation.status !== 'failed',
-          data: data,
+          data,
           status: generation.status,
-          error: generation?.error ?? undefined,
-          expiresAt: (await getGeneratedLlmsTxtExpiry(jobId)).toISOString(),
+          error: generation.error ?? undefined,
+          expiresAt: expiry ? expiry.toISOString() : undefined,
         },
         llmsTxtStatusResponseSchema,
       ),

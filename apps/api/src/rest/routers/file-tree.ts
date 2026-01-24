@@ -12,16 +12,22 @@ const fileTreeRouter = createRouter();
 
 fileTreeRouter.openapi(
   createRoute({
-    method: 'get',
+    method: 'post',
     tags: ['File Tree'],
     path: '/',
-    summary: 'Get file tree status',
+    summary: 'Create file tree generation job',
     request: {
-      query: fileTreeStatusSchema,
+      body: {
+        content: {
+          'application/json': {
+            schema: fileTreeStatusSchema,
+          },
+        },
+      },
     },
     responses: {
       200: {
-        description: 'File tree status',
+        description: 'File tree generation job created',
         content: {
           'application/json': {
             schema: fileTreeStatusResponseSchema,
@@ -115,6 +121,8 @@ fileTreeRouter.openapi(
       );
     }
 
+    const expiry = await getTreeGenerationDataExpiry(generationId);
+
     return c.json(
       validateResponse(
         {
@@ -124,9 +132,7 @@ fileTreeRouter.openapi(
           },
           status: generation.status,
           error: generation?.error ?? undefined,
-          expiresAt: (
-            await getTreeGenerationDataExpiry(generationId)
-          ).toISOString(),
+          expiresAt: expiry ? expiry.toISOString() : undefined,
         },
         fileTreeStatusResponseSchema,
       ),
