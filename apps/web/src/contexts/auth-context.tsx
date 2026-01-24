@@ -47,7 +47,7 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({
   // };
 
   return (
-    <AuthContext.Provider value={{ user:null, updateUser:() => {} }}>
+    <AuthContext.Provider value={{ user: null, updateUser: () => {} }}>
       {children}
     </AuthContext.Provider>
   );

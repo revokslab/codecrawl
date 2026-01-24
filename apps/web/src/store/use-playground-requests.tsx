@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface PlaygroundRequestsState {
   requestCount: number;
@@ -37,7 +37,7 @@ export const usePlaygroundRequestsStore = create<PlaygroundRequestsStore>()(
         Math.max(0, get().maxRequests - get().requestCount),
     }),
     {
-      name: "playground-requests-storage",
-    }
-  )
+      name: 'playground-requests-storage',
+    },
+  ),
 );

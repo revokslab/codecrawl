@@ -3,16 +3,19 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "workspaces": ["apps/*", "packages/*"],
   "scripts": {
-    "dev": "pnpm --filter './apps/*' run dev",
-    "workers": "pnpm --filter './apps/api' run workers",
-    "format": "biome format --write ."
+    "dev": "turbo dev",
+    "format": "biome format --write",
+    "lint": "biome lint",
+    "biome:check": "biome check"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.2.0+sha512.0d27364e0139c6aadeed65ada153135e0ca96c8da42123bd50047f961339dc7a758fc2e944b428f52be570d1bd3372455c1c65fa2e7aa0bfbf931190f9552001",
+  "packageManager": "bun@1.3.5",
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4"
+    "@biomejs/biome": "^1.9.4",
+    "turbo": "^2.7.5"
   }
 }

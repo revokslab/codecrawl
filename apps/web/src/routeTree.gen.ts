@@ -8,179 +8,179 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as RedirectRouteImport } from './routes/redirect'
-import { Route as AppAppRouteImport } from './routes/app/_app'
-import { Route as marketingLandingRouteImport } from './routes/(marketing)/_landing'
-import { Route as authLogoutRouteImport } from './routes/(auth)/logout'
-import { Route as authAuthRouteImport } from './routes/(auth)/_auth'
-import { Route as AppAppIndexRouteImport } from './routes/app/_app/index'
-import { Route as marketingLandingIndexRouteImport } from './routes/(marketing)/_landing/index'
-import { Route as AppAppPlaygroundRouteImport } from './routes/app/_app/playground'
-import { Route as AppAppLogsRouteImport } from './routes/app/_app/logs'
-import { Route as AppAppKeysRouteImport } from './routes/app/_app/keys'
-import { Route as marketingLandingPlaygroundRouteImport } from './routes/(marketing)/_landing/playground'
-import { Route as authAuthSignupRouteImport } from './routes/(auth)/_auth.signup'
-import { Route as authAuthSigninRouteImport } from './routes/(auth)/_auth.signin'
-import { Route as marketingLandingUpdatesIndexRouteImport } from './routes/(marketing)/_landing/updates.index'
-import { Route as marketingLandingBlogIndexRouteImport } from './routes/(marketing)/_landing/blog.index'
-import { Route as marketingLandingUpdatesSlugRouteImport } from './routes/(marketing)/_landing/updates.$slug'
-import { Route as marketingLandingBlogSlugRouteImport } from './routes/(marketing)/_landing/blog.$slug'
-import { Route as marketingLandingBlogCCategoryRouteImport } from './routes/(marketing)/_landing/blog.c.$category'
+import { Route as rootRouteImport } from './routes/__root';
+import { Route as RedirectRouteImport } from './routes/redirect';
+import { Route as AppAppRouteImport } from './routes/app/_app';
+import { Route as marketingLandingRouteImport } from './routes/(marketing)/_landing';
+import { Route as authLogoutRouteImport } from './routes/(auth)/logout';
+import { Route as authAuthRouteImport } from './routes/(auth)/_auth';
+import { Route as AppAppIndexRouteImport } from './routes/app/_app/index';
+import { Route as marketingLandingIndexRouteImport } from './routes/(marketing)/_landing/index';
+import { Route as AppAppPlaygroundRouteImport } from './routes/app/_app/playground';
+import { Route as AppAppLogsRouteImport } from './routes/app/_app/logs';
+import { Route as AppAppKeysRouteImport } from './routes/app/_app/keys';
+import { Route as marketingLandingPlaygroundRouteImport } from './routes/(marketing)/_landing/playground';
+import { Route as authAuthSignupRouteImport } from './routes/(auth)/_auth.signup';
+import { Route as authAuthSigninRouteImport } from './routes/(auth)/_auth.signin';
+import { Route as marketingLandingUpdatesIndexRouteImport } from './routes/(marketing)/_landing/updates.index';
+import { Route as marketingLandingBlogIndexRouteImport } from './routes/(marketing)/_landing/blog.index';
+import { Route as marketingLandingUpdatesSlugRouteImport } from './routes/(marketing)/_landing/updates.$slug';
+import { Route as marketingLandingBlogSlugRouteImport } from './routes/(marketing)/_landing/blog.$slug';
+import { Route as marketingLandingBlogCCategoryRouteImport } from './routes/(marketing)/_landing/blog.c.$category';
 
 const RedirectRoute = RedirectRouteImport.update({
   id: '/redirect',
   path: '/redirect',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AppAppRoute = AppAppRouteImport.update({
   id: '/app/_app',
   path: '/app',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const marketingLandingRoute = marketingLandingRouteImport.update({
   id: '/(marketing)/_landing',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const authLogoutRoute = authLogoutRouteImport.update({
   id: '/(auth)/logout',
   path: '/logout',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const authAuthRoute = authAuthRouteImport.update({
   id: '/(auth)/_auth',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AppAppIndexRoute = AppAppIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AppAppRoute,
-} as any)
+} as any);
 const marketingLandingIndexRoute = marketingLandingIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => marketingLandingRoute,
-} as any)
+} as any);
 const AppAppPlaygroundRoute = AppAppPlaygroundRouteImport.update({
   id: '/playground',
   path: '/playground',
   getParentRoute: () => AppAppRoute,
-} as any)
+} as any);
 const AppAppLogsRoute = AppAppLogsRouteImport.update({
   id: '/logs',
   path: '/logs',
   getParentRoute: () => AppAppRoute,
-} as any)
+} as any);
 const AppAppKeysRoute = AppAppKeysRouteImport.update({
   id: '/keys',
   path: '/keys',
   getParentRoute: () => AppAppRoute,
-} as any)
+} as any);
 const marketingLandingPlaygroundRoute =
   marketingLandingPlaygroundRouteImport.update({
     id: '/playground',
     path: '/playground',
     getParentRoute: () => marketingLandingRoute,
-  } as any)
+  } as any);
 const authAuthSignupRoute = authAuthSignupRouteImport.update({
   id: '/signup',
   path: '/signup',
   getParentRoute: () => authAuthRoute,
-} as any)
+} as any);
 const authAuthSigninRoute = authAuthSigninRouteImport.update({
   id: '/signin',
   path: '/signin',
   getParentRoute: () => authAuthRoute,
-} as any)
+} as any);
 const marketingLandingUpdatesIndexRoute =
   marketingLandingUpdatesIndexRouteImport.update({
     id: '/updates/',
     path: '/updates/',
     getParentRoute: () => marketingLandingRoute,
-  } as any)
+  } as any);
 const marketingLandingBlogIndexRoute =
   marketingLandingBlogIndexRouteImport.update({
     id: '/blog/',
     path: '/blog/',
     getParentRoute: () => marketingLandingRoute,
-  } as any)
+  } as any);
 const marketingLandingUpdatesSlugRoute =
   marketingLandingUpdatesSlugRouteImport.update({
     id: '/updates/$slug',
     path: '/updates/$slug',
     getParentRoute: () => marketingLandingRoute,
-  } as any)
+  } as any);
 const marketingLandingBlogSlugRoute =
   marketingLandingBlogSlugRouteImport.update({
     id: '/blog/$slug',
     path: '/blog/$slug',
     getParentRoute: () => marketingLandingRoute,
-  } as any)
+  } as any);
 const marketingLandingBlogCCategoryRoute =
   marketingLandingBlogCCategoryRouteImport.update({
     id: '/blog/c/$category',
     path: '/blog/c/$category',
     getParentRoute: () => marketingLandingRoute,
-  } as any)
+  } as any);
 
 export interface FileRoutesByFullPath {
-  '/redirect': typeof RedirectRoute
-  '/logout': typeof authLogoutRoute
-  '/app': typeof AppAppRouteWithChildren
-  '/signin': typeof authAuthSigninRoute
-  '/signup': typeof authAuthSignupRoute
-  '/playground': typeof marketingLandingPlaygroundRoute
-  '/app/keys': typeof AppAppKeysRoute
-  '/app/logs': typeof AppAppLogsRoute
-  '/app/playground': typeof AppAppPlaygroundRoute
-  '/': typeof marketingLandingIndexRoute
-  '/app/': typeof AppAppIndexRoute
-  '/blog/$slug': typeof marketingLandingBlogSlugRoute
-  '/updates/$slug': typeof marketingLandingUpdatesSlugRoute
-  '/blog/': typeof marketingLandingBlogIndexRoute
-  '/updates/': typeof marketingLandingUpdatesIndexRoute
-  '/blog/c/$category': typeof marketingLandingBlogCCategoryRoute
+  '/redirect': typeof RedirectRoute;
+  '/logout': typeof authLogoutRoute;
+  '/app': typeof AppAppRouteWithChildren;
+  '/signin': typeof authAuthSigninRoute;
+  '/signup': typeof authAuthSignupRoute;
+  '/playground': typeof marketingLandingPlaygroundRoute;
+  '/app/keys': typeof AppAppKeysRoute;
+  '/app/logs': typeof AppAppLogsRoute;
+  '/app/playground': typeof AppAppPlaygroundRoute;
+  '/': typeof marketingLandingIndexRoute;
+  '/app/': typeof AppAppIndexRoute;
+  '/blog/$slug': typeof marketingLandingBlogSlugRoute;
+  '/updates/$slug': typeof marketingLandingUpdatesSlugRoute;
+  '/blog/': typeof marketingLandingBlogIndexRoute;
+  '/updates/': typeof marketingLandingUpdatesIndexRoute;
+  '/blog/c/$category': typeof marketingLandingBlogCCategoryRoute;
 }
 export interface FileRoutesByTo {
-  '/redirect': typeof RedirectRoute
-  '/logout': typeof authLogoutRoute
-  '/signin': typeof authAuthSigninRoute
-  '/signup': typeof authAuthSignupRoute
-  '/playground': typeof marketingLandingPlaygroundRoute
-  '/app/keys': typeof AppAppKeysRoute
-  '/app/logs': typeof AppAppLogsRoute
-  '/app/playground': typeof AppAppPlaygroundRoute
-  '/': typeof marketingLandingIndexRoute
-  '/app': typeof AppAppIndexRoute
-  '/blog/$slug': typeof marketingLandingBlogSlugRoute
-  '/updates/$slug': typeof marketingLandingUpdatesSlugRoute
-  '/blog': typeof marketingLandingBlogIndexRoute
-  '/updates': typeof marketingLandingUpdatesIndexRoute
-  '/blog/c/$category': typeof marketingLandingBlogCCategoryRoute
+  '/redirect': typeof RedirectRoute;
+  '/logout': typeof authLogoutRoute;
+  '/signin': typeof authAuthSigninRoute;
+  '/signup': typeof authAuthSignupRoute;
+  '/playground': typeof marketingLandingPlaygroundRoute;
+  '/app/keys': typeof AppAppKeysRoute;
+  '/app/logs': typeof AppAppLogsRoute;
+  '/app/playground': typeof AppAppPlaygroundRoute;
+  '/': typeof marketingLandingIndexRoute;
+  '/app': typeof AppAppIndexRoute;
+  '/blog/$slug': typeof marketingLandingBlogSlugRoute;
+  '/updates/$slug': typeof marketingLandingUpdatesSlugRoute;
+  '/blog': typeof marketingLandingBlogIndexRoute;
+  '/updates': typeof marketingLandingUpdatesIndexRoute;
+  '/blog/c/$category': typeof marketingLandingBlogCCategoryRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/redirect': typeof RedirectRoute
-  '/(auth)/_auth': typeof authAuthRouteWithChildren
-  '/(auth)/logout': typeof authLogoutRoute
-  '/(marketing)/_landing': typeof marketingLandingRouteWithChildren
-  '/app/_app': typeof AppAppRouteWithChildren
-  '/(auth)/_auth/signin': typeof authAuthSigninRoute
-  '/(auth)/_auth/signup': typeof authAuthSignupRoute
-  '/(marketing)/_landing/playground': typeof marketingLandingPlaygroundRoute
-  '/app/_app/keys': typeof AppAppKeysRoute
-  '/app/_app/logs': typeof AppAppLogsRoute
-  '/app/_app/playground': typeof AppAppPlaygroundRoute
-  '/(marketing)/_landing/': typeof marketingLandingIndexRoute
-  '/app/_app/': typeof AppAppIndexRoute
-  '/(marketing)/_landing/blog/$slug': typeof marketingLandingBlogSlugRoute
-  '/(marketing)/_landing/updates/$slug': typeof marketingLandingUpdatesSlugRoute
-  '/(marketing)/_landing/blog/': typeof marketingLandingBlogIndexRoute
-  '/(marketing)/_landing/updates/': typeof marketingLandingUpdatesIndexRoute
-  '/(marketing)/_landing/blog/c/$category': typeof marketingLandingBlogCCategoryRoute
+  __root__: typeof rootRouteImport;
+  '/redirect': typeof RedirectRoute;
+  '/(auth)/_auth': typeof authAuthRouteWithChildren;
+  '/(auth)/logout': typeof authLogoutRoute;
+  '/(marketing)/_landing': typeof marketingLandingRouteWithChildren;
+  '/app/_app': typeof AppAppRouteWithChildren;
+  '/(auth)/_auth/signin': typeof authAuthSigninRoute;
+  '/(auth)/_auth/signup': typeof authAuthSignupRoute;
+  '/(marketing)/_landing/playground': typeof marketingLandingPlaygroundRoute;
+  '/app/_app/keys': typeof AppAppKeysRoute;
+  '/app/_app/logs': typeof AppAppLogsRoute;
+  '/app/_app/playground': typeof AppAppPlaygroundRoute;
+  '/(marketing)/_landing/': typeof marketingLandingIndexRoute;
+  '/app/_app/': typeof AppAppIndexRoute;
+  '/(marketing)/_landing/blog/$slug': typeof marketingLandingBlogSlugRoute;
+  '/(marketing)/_landing/updates/$slug': typeof marketingLandingUpdatesSlugRoute;
+  '/(marketing)/_landing/blog/': typeof marketingLandingBlogIndexRoute;
+  '/(marketing)/_landing/updates/': typeof marketingLandingUpdatesIndexRoute;
+  '/(marketing)/_landing/blog/c/$category': typeof marketingLandingBlogCCategoryRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
     | '/redirect'
     | '/logout'
@@ -197,8 +197,8 @@ export interface FileRouteTypes {
     | '/updates/$slug'
     | '/blog/'
     | '/updates/'
-    | '/blog/c/$category'
-  fileRoutesByTo: FileRoutesByTo
+    | '/blog/c/$category';
+  fileRoutesByTo: FileRoutesByTo;
   to:
     | '/redirect'
     | '/logout'
@@ -214,7 +214,7 @@ export interface FileRouteTypes {
     | '/updates/$slug'
     | '/blog'
     | '/updates'
-    | '/blog/c/$category'
+    | '/blog/c/$category';
   id:
     | '__root__'
     | '/redirect'
@@ -234,170 +234,170 @@ export interface FileRouteTypes {
     | '/(marketing)/_landing/updates/$slug'
     | '/(marketing)/_landing/blog/'
     | '/(marketing)/_landing/updates/'
-    | '/(marketing)/_landing/blog/c/$category'
-  fileRoutesById: FileRoutesById
+    | '/(marketing)/_landing/blog/c/$category';
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  RedirectRoute: typeof RedirectRoute
-  authAuthRoute: typeof authAuthRouteWithChildren
-  authLogoutRoute: typeof authLogoutRoute
-  marketingLandingRoute: typeof marketingLandingRouteWithChildren
-  AppAppRoute: typeof AppAppRouteWithChildren
+  RedirectRoute: typeof RedirectRoute;
+  authAuthRoute: typeof authAuthRouteWithChildren;
+  authLogoutRoute: typeof authLogoutRoute;
+  marketingLandingRoute: typeof marketingLandingRouteWithChildren;
+  AppAppRoute: typeof AppAppRouteWithChildren;
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/redirect': {
-      id: '/redirect'
-      path: '/redirect'
-      fullPath: '/redirect'
-      preLoaderRoute: typeof RedirectRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/redirect';
+      path: '/redirect';
+      fullPath: '/redirect';
+      preLoaderRoute: typeof RedirectRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/app/_app': {
-      id: '/app/_app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppAppRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/app/_app';
+      path: '/app';
+      fullPath: '/app';
+      preLoaderRoute: typeof AppAppRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/(marketing)/_landing': {
-      id: '/(marketing)/_landing'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof marketingLandingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/(marketing)/_landing';
+      path: '';
+      fullPath: '';
+      preLoaderRoute: typeof marketingLandingRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/(auth)/logout': {
-      id: '/(auth)/logout'
-      path: '/logout'
-      fullPath: '/logout'
-      preLoaderRoute: typeof authLogoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/(auth)/logout';
+      path: '/logout';
+      fullPath: '/logout';
+      preLoaderRoute: typeof authLogoutRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/(auth)/_auth': {
-      id: '/(auth)/_auth'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof authAuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/(auth)/_auth';
+      path: '';
+      fullPath: '';
+      preLoaderRoute: typeof authAuthRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/app/_app/': {
-      id: '/app/_app/'
-      path: '/'
-      fullPath: '/app/'
-      preLoaderRoute: typeof AppAppIndexRouteImport
-      parentRoute: typeof AppAppRoute
-    }
+      id: '/app/_app/';
+      path: '/';
+      fullPath: '/app/';
+      preLoaderRoute: typeof AppAppIndexRouteImport;
+      parentRoute: typeof AppAppRoute;
+    };
     '/(marketing)/_landing/': {
-      id: '/(marketing)/_landing/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof marketingLandingIndexRouteImport
-      parentRoute: typeof marketingLandingRoute
-    }
+      id: '/(marketing)/_landing/';
+      path: '/';
+      fullPath: '/';
+      preLoaderRoute: typeof marketingLandingIndexRouteImport;
+      parentRoute: typeof marketingLandingRoute;
+    };
     '/app/_app/playground': {
-      id: '/app/_app/playground'
-      path: '/playground'
-      fullPath: '/app/playground'
-      preLoaderRoute: typeof AppAppPlaygroundRouteImport
-      parentRoute: typeof AppAppRoute
-    }
+      id: '/app/_app/playground';
+      path: '/playground';
+      fullPath: '/app/playground';
+      preLoaderRoute: typeof AppAppPlaygroundRouteImport;
+      parentRoute: typeof AppAppRoute;
+    };
     '/app/_app/logs': {
-      id: '/app/_app/logs'
-      path: '/logs'
-      fullPath: '/app/logs'
-      preLoaderRoute: typeof AppAppLogsRouteImport
-      parentRoute: typeof AppAppRoute
-    }
+      id: '/app/_app/logs';
+      path: '/logs';
+      fullPath: '/app/logs';
+      preLoaderRoute: typeof AppAppLogsRouteImport;
+      parentRoute: typeof AppAppRoute;
+    };
     '/app/_app/keys': {
-      id: '/app/_app/keys'
-      path: '/keys'
-      fullPath: '/app/keys'
-      preLoaderRoute: typeof AppAppKeysRouteImport
-      parentRoute: typeof AppAppRoute
-    }
+      id: '/app/_app/keys';
+      path: '/keys';
+      fullPath: '/app/keys';
+      preLoaderRoute: typeof AppAppKeysRouteImport;
+      parentRoute: typeof AppAppRoute;
+    };
     '/(marketing)/_landing/playground': {
-      id: '/(marketing)/_landing/playground'
-      path: '/playground'
-      fullPath: '/playground'
-      preLoaderRoute: typeof marketingLandingPlaygroundRouteImport
-      parentRoute: typeof marketingLandingRoute
-    }
+      id: '/(marketing)/_landing/playground';
+      path: '/playground';
+      fullPath: '/playground';
+      preLoaderRoute: typeof marketingLandingPlaygroundRouteImport;
+      parentRoute: typeof marketingLandingRoute;
+    };
     '/(auth)/_auth/signup': {
-      id: '/(auth)/_auth/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof authAuthSignupRouteImport
-      parentRoute: typeof authAuthRoute
-    }
+      id: '/(auth)/_auth/signup';
+      path: '/signup';
+      fullPath: '/signup';
+      preLoaderRoute: typeof authAuthSignupRouteImport;
+      parentRoute: typeof authAuthRoute;
+    };
     '/(auth)/_auth/signin': {
-      id: '/(auth)/_auth/signin'
-      path: '/signin'
-      fullPath: '/signin'
-      preLoaderRoute: typeof authAuthSigninRouteImport
-      parentRoute: typeof authAuthRoute
-    }
+      id: '/(auth)/_auth/signin';
+      path: '/signin';
+      fullPath: '/signin';
+      preLoaderRoute: typeof authAuthSigninRouteImport;
+      parentRoute: typeof authAuthRoute;
+    };
     '/(marketing)/_landing/updates/': {
-      id: '/(marketing)/_landing/updates/'
-      path: '/updates'
-      fullPath: '/updates/'
-      preLoaderRoute: typeof marketingLandingUpdatesIndexRouteImport
-      parentRoute: typeof marketingLandingRoute
-    }
+      id: '/(marketing)/_landing/updates/';
+      path: '/updates';
+      fullPath: '/updates/';
+      preLoaderRoute: typeof marketingLandingUpdatesIndexRouteImport;
+      parentRoute: typeof marketingLandingRoute;
+    };
     '/(marketing)/_landing/blog/': {
-      id: '/(marketing)/_landing/blog/'
-      path: '/blog'
-      fullPath: '/blog/'
-      preLoaderRoute: typeof marketingLandingBlogIndexRouteImport
-      parentRoute: typeof marketingLandingRoute
-    }
+      id: '/(marketing)/_landing/blog/';
+      path: '/blog';
+      fullPath: '/blog/';
+      preLoaderRoute: typeof marketingLandingBlogIndexRouteImport;
+      parentRoute: typeof marketingLandingRoute;
+    };
     '/(marketing)/_landing/updates/$slug': {
-      id: '/(marketing)/_landing/updates/$slug'
-      path: '/updates/$slug'
-      fullPath: '/updates/$slug'
-      preLoaderRoute: typeof marketingLandingUpdatesSlugRouteImport
-      parentRoute: typeof marketingLandingRoute
-    }
+      id: '/(marketing)/_landing/updates/$slug';
+      path: '/updates/$slug';
+      fullPath: '/updates/$slug';
+      preLoaderRoute: typeof marketingLandingUpdatesSlugRouteImport;
+      parentRoute: typeof marketingLandingRoute;
+    };
     '/(marketing)/_landing/blog/$slug': {
-      id: '/(marketing)/_landing/blog/$slug'
-      path: '/blog/$slug'
-      fullPath: '/blog/$slug'
-      preLoaderRoute: typeof marketingLandingBlogSlugRouteImport
-      parentRoute: typeof marketingLandingRoute
-    }
+      id: '/(marketing)/_landing/blog/$slug';
+      path: '/blog/$slug';
+      fullPath: '/blog/$slug';
+      preLoaderRoute: typeof marketingLandingBlogSlugRouteImport;
+      parentRoute: typeof marketingLandingRoute;
+    };
     '/(marketing)/_landing/blog/c/$category': {
-      id: '/(marketing)/_landing/blog/c/$category'
-      path: '/blog/c/$category'
-      fullPath: '/blog/c/$category'
-      preLoaderRoute: typeof marketingLandingBlogCCategoryRouteImport
-      parentRoute: typeof marketingLandingRoute
-    }
+      id: '/(marketing)/_landing/blog/c/$category';
+      path: '/blog/c/$category';
+      fullPath: '/blog/c/$category';
+      preLoaderRoute: typeof marketingLandingBlogCCategoryRouteImport;
+      parentRoute: typeof marketingLandingRoute;
+    };
   }
 }
 
 interface authAuthRouteChildren {
-  authAuthSigninRoute: typeof authAuthSigninRoute
-  authAuthSignupRoute: typeof authAuthSignupRoute
+  authAuthSigninRoute: typeof authAuthSigninRoute;
+  authAuthSignupRoute: typeof authAuthSignupRoute;
 }
 
 const authAuthRouteChildren: authAuthRouteChildren = {
   authAuthSigninRoute: authAuthSigninRoute,
   authAuthSignupRoute: authAuthSignupRoute,
-}
+};
 
 const authAuthRouteWithChildren = authAuthRoute._addFileChildren(
   authAuthRouteChildren,
-)
+);
 
 interface marketingLandingRouteChildren {
-  marketingLandingPlaygroundRoute: typeof marketingLandingPlaygroundRoute
-  marketingLandingIndexRoute: typeof marketingLandingIndexRoute
-  marketingLandingBlogSlugRoute: typeof marketingLandingBlogSlugRoute
-  marketingLandingUpdatesSlugRoute: typeof marketingLandingUpdatesSlugRoute
-  marketingLandingBlogIndexRoute: typeof marketingLandingBlogIndexRoute
-  marketingLandingUpdatesIndexRoute: typeof marketingLandingUpdatesIndexRoute
-  marketingLandingBlogCCategoryRoute: typeof marketingLandingBlogCCategoryRoute
+  marketingLandingPlaygroundRoute: typeof marketingLandingPlaygroundRoute;
+  marketingLandingIndexRoute: typeof marketingLandingIndexRoute;
+  marketingLandingBlogSlugRoute: typeof marketingLandingBlogSlugRoute;
+  marketingLandingUpdatesSlugRoute: typeof marketingLandingUpdatesSlugRoute;
+  marketingLandingBlogIndexRoute: typeof marketingLandingBlogIndexRoute;
+  marketingLandingUpdatesIndexRoute: typeof marketingLandingUpdatesIndexRoute;
+  marketingLandingBlogCCategoryRoute: typeof marketingLandingBlogCCategoryRoute;
 }
 
 const marketingLandingRouteChildren: marketingLandingRouteChildren = {
@@ -408,16 +408,16 @@ const marketingLandingRouteChildren: marketingLandingRouteChildren = {
   marketingLandingBlogIndexRoute: marketingLandingBlogIndexRoute,
   marketingLandingUpdatesIndexRoute: marketingLandingUpdatesIndexRoute,
   marketingLandingBlogCCategoryRoute: marketingLandingBlogCCategoryRoute,
-}
+};
 
 const marketingLandingRouteWithChildren =
-  marketingLandingRoute._addFileChildren(marketingLandingRouteChildren)
+  marketingLandingRoute._addFileChildren(marketingLandingRouteChildren);
 
 interface AppAppRouteChildren {
-  AppAppKeysRoute: typeof AppAppKeysRoute
-  AppAppLogsRoute: typeof AppAppLogsRoute
-  AppAppPlaygroundRoute: typeof AppAppPlaygroundRoute
-  AppAppIndexRoute: typeof AppAppIndexRoute
+  AppAppKeysRoute: typeof AppAppKeysRoute;
+  AppAppLogsRoute: typeof AppAppLogsRoute;
+  AppAppPlaygroundRoute: typeof AppAppPlaygroundRoute;
+  AppAppIndexRoute: typeof AppAppIndexRoute;
 }
 
 const AppAppRouteChildren: AppAppRouteChildren = {
@@ -425,10 +425,10 @@ const AppAppRouteChildren: AppAppRouteChildren = {
   AppAppLogsRoute: AppAppLogsRoute,
   AppAppPlaygroundRoute: AppAppPlaygroundRoute,
   AppAppIndexRoute: AppAppIndexRoute,
-}
+};
 
 const AppAppRouteWithChildren =
-  AppAppRoute._addFileChildren(AppAppRouteChildren)
+  AppAppRoute._addFileChildren(AppAppRouteChildren);
 
 const rootRouteChildren: RootRouteChildren = {
   RedirectRoute: RedirectRoute,
@@ -436,16 +436,16 @@ const rootRouteChildren: RootRouteChildren = {
   authLogoutRoute: authLogoutRoute,
   marketingLandingRoute: marketingLandingRouteWithChildren,
   AppAppRoute: AppAppRouteWithChildren,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
+import type { getRouter } from './router.tsx';
+import type { createStart } from '@tanstack/react-start';
 declare module '@tanstack/react-start' {
   interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
+    ssr: true;
+    router: Awaited<ReturnType<typeof getRouter>>;
   }
 }

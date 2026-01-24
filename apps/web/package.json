@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build"
+    "build": "vite build",
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "@codecrawl/sdk": "workspace:*",

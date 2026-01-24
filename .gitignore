@@ -59,5 +59,6 @@ dist
 
 # Sanity
 .sanity
+.turbo
 
 TODO.md

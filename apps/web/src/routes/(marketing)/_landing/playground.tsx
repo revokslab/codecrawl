@@ -1,12 +1,12 @@
-import { Flex, Text, Box } from "@radix-ui/themes";
-import { Tabs } from "@radix-ui/themes";
-import { createFileRoute } from "@tanstack/react-router";
-import { FileTreeTab } from "~/components/playground/file-tree-tab";
-import { SettingsTab } from "~/components/playground/settings-tab";
-import { usePlaygroundSettingsStore } from "~/store/use-playground-settings";
-import { LLMsTxtTab } from "~/components/playground/llmstxt-tab";
+import { Flex, Text, Box } from '@radix-ui/themes';
+import { Tabs } from '@radix-ui/themes';
+import { createFileRoute } from '@tanstack/react-router';
+import { FileTreeTab } from '~/components/playground/file-tree-tab';
+import { SettingsTab } from '~/components/playground/settings-tab';
+import { usePlaygroundSettingsStore } from '~/store/use-playground-settings';
+import { LLMsTxtTab } from '~/components/playground/llmstxt-tab';
 
-export const Route = createFileRoute("/(marketing)/_landing/playground")({
+export const Route = createFileRoute('/(marketing)/_landing/playground')({
   component: RouteComponent,
 });
 
@@ -14,23 +14,23 @@ function RouteComponent() {
   usePlaygroundSettingsStore();
 
   return (
-    <Flex direction={"column"} gap={"4"} className="mt-4 md:mt-8">
-      <Flex justify={"between"} align={"center"}>
-        <Flex direction={"column"} gap={"2"}>
-          <Text size={"7"} weight={"medium"} className="text-neutral-800">
+    <Flex direction={'column'} gap={'4'} className="mt-4 md:mt-8">
+      <Flex justify={'between'} align={'center'}>
+        <Flex direction={'column'} gap={'2'}>
+          <Text size={'7'} weight={'medium'} className="text-neutral-800">
             Playground
           </Text>
           <Text
-            size={"3"}
-            color={"gray"}
-            weight={"medium"}
+            size={'3'}
+            color={'gray'}
+            weight={'medium'}
             className="text-neutral-500"
           >
             Try out Codecrawl in this visual playground
           </Text>
         </Flex>
       </Flex>
-      <Flex direction={"column"} gap={"4"}>
+      <Flex direction={'column'} gap={'4'}>
         <div>
           <Tabs.Root defaultValue="llms" className="w-full !text-neutral-800">
             <Tabs.List className="px-4 pt-4 bg-white border-b border-neutral-200">

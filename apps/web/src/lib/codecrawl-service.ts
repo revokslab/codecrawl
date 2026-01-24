@@ -1,10 +1,10 @@
 import Codecrawl, {
   type CrawlOptions,
   type GenerateLLMsTextParams,
-} from "@codecrawl/sdk";
-import { usePlaygroundRequestsStore } from "~/store/use-playground-requests";
-import { useApiKeyStore } from "~/store/use-api-key-store";
-import { toast } from "sonner";
+} from '@codecrawl/sdk';
+import { usePlaygroundRequestsStore } from '~/store/use-playground-requests';
+import { useApiKeyStore } from '~/store/use-api-key-store';
+import { toast } from 'sonner';
 
 // Default instance using API keys from environment
 const defaultCodecrawl = new Codecrawl({
@@ -46,7 +46,7 @@ export const CodecrawlService = {
   useMarketingInstance: (): {
     generateLLMsTxt: (
       url: string,
-      options?: GenerateLLMsTextParams
+      options?: GenerateLLMsTextParams,
     ) => Promise<any>;
     generateFileTree: (url: string, options?: CrawlOptions) => Promise<any>;
     hasRemainingRequests: boolean;
@@ -63,13 +63,13 @@ export const CodecrawlService = {
 
     const generateLLMsTxt = async (
       url: string,
-      options?: GenerateLLMsTextParams
+      options?: GenerateLLMsTextParams,
     ) => {
       if (!hasRemainingRequests) {
         toast.error(
-          "You have reached the maximum number of requests. Please sign up for an account to continue."
+          'You have reached the maximum number of requests. Please sign up for an account to continue.',
         );
-        return { success: false, error: "Request limit reached" };
+        return { success: false, error: 'Request limit reached' };
       }
 
       try {
@@ -77,17 +77,17 @@ export const CodecrawlService = {
         incrementRequestCount();
         return response;
       } catch (error) {
-        console.error("Error generating LLMs.txt:", error);
-        return { success: false, error: "Failed to generate LLMs.txt" };
+        console.error('Error generating LLMs.txt:', error);
+        return { success: false, error: 'Failed to generate LLMs.txt' };
       }
     };
 
     const generateFileTree = async (url: string, options?: CrawlOptions) => {
       if (!hasRemainingRequests) {
         toast.error(
-          "You have reached the maximum number of requests. Please sign up for an account to continue."
+          'You have reached the maximum number of requests. Please sign up for an account to continue.',
         );
-        return { success: false, error: "Request limit reached" };
+        return { success: false, error: 'Request limit reached' };
       }
 
       try {
@@ -95,8 +95,8 @@ export const CodecrawlService = {
         incrementRequestCount();
         return response;
       } catch (error) {
-        console.error("Error generating file tree:", error);
-        return { success: false, error: "Failed to generate file tree" };
+        console.error('Error generating file tree:', error);
+        return { success: false, error: 'Failed to generate file tree' };
       }
     };
 

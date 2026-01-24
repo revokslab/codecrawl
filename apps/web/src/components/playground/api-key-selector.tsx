@@ -1,7 +1,7 @@
-import { Flex, Text, Select } from "@radix-ui/themes";
-import { useState, useEffect } from "react";
-import { useApiKeyStore } from "~/store/use-api-key-store";
-import { useTeams } from "~/contexts/teams-context";
+import { Flex, Text, Select } from '@radix-ui/themes';
+import { useState, useEffect } from 'react';
+import { useApiKeyStore } from '~/store/use-api-key-store';
+import { useTeams } from '~/contexts/teams-context';
 
 export function ApiKeySelector() {
   const { activeTeam, teams } = useTeams();

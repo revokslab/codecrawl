@@ -1,6 +1,6 @@
-import { Box, Button, Checkbox, Flex, Text, TextField } from "@radix-ui/themes";
-import { usePlaygroundSettingsStore } from "~/store/use-playground-settings";
-import { cn } from "~/utils/classnames";
+import { Box, Button, Checkbox, Flex, Text, TextField } from '@radix-ui/themes';
+import { usePlaygroundSettingsStore } from '~/store/use-playground-settings';
+import { cn } from '~/utils/classnames';
 
 export function SettingsTab() {
   // Get state and actions from the Zustand store
@@ -18,7 +18,7 @@ export function SettingsTab() {
     setSettings,
   } = usePlaygroundSettingsStore();
 
-  type OutputFormat = "xml" | "markdown" | "plain" | undefined;
+  type OutputFormat = 'xml' | 'markdown' | 'plain' | undefined;
 
   const handleFormatChange = (newFormat: OutputFormat) => {
     setSettings({ output: newFormat });
@@ -29,8 +29,8 @@ export function SettingsTab() {
   };
 
   return (
-    <Box className={cn("py-6 rounded-lg")}>
-      <Flex direction={"column"} gap="8">
+    <Box className={cn('py-6 rounded-lg')}>
+      <Flex direction={'column'} gap="8">
         <Flex direction="column" gap="6" className="flex-1">
           <Flex direction="column" gap="2">
             <Text size="2" weight="medium" className="text-[var(--gray-11)]">
@@ -38,26 +38,26 @@ export function SettingsTab() {
             </Text>
             <Flex gap="2">
               <Button
-                variant={output === "xml" ? "solid" : "outline"}
+                variant={output === 'xml' ? 'solid' : 'outline'}
                 color="tomato"
                 size="2"
-                onClick={() => handleFormatChange("xml")}
+                onClick={() => handleFormatChange('xml')}
               >
                 XML
               </Button>
               <Button
-                variant={output === "markdown" ? "solid" : "outline"}
+                variant={output === 'markdown' ? 'solid' : 'outline'}
                 color="tomato"
                 size="2"
-                onClick={() => handleFormatChange("markdown")}
+                onClick={() => handleFormatChange('markdown')}
               >
                 Markdown
               </Button>
               <Button
-                variant={output === "plain" ? "solid" : "outline"}
+                variant={output === 'plain' ? 'solid' : 'outline'}
                 color="tomato"
                 size="2"
-                onClick={() => handleFormatChange("plain")}
+                onClick={() => handleFormatChange('plain')}
               >
                 Plain
               </Button>
@@ -72,7 +72,7 @@ export function SettingsTab() {
               mb="1"
               className="text-[var(--gray-11)]"
             >
-              Include Patterns (using{" "}
+              Include Patterns (using{' '}
               <span
                 className="text-[var(--tomato-9)] cursor-pointer hover:underline"
                 aria-label="Learn more about glob patterns"
@@ -86,7 +86,7 @@ export function SettingsTab() {
               type="text"
               placeholder="Comma-separated patterns to include. e.g., src/**/*.ts"
               size="2"
-              value={include || ""}
+              value={include || ''}
               onChange={(e) => setSettings({ include: e.target.value })}
             />
           </label>
@@ -106,7 +106,7 @@ export function SettingsTab() {
               type="text"
               placeholder="Comma-separated patterns to ignore. e.g., **/*.test.ts,README.md"
               size="2"
-              value={ignore || ""}
+              value={ignore || ''}
               onChange={(e) => setSettings({ ignore: e.target.value })}
             />
           </label>
@@ -125,10 +125,10 @@ export function SettingsTab() {
               id="include-summary"
               checked={fileSummary}
               onCheckedChange={(checked) =>
-                handleCheckboxChange("fileSummary", Boolean(checked))
+                handleCheckboxChange('fileSummary', Boolean(checked))
               }
               color="orange"
-            />{" "}
+            />{' '}
             Include File Summary
           </Text>
           <Text
@@ -140,10 +140,10 @@ export function SettingsTab() {
               id="include-dir-structure"
               checked={directoryStructure}
               onCheckedChange={(checked) =>
-                handleCheckboxChange("directoryStructure", Boolean(checked))
+                handleCheckboxChange('directoryStructure', Boolean(checked))
               }
               color="orange"
-            />{" "}
+            />{' '}
             Include Directory Structure
           </Text>
           <Text
@@ -155,10 +155,10 @@ export function SettingsTab() {
               id="show-line-numbers"
               checked={outputShowLineNumbers}
               onCheckedChange={(checked) =>
-                handleCheckboxChange("outputShowLineNumbers", Boolean(checked))
+                handleCheckboxChange('outputShowLineNumbers', Boolean(checked))
               }
               color="orange"
-            />{" "}
+            />{' '}
             Show Line Numbers
           </Text>
           <Text
@@ -170,11 +170,11 @@ export function SettingsTab() {
               id="output-parsable"
               checked={parsableStyle}
               onCheckedChange={(checked) =>
-                handleCheckboxChange("parsableStyle", Boolean(checked))
+                handleCheckboxChange('parsableStyle', Boolean(checked))
               }
               color="orange"
-            />{" "}
-            Output Parsable Format{" "}
+            />{' '}
+            Output Parsable Format{' '}
             <span
               className="text-[var(--gray-9)] cursor-help"
               title="More information about parsable format"
@@ -197,10 +197,10 @@ export function SettingsTab() {
               id="compress-code"
               checked={compress}
               onCheckedChange={(checked) =>
-                handleCheckboxChange("compress", Boolean(checked))
+                handleCheckboxChange('compress', Boolean(checked))
               }
               color="orange"
-            />{" "}
+            />{' '}
             Compress Code
           </Text>
           <Text
@@ -212,10 +212,10 @@ export function SettingsTab() {
               id="remove-comments"
               checked={removeComments}
               onCheckedChange={(checked) =>
-                handleCheckboxChange("removeComments", Boolean(checked))
+                handleCheckboxChange('removeComments', Boolean(checked))
               }
               color="orange"
-            />{" "}
+            />{' '}
             Remove Comments
           </Text>
           <Text
@@ -227,10 +227,10 @@ export function SettingsTab() {
               id="remove-empty-lines"
               checked={removeEmptyLines}
               onCheckedChange={(checked) =>
-                handleCheckboxChange("removeEmptyLines", Boolean(checked))
+                handleCheckboxChange('removeEmptyLines', Boolean(checked))
               }
               color="orange"
-            />{" "}
+            />{' '}
             Remove Empty Lines
           </Text>
         </Flex>

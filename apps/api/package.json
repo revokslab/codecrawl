@@ -4,13 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run watch-compile\" \"npm run watch-dev\"",
-    "watch-compile": "swc src -w --out-dir dist",
-    "watch-dev": "node --watch dist/src/index.js",
-    "build": "swc src -d dist",
-    "start": "NODE_ENV=production node dist/src/index.js",
-    "workers": "node --watch dist/src/services/queue-worker.js",
-    "worker:prod": "node dist/src/services/queue-worker.js",
+    "dev": "bun --watch src/index.ts",
+    "build": "bun build src/index.ts --outdir dist --target bun",
+    "start": "NODE_ENV=production bun src/index.ts",
+    "workers": "bun --watch src/services/queue-worker.ts",
+    "worker:prod": "bun src/services/queue-worker.ts",
     "db:gen": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate"
   },
@@ -60,8 +58,6 @@
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
-    "@swc/cli": "^0.7.10",
-    "@swc/core": "^1.15.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/express-ws": "^3.0.6",
