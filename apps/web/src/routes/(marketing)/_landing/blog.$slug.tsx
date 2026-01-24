@@ -1,7 +1,7 @@
 import { MDXContent } from '@content-collections/mdx/react'
 import { createFileRoute } from '@tanstack/react-router'
-import { useMemo } from 'react'
 import { format } from 'date-fns'
+import { useMemo } from 'react'
 import { findPostBySlug } from '~/lib/content'
 
 export const Route = createFileRoute('/(marketing)/_landing/blog/$slug')({
@@ -17,7 +17,7 @@ function RouteComponent() {
     <article className='relative'>
       <div className='flex space-y-10 pb-10 flex-col items-center justify-center'>
         <header className='flex flex-col w-full items-center space-y-10 mt-4'>
-          <h3 className='text-3xl w-full max-w-xl font-semibold text-balance text-neutral-900 tracking-tight !leading-[1.2]'>
+          <h3 className='text-3xl w-full max-w-xl font-semibold text-balance text-neutral-900 tracking-tight leading-[1.2]!'>
             {post.title}
           </h3>
           <div className='flex justify-start gap-x-8 w-full max-w-xl text-sm'>
@@ -39,12 +39,12 @@ function RouteComponent() {
                 alt={post.title}
                 width={1200}
                 height={600}
-                className='w-full h-full aspect-[2/1] object-fit sepia-[.15] saturate-50 rounded-xl pointer-events-none'
+                className='w-full h-full aspect-2/1 object-fit sepia-[.15] saturate-50 rounded-xl pointer-events-none'
               />
             </div>
           </div>
         </header>
-        <div className='prose prose-th:text-left prose-neutral max-w-xl w-full prose-pre:!bg-neutral-100'>
+        <div className='prose prose-th:text-left prose-neutral max-w-xl w-full prose-pre:bg-neutral-100!'>
           <MDXContent code={post.content} />
         </div>
       </div>

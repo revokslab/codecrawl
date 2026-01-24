@@ -1,7 +1,7 @@
 import { ArrowRightCircleIcon, HeartIcon } from '@heroicons/react/24/solid'
-import { SvgLogoBlack } from '../svgs'
 import { Button } from '@radix-ui/themes'
 import { useNavigate } from '@tanstack/react-router'
+import { SvgLogoBlack } from '../svgs'
 
 export function CTA() {
   const navigate = useNavigate()
@@ -26,7 +26,7 @@ export function CTA() {
               variant='solid'
               size='3'
               className='cursor-pointer'
-              onClick={() => navigate({ to: '/signup' })}
+              onClick={() => navigate({ to: '/signin' })}
             >
               Get Started
               <ArrowRightCircleIcon className='w-4 h-4' />

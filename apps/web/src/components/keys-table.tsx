@@ -1,12 +1,10 @@
-import { format } from 'date-fns'
 import { EyeSlashIcon, TrashIcon } from '@heroicons/react/24/outline'
-import { Button, Text, Table, Flex, Dialog, TextField } from '@radix-ui/themes'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { useCopyToClipboard } from 'usehooks-ts'
+import { Button, Dialog, Flex, Table, Text, TextField } from '@radix-ui/themes'
+import { useQuery } from '@tanstack/react-query'
+import { format } from 'date-fns'
 import { toast } from 'sonner'
+import { useCopyToClipboard } from 'usehooks-ts'
 
-import { mutationFnHelper } from '~/lib/mutation-fn'
-import { queryClient } from '~/lib/query-client'
 
 export function KeysTable() {
   const { data, isLoading } = useQuery<{
@@ -14,21 +12,7 @@ export function KeysTable() {
   }>({
     queryKey: ['users/keys'],
   })
-  const { mutateAsync: deleteKey } = useMutation({
-    mutationFn: (keyId: string) =>
-      mutationFnHelper({
-        endpoint: `users/keys/${keyId}`,
-        method: 'DELETE',
-        data: { keyId },
-      }),
-    onSuccess: () => {
-      toast.success('Key deleted')
-      queryClient.invalidateQueries({ queryKey: ['users/keys'] })
-    },
-    onError: () => {
-      toast.error('Failed to delete key')
-    },
-  })
+  
   const [copiedText, copy] = useCopyToClipboard()
 
   const handleCopy = (text: string) => () => {
@@ -117,7 +101,7 @@ export function KeysTable() {
             <Table.Cell align={'center'}>
               <Button
                 variant={'ghost'}
-                onClick={() => deleteKey(key.id)}
+                onClick={() => {}}
                 disabled={isDeleteDisabled}
               >
                 <TrashIcon className='w-4 h-4' />

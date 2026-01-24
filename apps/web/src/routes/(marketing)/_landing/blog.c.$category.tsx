@@ -49,7 +49,7 @@ function RouteComponent() {
                 <img
                   src={mostLatestPost.image}
                   alt={mostLatestPost.title}
-                  className='aspect-[2/1] w-full p-1.5 shadow-sm rounded-2xl bg-white object-cover border border-gray-200 saturate-50 sepia-[.15] pointer-events-none'
+                  className='aspect-2/1 w-full p-1.5 shadow-sm rounded-2xl bg-white object-cover border border-gray-200 saturate-50 sepia-[.15] pointer-events-none'
                 />
                 <div className='flex flex-col justify-center'>
                   <div className='flex items-center gap-x-4 text-xs'>
@@ -83,10 +83,10 @@ function RouteComponent() {
                 key={category.slug}
                 params={{ category: category.slug }}
               >
-                <div className='relative rounded-2xl border shadow-sm border-gray-200 p-1 transition-all aspect-[2/1]'>
+                <div className='relative rounded-2xl border shadow-sm border-gray-200 p-1 transition-all aspect-2/1'>
                   <div
                     className={cn(
-                      'absolute inset-0 m-1 bg-gradient-to-r rounded-xl',
+                      'absolute inset-0 m-1 bg-linear-to-r rounded-xl',
                       category.gradient
                     )}
                   />
@@ -117,7 +117,7 @@ function RouteComponent() {
                   <img
                     src={post.image}
                     alt={post.title}
-                    className='aspect-[2/1] w-full saturate-0 rounded-2xl bg-white shadow-sm object-cover border border-gray-200 transition-all duration-500 group-hover:saturate-50 group-hover:sepia-[.15] p-1 pointer-events-none'
+                    className='aspect-2/1 w-full saturate-0 rounded-2xl bg-white shadow-sm object-cover border border-gray-200 transition-all duration-500 group-hover:saturate-50 group-hover:sepia-[.15] p-1 pointer-events-none'
                   />
                 </div>
                 <div className='max-w-xl'>

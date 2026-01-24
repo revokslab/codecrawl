@@ -1,52 +1,14 @@
 'use client'
 import { PlusIcon } from '@heroicons/react/24/outline'
-import { Dialog, Button, Flex, TextField, Text } from '@radix-ui/themes'
-import { useMutation } from '@tanstack/react-query'
+import { Button, Dialog, Flex, Text, TextField } from '@radix-ui/themes'
 import { useState } from 'react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
-import { useNavigate } from '@tanstack/react-router'
 
-import { useTeams } from '~/contexts/teams-context'
-import { mutationFnHelper } from '~/lib/mutation-fn'
-import { toast } from '~/components/ui/toast'
+
 
 export function CreateKeyModal() {
   const [open, setOpen] = useState(false)
-  const { activeTeam } = useTeams()
-  const navigate = useNavigate()
-
-  const { mutateAsync } = useMutation({
-    mutationFn: (variables: { name: string; teamId: string }) =>
-      mutationFnHelper({
-        endpoint: 'users/keys',
-        data: variables,
-        method: 'POST',
-      }),
-    onSuccess: (data) => {
-      setOpen(false)
-      toast({
-        title: 'Key created',
-        description: 'Your key has been created',
-        button: {
-          label: 'Copy',
-          onClick: () => {
-            navigator.clipboard.writeText(data.key)
-          },
-        },
-      })
-    },
-    onError: (error) => {
-      toast({
-        title: 'Failed to create key',
-        description: 'Please try again',
-        button: {
-          label: 'Close',
-          onClick: () => {},
-        },
-      })
-    },
-  })
-
+  
   const {
     register,
     handleSubmit,
@@ -55,20 +17,7 @@ export function CreateKeyModal() {
   } = useForm<{ name: string }>()
 
   const onSubmit: SubmitHandler<{ name: string }> = async (values) => {
-    if (!activeTeam) {
-      toast({
-        title: 'No active team selected',
-        description: 'Please select a team to create a key',
-        button: {
-          label: 'Select Team',
-          onClick: () => {
-            navigate({ to: '/app/keys' })
-          },
-        },
-      })
-      return
-    }
-    await mutateAsync({ name: values.name, teamId: activeTeam.id })
+    
   }
 
   return (

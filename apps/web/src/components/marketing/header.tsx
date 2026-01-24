@@ -1,11 +1,10 @@
-import { SvgLogoBlack, SvgGithubLogo } from '../svgs'
+import { Link } from '@tanstack/react-router'
 import { useScroll } from '~/hooks/use-scroll'
 import { cn } from '~/utils/classnames'
 import { kFormatter } from '~/utils/k-formatter'
-import { Link } from '@tanstack/react-router'
-import type { User } from '~/contexts/auth-context'
+import { SvgGithubLogo, SvgLogoBlack } from '../svgs'
 
-export function Header({ stars, user }: { stars: number; user: User | null }) {
+export function Header({ stars }: { stars: number; }) {
   const scrolled = useScroll(10)
 
   return (
@@ -20,7 +19,7 @@ export function Header({ stars, user }: { stars: number; user: User | null }) {
           <span className='text-base font-semibold text-neutral-900'>Codecrawl</span>
         </Link>
         <div className='gap-8 col-span-3 hidden md:flex justify-center items-center text-neutral-900 font-medium'>
-          <Link to='/playground'>Playground</Link>
+  
           <a href='https://docs.codecrawl.com' target='_blank'>
             Docs
           </a>
@@ -37,7 +36,7 @@ export function Header({ stars, user }: { stars: number; user: User | null }) {
             <SvgGithubLogo className='w-4 h-4' />
             {kFormatter(stars)}
           </a>
-          {!user ? (
+          
             <Link
               to='/signin'
               className={cn(
@@ -46,16 +45,7 @@ export function Header({ stars, user }: { stars: number; user: User | null }) {
             >
               Sign In
             </Link>
-          ) : (
-            <Link
-              to='/app/playground'
-              className={cn(
-                'h-9 rounded-[10px] text-sm font-medium flex items-center transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50 bg-[#36322F] text-[#fff] hover:bg-[#4a4542] disabled:bg-[#8c8885] disabled:hover:bg-[#8c8885] [box-shadow:inset_0px_-2.108433723449707px_0px_0px_#171310,_0px_1.2048193216323853px_6.325301647186279px_0px_rgba(58,_33,_8,_58%)] hover:translate-y-[1px] hover:scale-[0.98] hover:[box-shadow:inset_0px_-1px_0px_0px_#171310,_0px_1px_3px_0px_rgba(58,_33,_8,_40%)] active:translate-y-[2px] active:scale-[0.97] active:[box-shadow:inset_0px_1px_1px_0px_#171310,_0px_1px_2px_0px_rgba(58,_33,_8,_30%)] disabled:shadow-none disabled:hover:translate-y-0 disabled:hover:scale-100 px-2.5 py-1'
-              )}
-            >
-              Dashboard
-            </Link>
-          )}
+         
         </div>
       </div>
     </header>

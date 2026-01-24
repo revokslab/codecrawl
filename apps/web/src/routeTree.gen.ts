@@ -19,7 +19,6 @@ import { Route as marketingLandingIndexRouteImport } from './routes/(marketing)/
 import { Route as AppAppPlaygroundRouteImport } from './routes/app/_app/playground'
 import { Route as AppAppLogsRouteImport } from './routes/app/_app/logs'
 import { Route as AppAppKeysRouteImport } from './routes/app/_app/keys'
-import { Route as marketingLandingPlaygroundRouteImport } from './routes/(marketing)/_landing/playground'
 import { Route as authAuthSigninRouteImport } from './routes/(auth)/_auth.signin'
 import { Route as marketingLandingUpdatesIndexRouteImport } from './routes/(marketing)/_landing/updates.index'
 import { Route as marketingLandingBlogIndexRouteImport } from './routes/(marketing)/_landing/blog.index'
@@ -75,12 +74,6 @@ const AppAppKeysRoute = AppAppKeysRouteImport.update({
   path: '/keys',
   getParentRoute: () => AppAppRoute,
 } as any)
-const marketingLandingPlaygroundRoute =
-  marketingLandingPlaygroundRouteImport.update({
-    id: '/playground',
-    path: '/playground',
-    getParentRoute: () => marketingLandingRoute,
-  } as any)
 const authAuthSigninRoute = authAuthSigninRouteImport.update({
   id: '/signin',
   path: '/signin',
@@ -122,7 +115,6 @@ export interface FileRoutesByFullPath {
   '/logout': typeof authLogoutRoute
   '/app': typeof AppAppRouteWithChildren
   '/signin': typeof authAuthSigninRoute
-  '/playground': typeof marketingLandingPlaygroundRoute
   '/app/keys': typeof AppAppKeysRoute
   '/app/logs': typeof AppAppLogsRoute
   '/app/playground': typeof AppAppPlaygroundRoute
@@ -138,7 +130,6 @@ export interface FileRoutesByTo {
   '/redirect': typeof RedirectRoute
   '/logout': typeof authLogoutRoute
   '/signin': typeof authAuthSigninRoute
-  '/playground': typeof marketingLandingPlaygroundRoute
   '/app/keys': typeof AppAppKeysRoute
   '/app/logs': typeof AppAppLogsRoute
   '/app/playground': typeof AppAppPlaygroundRoute
@@ -158,7 +149,6 @@ export interface FileRoutesById {
   '/(marketing)/_landing': typeof marketingLandingRouteWithChildren
   '/app/_app': typeof AppAppRouteWithChildren
   '/(auth)/_auth/signin': typeof authAuthSigninRoute
-  '/(marketing)/_landing/playground': typeof marketingLandingPlaygroundRoute
   '/app/_app/keys': typeof AppAppKeysRoute
   '/app/_app/logs': typeof AppAppLogsRoute
   '/app/_app/playground': typeof AppAppPlaygroundRoute
@@ -177,7 +167,6 @@ export interface FileRouteTypes {
     | '/logout'
     | '/app'
     | '/signin'
-    | '/playground'
     | '/app/keys'
     | '/app/logs'
     | '/app/playground'
@@ -193,7 +182,6 @@ export interface FileRouteTypes {
     | '/redirect'
     | '/logout'
     | '/signin'
-    | '/playground'
     | '/app/keys'
     | '/app/logs'
     | '/app/playground'
@@ -212,7 +200,6 @@ export interface FileRouteTypes {
     | '/(marketing)/_landing'
     | '/app/_app'
     | '/(auth)/_auth/signin'
-    | '/(marketing)/_landing/playground'
     | '/app/_app/keys'
     | '/app/_app/logs'
     | '/app/_app/playground'
@@ -305,13 +292,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAppKeysRouteImport
       parentRoute: typeof AppAppRoute
     }
-    '/(marketing)/_landing/playground': {
-      id: '/(marketing)/_landing/playground'
-      path: '/playground'
-      fullPath: '/playground'
-      preLoaderRoute: typeof marketingLandingPlaygroundRouteImport
-      parentRoute: typeof marketingLandingRoute
-    }
     '/(auth)/_auth/signin': {
       id: '/(auth)/_auth/signin'
       path: '/signin'
@@ -370,7 +350,6 @@ const authAuthRouteWithChildren = authAuthRoute._addFileChildren(
 )
 
 interface marketingLandingRouteChildren {
-  marketingLandingPlaygroundRoute: typeof marketingLandingPlaygroundRoute
   marketingLandingIndexRoute: typeof marketingLandingIndexRoute
   marketingLandingBlogSlugRoute: typeof marketingLandingBlogSlugRoute
   marketingLandingUpdatesSlugRoute: typeof marketingLandingUpdatesSlugRoute
@@ -380,7 +359,6 @@ interface marketingLandingRouteChildren {
 }
 
 const marketingLandingRouteChildren: marketingLandingRouteChildren = {
-  marketingLandingPlaygroundRoute: marketingLandingPlaygroundRoute,
   marketingLandingIndexRoute: marketingLandingIndexRoute,
   marketingLandingBlogSlugRoute: marketingLandingBlogSlugRoute,
   marketingLandingUpdatesSlugRoute: marketingLandingUpdatesSlugRoute,
