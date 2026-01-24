@@ -1,6 +1,7 @@
-import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { Button } from '@radix-ui/themes'
-import { useTokenStore } from '~/store/use-token-store'
+import { createFileRoute, useRouter } from '@tanstack/react-router'
+import { signOut } from '~/lib/auth-client'
+
 export const Route = createFileRoute('/(auth)/logout')({
   component: RouteComponent,
 })
@@ -17,10 +18,7 @@ function RouteComponent() {
           variant='outline'
           color='red'
           onClick={() => {
-            useTokenStore.getState().setTokens({
-              accessToken: '',
-              refreshToken: '',
-            })
+            signOut()
             router.navigate({ to: '/' })
           }}
         >

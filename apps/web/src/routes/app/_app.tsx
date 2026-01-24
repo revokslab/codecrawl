@@ -1,9 +1,8 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { Flex, Separator } from '@radix-ui/themes'
+import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { Sidebar } from '~/components/sidebar'
 import { seo } from '~/utils/seo'
-import { useVerifyLoggedIn } from '~/hooks/use-verify-login'
-import { AuthContextProvider } from '~/contexts/auth-context'
+
 
 export const Route = createFileRoute('/app/_app')({
   component: RouteComponent,
@@ -15,10 +14,9 @@ export const Route = createFileRoute('/app/_app')({
 })
 
 function RouteComponent() {
-  useVerifyLoggedIn()
+
 
   return (
-    <AuthContextProvider>
       <Flex direction={'column'} flexGrow={'1'}>
         <Flex flexGrow={'1'} className='h-screen'>
           <Sidebar />
@@ -35,6 +33,5 @@ function RouteComponent() {
           </Flex>
         </Flex>
       </Flex>
-    </AuthContextProvider>
   )
 }
