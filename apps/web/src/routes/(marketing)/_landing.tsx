@@ -26,7 +26,7 @@ function RouteComponent() {
 
   return (
     <Flex direction={'column'} height={'100%'} flexGrow={'1'} style={{ backgroundColor: 'white' }}>
-      <Header stars={state.stars} user={null} />
+      <Header stars={state.stars}  />
       <div className='custom-container space-y-12 pt-16 min-h-screen flex flex-col justify-between'>
         <main className='flex-1'>
           <Outlet />
