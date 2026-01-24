@@ -1,4 +1,3 @@
-// src/router.tsx
 import { createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 

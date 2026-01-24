@@ -19,6 +19,7 @@
     "@tanstack/react-router-devtools": "^1.154.13",
     "@tanstack/react-start": "^1.154.13",
     "@tanstack/zod-adapter": "^1.154.13",
+    "better-auth": "1.4.17",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "react": "^19.2.3",
@@ -26,20 +27,19 @@
     "react-hook-form": "^7.71.1",
     "redaxios": "^0.5.1",
     "sonner": "^2.0.7",
-    "tailwind-merge": "^2.6.0",
+    "tailwind-merge": "^3.4.0",
     "usehooks-ts": "^3.1.1",
-    "vinxi": "0.5.3",
-    "zod": "^3.25.76",
+    "zod": "^4.3.6",
     "zustand": "^5.0.10"
   },
   "devDependencies": {
-    "@content-collections/core": "^0.8.2",
+    "@content-collections/core": "^0.13.1",
     "@content-collections/mdx": "^0.2.2",
     "@content-collections/vinxi": "^0.1.2",
     "@tailwindcss/postcss": "^4.1.18",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.18",
-    "@types/node": "^22.19.7",
+    "@types/node": "^25.0.10",
     "@types/react": "^19.2.9",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.2",
@@ -47,6 +47,6 @@
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
     "vite": "^7.3.1",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^6.0.5"
   }
 }

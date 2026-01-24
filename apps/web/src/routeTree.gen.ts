@@ -20,7 +20,6 @@ import { Route as AppAppPlaygroundRouteImport } from './routes/app/_app/playgrou
 import { Route as AppAppLogsRouteImport } from './routes/app/_app/logs'
 import { Route as AppAppKeysRouteImport } from './routes/app/_app/keys'
 import { Route as marketingLandingPlaygroundRouteImport } from './routes/(marketing)/_landing/playground'
-import { Route as authAuthSignupRouteImport } from './routes/(auth)/_auth.signup'
 import { Route as authAuthSigninRouteImport } from './routes/(auth)/_auth.signin'
 import { Route as marketingLandingUpdatesIndexRouteImport } from './routes/(marketing)/_landing/updates.index'
 import { Route as marketingLandingBlogIndexRouteImport } from './routes/(marketing)/_landing/blog.index'
@@ -76,53 +75,53 @@ const AppAppKeysRoute = AppAppKeysRouteImport.update({
   path: '/keys',
   getParentRoute: () => AppAppRoute,
 } as any)
-const marketingLandingPlaygroundRoute = marketingLandingPlaygroundRouteImport.update({
-  id: '/playground',
-  path: '/playground',
-  getParentRoute: () => marketingLandingRoute,
-} as any)
-const authAuthSignupRoute = authAuthSignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
-  getParentRoute: () => authAuthRoute,
-} as any)
+const marketingLandingPlaygroundRoute =
+  marketingLandingPlaygroundRouteImport.update({
+    id: '/playground',
+    path: '/playground',
+    getParentRoute: () => marketingLandingRoute,
+  } as any)
 const authAuthSigninRoute = authAuthSigninRouteImport.update({
   id: '/signin',
   path: '/signin',
   getParentRoute: () => authAuthRoute,
 } as any)
-const marketingLandingUpdatesIndexRoute = marketingLandingUpdatesIndexRouteImport.update({
-  id: '/updates/',
-  path: '/updates/',
-  getParentRoute: () => marketingLandingRoute,
-} as any)
-const marketingLandingBlogIndexRoute = marketingLandingBlogIndexRouteImport.update({
-  id: '/blog/',
-  path: '/blog/',
-  getParentRoute: () => marketingLandingRoute,
-} as any)
-const marketingLandingUpdatesSlugRoute = marketingLandingUpdatesSlugRouteImport.update({
-  id: '/updates/$slug',
-  path: '/updates/$slug',
-  getParentRoute: () => marketingLandingRoute,
-} as any)
-const marketingLandingBlogSlugRoute = marketingLandingBlogSlugRouteImport.update({
-  id: '/blog/$slug',
-  path: '/blog/$slug',
-  getParentRoute: () => marketingLandingRoute,
-} as any)
-const marketingLandingBlogCCategoryRoute = marketingLandingBlogCCategoryRouteImport.update({
-  id: '/blog/c/$category',
-  path: '/blog/c/$category',
-  getParentRoute: () => marketingLandingRoute,
-} as any)
+const marketingLandingUpdatesIndexRoute =
+  marketingLandingUpdatesIndexRouteImport.update({
+    id: '/updates/',
+    path: '/updates/',
+    getParentRoute: () => marketingLandingRoute,
+  } as any)
+const marketingLandingBlogIndexRoute =
+  marketingLandingBlogIndexRouteImport.update({
+    id: '/blog/',
+    path: '/blog/',
+    getParentRoute: () => marketingLandingRoute,
+  } as any)
+const marketingLandingUpdatesSlugRoute =
+  marketingLandingUpdatesSlugRouteImport.update({
+    id: '/updates/$slug',
+    path: '/updates/$slug',
+    getParentRoute: () => marketingLandingRoute,
+  } as any)
+const marketingLandingBlogSlugRoute =
+  marketingLandingBlogSlugRouteImport.update({
+    id: '/blog/$slug',
+    path: '/blog/$slug',
+    getParentRoute: () => marketingLandingRoute,
+  } as any)
+const marketingLandingBlogCCategoryRoute =
+  marketingLandingBlogCCategoryRouteImport.update({
+    id: '/blog/c/$category',
+    path: '/blog/c/$category',
+    getParentRoute: () => marketingLandingRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/redirect': typeof RedirectRoute
   '/logout': typeof authLogoutRoute
   '/app': typeof AppAppRouteWithChildren
   '/signin': typeof authAuthSigninRoute
-  '/signup': typeof authAuthSignupRoute
   '/playground': typeof marketingLandingPlaygroundRoute
   '/app/keys': typeof AppAppKeysRoute
   '/app/logs': typeof AppAppLogsRoute
@@ -139,7 +138,6 @@ export interface FileRoutesByTo {
   '/redirect': typeof RedirectRoute
   '/logout': typeof authLogoutRoute
   '/signin': typeof authAuthSigninRoute
-  '/signup': typeof authAuthSignupRoute
   '/playground': typeof marketingLandingPlaygroundRoute
   '/app/keys': typeof AppAppKeysRoute
   '/app/logs': typeof AppAppLogsRoute
@@ -160,7 +158,6 @@ export interface FileRoutesById {
   '/(marketing)/_landing': typeof marketingLandingRouteWithChildren
   '/app/_app': typeof AppAppRouteWithChildren
   '/(auth)/_auth/signin': typeof authAuthSigninRoute
-  '/(auth)/_auth/signup': typeof authAuthSignupRoute
   '/(marketing)/_landing/playground': typeof marketingLandingPlaygroundRoute
   '/app/_app/keys': typeof AppAppKeysRoute
   '/app/_app/logs': typeof AppAppLogsRoute
@@ -180,7 +177,6 @@ export interface FileRouteTypes {
     | '/logout'
     | '/app'
     | '/signin'
-    | '/signup'
     | '/playground'
     | '/app/keys'
     | '/app/logs'
@@ -197,7 +193,6 @@ export interface FileRouteTypes {
     | '/redirect'
     | '/logout'
     | '/signin'
-    | '/signup'
     | '/playground'
     | '/app/keys'
     | '/app/logs'
@@ -217,7 +212,6 @@ export interface FileRouteTypes {
     | '/(marketing)/_landing'
     | '/app/_app'
     | '/(auth)/_auth/signin'
-    | '/(auth)/_auth/signup'
     | '/(marketing)/_landing/playground'
     | '/app/_app/keys'
     | '/app/_app/logs'
@@ -318,13 +312,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof marketingLandingPlaygroundRouteImport
       parentRoute: typeof marketingLandingRoute
     }
-    '/(auth)/_auth/signup': {
-      id: '/(auth)/_auth/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof authAuthSignupRouteImport
-      parentRoute: typeof authAuthRoute
-    }
     '/(auth)/_auth/signin': {
       id: '/(auth)/_auth/signin'
       path: '/signin'
@@ -372,15 +359,15 @@ declare module '@tanstack/react-router' {
 
 interface authAuthRouteChildren {
   authAuthSigninRoute: typeof authAuthSigninRoute
-  authAuthSignupRoute: typeof authAuthSignupRoute
 }
 
 const authAuthRouteChildren: authAuthRouteChildren = {
   authAuthSigninRoute: authAuthSigninRoute,
-  authAuthSignupRoute: authAuthSignupRoute,
 }
 
-const authAuthRouteWithChildren = authAuthRoute._addFileChildren(authAuthRouteChildren)
+const authAuthRouteWithChildren = authAuthRoute._addFileChildren(
+  authAuthRouteChildren,
+)
 
 interface marketingLandingRouteChildren {
   marketingLandingPlaygroundRoute: typeof marketingLandingPlaygroundRoute
@@ -402,9 +389,8 @@ const marketingLandingRouteChildren: marketingLandingRouteChildren = {
   marketingLandingBlogCCategoryRoute: marketingLandingBlogCCategoryRoute,
 }
 
-const marketingLandingRouteWithChildren = marketingLandingRoute._addFileChildren(
-  marketingLandingRouteChildren
-)
+const marketingLandingRouteWithChildren =
+  marketingLandingRoute._addFileChildren(marketingLandingRouteChildren)
 
 interface AppAppRouteChildren {
   AppAppKeysRoute: typeof AppAppKeysRoute
@@ -420,7 +406,8 @@ const AppAppRouteChildren: AppAppRouteChildren = {
   AppAppIndexRoute: AppAppIndexRoute,
 }
 
-const AppAppRouteWithChildren = AppAppRoute._addFileChildren(AppAppRouteChildren)
+const AppAppRouteWithChildren =
+  AppAppRoute._addFileChildren(AppAppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   RedirectRoute: RedirectRoute,
@@ -434,10 +421,11 @@ export const routeTree = rootRouteImport
   ._addFileTypes<FileRouteTypes>()
 
 import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
+import type { startInstance } from './start.tsx'
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true
     router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
   }
 }

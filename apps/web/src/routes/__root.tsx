@@ -1,8 +1,7 @@
 /// <reference types="vite/client" />
 import { Theme } from '@radix-ui/themes'
-import { type QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router'
 import * as React from 'react'
 import { Toaster } from 'sonner'
 
@@ -12,7 +11,7 @@ import { queryClient } from '~/lib/query-client'
 import appCss from '~/styles/app.css?url'
 import { seo } from '~/utils/seo'
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+export const Route = createRootRoute({
   head: () => ({
     meta: [
       {
@@ -84,7 +83,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             appearance='dark'
           >
             <main className='flex min-h-screen flex-col'>{children}</main>
-            <TanStackRouterDevtools position='bottom-right' />
             <Scripts />
             <Toaster />
           </Theme>
