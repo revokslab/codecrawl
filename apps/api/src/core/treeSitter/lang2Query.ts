@@ -14,7 +14,7 @@ import {
   querySwift,
   queryTypescript,
   queryVue,
-} from './queries';
+} from './queries'
 
 export const lang2Query = {
   javascript: queryJavascript,
@@ -32,6 +32,6 @@ export const lang2Query = {
   vue: queryVue,
   ruby: queryRuby,
   go: queryGo,
-};
+}
 
-export type SupportedLang = keyof typeof lang2Query;
+export type SupportedLang = keyof typeof lang2Query

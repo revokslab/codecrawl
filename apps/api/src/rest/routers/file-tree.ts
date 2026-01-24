@@ -1,14 +1,20 @@
-import { createRoute } from '@hono/zod-openapi';
+import { createRoute } from '@hono/zod-openapi'
+
 import {
   getTreeGenerationData,
   getTreeGenerationDataExpiry,
   saveTreeGenerationData,
-} from '~/lib/generate-tree';
-import { fileTreeStatusResponseSchema, fileTreeStatusSchema } from '~/schemas';
-import { getGenerateTreeQueue } from '~/services/queue-service';
-import { createRouter, generateId, validateResponse } from '~/utils';
+} from '~/lib/generate-tree'
+import {
+  fileTreeRequestSchema,
+  fileTreeResponseSchema,
+  fileTreeStatusResponseSchema,
+  fileTreeStatusSchema,
+} from '~/schemas'
+import { getGenerateTreeQueue } from '~/services/queue-service'
+import { createRouter, generateId, validateResponse } from '~/utils'
 
-const fileTreeRouter = createRouter();
+const fileTreeRouter = createRouter()
 
 fileTreeRouter.openapi(
   createRoute({
@@ -20,7 +26,7 @@ fileTreeRouter.openapi(
       body: {
         content: {
           'application/json': {
-            schema: fileTreeStatusSchema,
+            schema: fileTreeRequestSchema,
           },
         },
       },
@@ -30,35 +36,35 @@ fileTreeRouter.openapi(
         description: 'File tree generation job created',
         content: {
           'application/json': {
-            schema: fileTreeStatusResponseSchema,
+            schema: fileTreeResponseSchema,
           },
         },
       },
     },
   }),
   async (c) => {
-    const session = c.get('session');
-    const { url } = await c.req.json();
+    const session = c.get('session')
+    const body = c.req.valid('json')
 
-    const generationId = generateId();
+    const generationId = generateId()
     const jobData = {
-      url,
+      url: body.url,
       userId: session.userId,
       generationId,
-    };
+    }
 
     await saveTreeGenerationData({
       id: generationId,
       userId: session.userId,
       createdAt: Date.now(),
       status: 'processing',
-      url,
+      url: body.url,
       fileTree: '',
-    });
+    })
 
     await getGenerateTreeQueue().add(generationId, jobData, {
       jobId: generationId,
-    });
+    })
 
     return c.json(
       validateResponse(
@@ -66,20 +72,20 @@ fileTreeRouter.openapi(
           success: true,
           id: generationId,
         },
-        fileTreeStatusResponseSchema,
-      ),
-    );
-  },
-);
+        fileTreeResponseSchema
+      )
+    )
+  }
+)
 
 fileTreeRouter.openapi(
   createRoute({
     method: 'get',
     tags: ['File Tree'],
-    path: '/',
+    path: '/:jobId',
     summary: 'Get file tree status',
     request: {
-      query: fileTreeStatusSchema,
+      params: fileTreeStatusSchema,
     },
     responses: {
       200: {
@@ -93,21 +99,9 @@ fileTreeRouter.openapi(
     },
   }),
   async (c) => {
-    const generationId = c.req.query('jobId');
+    const { jobId } = c.req.valid('param')
 
-    if (!generationId) {
-      return c.json(
-        validateResponse(
-          {
-            success: false,
-            error: 'jobId is required',
-          },
-          fileTreeStatusResponseSchema,
-        ),
-      );
-    }
-
-    const generation = await getTreeGenerationData(generationId);
+    const generation = await getTreeGenerationData(jobId)
 
     if (!generation) {
       return c.json(
@@ -116,12 +110,12 @@ fileTreeRouter.openapi(
             success: false,
             error: 'tree generation job not found',
           },
-          fileTreeStatusResponseSchema,
-        ),
-      );
+          fileTreeStatusResponseSchema
+        )
+      )
     }
 
-    const expiry = await getTreeGenerationDataExpiry(generationId);
+    const expiry = await getTreeGenerationDataExpiry(jobId)
 
     return c.json(
       validateResponse(
@@ -134,10 +128,10 @@ fileTreeRouter.openapi(
           error: generation?.error ?? undefined,
           expiresAt: expiry ? expiry.toISOString() : undefined,
         },
-        fileTreeStatusResponseSchema,
-      ),
-    );
-  },
-);
+        fileTreeStatusResponseSchema
+      )
+    )
+  }
+)
 
-export { fileTreeRouter };
+export { fileTreeRouter }

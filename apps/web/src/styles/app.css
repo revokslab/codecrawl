@@ -1,6 +1,6 @@
-@import url('https://cdnjs.cloudflare.com/ajax/libs/inter-ui/3.18.0/inter.css');
-@import 'tailwindcss';
-@import '@radix-ui/themes/styles.css' layer(base);
+@import url("https://cdnjs.cloudflare.com/ajax/libs/inter-ui/3.18.0/inter.css");
+@import "tailwindcss";
+@import "@radix-ui/themes/styles.css" layer(base);
 
 @plugin "@tailwindcss/typography";
 
@@ -12,13 +12,14 @@
   @apply md:max-w-6xl sm:max-w-4xl lg:max-w-5xl px-8 sm:px-14 lg:px-16 mx-auto w-full;
 }
 
-
 @theme {
   /* Fonts */
   --font-display: "Inter", sans-serif;
   --font-sans: "Inter", sans-serif;
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
 
   /* Animations */
   --animate-wiggle: wiggle 1s ease-in-out infinite;
@@ -54,10 +55,9 @@
   }
 }
 
-
 .radix-themes {
-	--default-font-family: var(--font-sans);
-	--heading-font-family: var(--font-display);
-	--code-font-family: var(--font-mono);
-	--strong-font-family: var(--font-sans);
+  --default-font-family: var(--font-sans);
+  --heading-font-family: var(--font-display);
+  --code-font-family: var(--font-mono);
+  --strong-font-family: var(--font-sans);
 }

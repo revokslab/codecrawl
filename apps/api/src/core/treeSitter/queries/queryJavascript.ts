@@ -87,4 +87,4 @@ export const queryJavascript = `
 
 (new_expression
   constructor: (_) @name.reference.class) @reference.class
-`;
+`

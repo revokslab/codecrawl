@@ -45,4 +45,4 @@ export const queryPhp = `
 
 (member_call_expression
   name: (name) @name) @reference.call
-`;
+`

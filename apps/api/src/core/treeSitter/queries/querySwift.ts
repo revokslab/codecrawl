@@ -38,4 +38,4 @@ export const querySwift = `
 
 (function_declaration
     name: (simple_identifier) @name) @definition.function
-`;
+`

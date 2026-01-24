@@ -1,9 +1,9 @@
-import { z } from 'zod';
-import type { TiktokenEncoding } from 'tiktoken';
+import { z } from 'zod'
+import type { TiktokenEncoding } from 'tiktoken'
 
 // Output style enum
-export const outputStyleSchema = z.enum(['xml', 'markdown', 'plain']);
-export type OutputStyle = z.infer<typeof outputStyleSchema>;
+export const outputStyleSchema = z.enum(['xml', 'markdown', 'plain'])
+export type OutputStyle = z.infer<typeof outputStyleSchema>
 
 // Base config schema
 export const configBaseSchema = z.object({
@@ -49,7 +49,7 @@ export const configBaseSchema = z.object({
       encoding: z.string().optional(),
     })
     .optional(),
-});
+})
 
 // Default config schema with default values
 export const configDefaultSchema = z.object({
@@ -97,16 +97,16 @@ export const configDefaultSchema = z.object({
         .transform((val) => val as TiktokenEncoding),
     })
     .default({}),
-});
+})
 
 export const configMergedSchema = configDefaultSchema.and(configBaseSchema).and(
   z.object({
     cwd: z.string().optional(),
-  }),
-);
+  })
+)
 
-export type ConfigDefault = z.infer<typeof configDefaultSchema>;
-export type ConfigMerged = z.infer<typeof configMergedSchema>;
-export type ConfigBase = z.infer<typeof configBaseSchema>;
+export type ConfigDefault = z.infer<typeof configDefaultSchema>
+export type ConfigMerged = z.infer<typeof configMergedSchema>
+export type ConfigBase = z.infer<typeof configBaseSchema>
 
-export const defaultConfig = configDefaultSchema.parse({});
+export const defaultConfig = configDefaultSchema.parse({})

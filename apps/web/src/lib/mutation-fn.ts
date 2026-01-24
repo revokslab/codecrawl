@@ -1,17 +1,17 @@
-import redaxios from 'redaxios';
-import { useTokenStore } from '~/store/use-token-store';
-import { API_BASE_URL } from './constants';
+import redaxios from 'redaxios'
+import { useTokenStore } from '~/store/use-token-store'
+import { API_BASE_URL } from './constants'
 
 /**
  * Interface for the arguments passed to the generic mutation function.
  */
 interface MutationFnArgs {
   /** The URL endpoint for the mutation. */
-  endpoint: string;
+  endpoint: string
   /** The data payload to send with the request (optional). */
-  data?: any;
+  data?: any
   /** The HTTP method to use (defaults to 'POST'). */
-  method?: 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+  method?: 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 }
 
 /**
@@ -27,7 +27,7 @@ export const mutationFnHelper = async ({
   data,
   method = 'POST',
 }: MutationFnArgs): Promise<any> => {
-  const { accessToken, refreshToken } = useTokenStore.getState();
+  const { accessToken, refreshToken } = useTokenStore.getState()
   try {
     const response = await redaxios({
       url: `${API_BASE_URL}/${endpoint}`,
@@ -38,21 +38,21 @@ export const mutationFnHelper = async ({
         'X-Access-Token': accessToken,
         'X-Refresh-Token': refreshToken,
       },
-    });
+    })
 
-    const _accessToken = response.headers.get('access-token');
-    const _refreshToken = response.headers.get('refresh-token');
+    const _accessToken = response.headers.get('access-token')
+    const _refreshToken = response.headers.get('refresh-token')
 
     if (_accessToken && _refreshToken) {
       useTokenStore.getState().setTokens({
         accessToken: _accessToken,
         refreshToken: _refreshToken,
-      });
+      })
     }
 
-    return response.data;
+    return response.data
   } catch (error) {
-    console.error(`Mutation failed: ${method} ${endpoint}`, error);
-    throw error;
+    console.error(`Mutation failed: ${method} ${endpoint}`, error)
+    throw error
   }
-};
+}

@@ -1,20 +1,20 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 interface ApiKeyState {
-  selectedApiKey: string | null;
+  selectedApiKey: string | null
 }
 
 interface ApiKeyActions {
-  setSelectedApiKey: (key: string | null) => void;
-  reset: () => void;
+  setSelectedApiKey: (key: string | null) => void
+  reset: () => void
 }
 
-type ApiKeyStore = ApiKeyState & ApiKeyActions;
+type ApiKeyStore = ApiKeyState & ApiKeyActions
 
 const initialApiKeyState: ApiKeyState = {
   selectedApiKey: null,
-};
+}
 
 export const useApiKeyStore = create<ApiKeyStore>()(
   persist(
@@ -27,6 +27,6 @@ export const useApiKeyStore = create<ApiKeyStore>()(
     }),
     {
       name: 'api-key-storage',
-    },
-  ),
-);
+    }
+  )
+)

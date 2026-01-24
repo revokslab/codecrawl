@@ -30,4 +30,4 @@ export const queryJava = `
   type: (type_identifier) @name.reference.class) @reference.class
 
 (superclass (type_identifier) @name.reference.class) @reference.class
-`;
+`

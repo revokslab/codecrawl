@@ -1,8 +1,4 @@
-import axios, {
-  AxiosError,
-  type AxiosRequestHeaders,
-  type AxiosResponse,
-} from 'axios';
+import axios, { AxiosError, type AxiosRequestHeaders, type AxiosResponse } from 'axios'
 
 /**
  * Configuration interface for CodecrawlApp.
@@ -10,11 +6,11 @@ import axios, {
  * @param apiUrl - Optional base URL of the API; defaults to 'https://api.irere.dev'.
  */
 export interface CodecrawlAppConfig {
-  apiKey?: string | null;
-  apiUrl?: string | null;
+  apiKey?: string | null
+  apiUrl?: string | null
 }
 
-export type OutputStyle = 'markdown' | 'xml' | 'plain';
+export type OutputStyle = 'markdown' | 'xml' | 'plain'
 
 /**
  * Parameters for scraping operations.
@@ -22,46 +18,46 @@ export type OutputStyle = 'markdown' | 'xml' | 'plain';
  */
 export interface CrawlOptions {
   // Output Options
-  output?: string;
-  style?: OutputStyle;
-  parsableStyle?: boolean;
-  compress?: boolean;
-  outputShowLineNumbers?: boolean;
-  copy?: boolean;
-  fileSummary?: boolean;
-  directoryStructure?: boolean;
-  removeComments?: boolean;
-  removeEmptyLines?: boolean;
-  headerText?: string;
-  instructionFilePath?: string;
-  includeEmptyDirectories?: boolean;
-  gitSortByChanges?: boolean;
+  output?: string
+  style?: OutputStyle
+  parsableStyle?: boolean
+  compress?: boolean
+  outputShowLineNumbers?: boolean
+  copy?: boolean
+  fileSummary?: boolean
+  directoryStructure?: boolean
+  removeComments?: boolean
+  removeEmptyLines?: boolean
+  headerText?: string
+  instructionFilePath?: string
+  includeEmptyDirectories?: boolean
+  gitSortByChanges?: boolean
 
   // Filter Options
-  include?: string;
-  ignore?: string;
-  gitignore?: boolean;
-  defaultPatterns?: boolean;
+  include?: string
+  ignore?: string
+  gitignore?: boolean
+  defaultPatterns?: boolean
 
   // Remote Repository Options
-  remote?: string;
-  remoteBranch?: string;
+  remote?: string
+  remoteBranch?: string
 
   // Configuration Options
-  config?: string;
-  init?: boolean;
-  global?: boolean;
+  config?: string
+  init?: boolean
+  global?: boolean
 
   // Security Options
-  securityCheck?: boolean;
+  securityCheck?: boolean
 
   // Token Count Options
-  tokenCountEncoding?: string;
+  tokenCountEncoding?: string
 
   // Other Options
-  topFilesLen?: number;
-  verbose?: boolean;
-  quiet?: boolean;
+  topFilesLen?: number
+  verbose?: boolean
+  quiet?: boolean
 }
 
 /**
@@ -69,7 +65,7 @@ export interface CrawlOptions {
  * Defines the options and configurations available for generating LLMs.txt.
  */
 export interface GenerateLLMsTextParams extends CrawlOptions {
-  showFullText: boolean;
+  showFullText: boolean
 }
 
 /**
@@ -83,8 +79,8 @@ export interface GenerateFileTreeParams extends CrawlOptions {}
  * Defines the structure of the error response received after initiating a crawl.
  */
 export interface ErrorResponse {
-  success: boolean;
-  error: string;
+  success: boolean
+  error: string
 }
 
 /**
@@ -92,8 +88,8 @@ export interface ErrorResponse {
  * Defines the structure of the response received after initiating a crawl.
  */
 export interface GenerateLLMsTextResponse {
-  success: boolean;
-  id: string;
+  success: boolean
+  id: string
 }
 
 /**
@@ -101,8 +97,8 @@ export interface GenerateLLMsTextResponse {
  * Defines the structure of the response received after initiating a file tree generation.
  */
 export interface GenerateFileTreeResponse {
-  success: boolean;
-  id: string;
+  success: boolean
+  id: string
 }
 
 /**
@@ -110,14 +106,14 @@ export interface GenerateFileTreeResponse {
  * Provides detailed status of a generate llmstxt job including progress and results.
  */
 export interface GenerateLLMsTextStatusResponse {
-  success: boolean;
+  success: boolean
   data: {
-    llmstxt: string;
-    llmsfulltxt?: string;
-  };
-  status: 'processing' | 'completed' | 'failed';
-  error?: string;
-  expiresAt: string;
+    llmstxt: string
+    llmsfulltxt?: string
+  }
+  status: 'processing' | 'completed' | 'failed'
+  error?: string
+  expiresAt: string
 }
 
 /**
@@ -125,13 +121,13 @@ export interface GenerateLLMsTextStatusResponse {
  * Provides detailed status of a generate file tree job including progress and results.
  */
 export interface GenerateFileTreeStatusResponse {
-  success: boolean;
+  success: boolean
   data: {
-    tree: string;
-  };
-  status: 'processing' | 'completed' | 'failed';
-  error?: string;
-  expiresAt: string;
+    tree: string
+  }
+  status: 'processing' | 'completed' | 'failed'
+  error?: string
+  expiresAt: string
 }
 
 /**
@@ -139,12 +135,12 @@ export interface GenerateFileTreeStatusResponse {
  * Extends the built-in Error class to include a status code.
  */
 export class CodecrawlError extends Error {
-  statusCode: number;
-  details?: any;
+  statusCode: number
+  details?: any
   constructor(message: string, statusCode: number, details?: any) {
-    super(message);
-    this.statusCode = statusCode;
-    this.details = details;
+    super(message)
+    this.statusCode = statusCode
+    this.details = details
   }
 }
 
@@ -153,11 +149,11 @@ export class CodecrawlError extends Error {
  * Provides methods for llmstxt generation, searching, indexing, and more.
  */
 export default class CodecrawlApp {
-  private apiKey: string;
-  private apiUrl: string;
+  private apiKey: string
+  private apiUrl: string
 
   private isCloudService(url: string): boolean {
-    return url.includes('api.irere.dev');
+    return url.includes('api.irere.dev')
   }
 
   /**
@@ -165,14 +161,14 @@ export default class CodecrawlApp {
    * @param config - Configuration options for the CodecrawlApp instance.
    */
   constructor({ apiKey = null, apiUrl = null }: CodecrawlAppConfig) {
-    const baseUrl = apiUrl || 'https://api.irere.dev';
+    const baseUrl = apiUrl || 'https://api.irere.dev'
 
     if (this.isCloudService(baseUrl) && typeof apiKey !== 'string') {
-      throw new CodecrawlError('No API key provided', 401);
+      throw new CodecrawlError('No API key provided', 401)
     }
 
-    this.apiKey = apiKey || '';
-    this.apiUrl = apiUrl || baseUrl;
+    this.apiKey = apiKey || ''
+    this.apiUrl = apiUrl || baseUrl
   }
 
   /**
@@ -185,7 +181,7 @@ export default class CodecrawlApp {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${this.apiKey}`,
       ...(idempotencyKey ? { 'x-idempotency-key': idempotencyKey } : {}),
-    } as AxiosRequestHeaders & { 'x-idempotency-key'?: string };
+    } as AxiosRequestHeaders & { 'x-idempotency-key'?: string }
   }
 
   /**
@@ -195,15 +191,11 @@ export default class CodecrawlApp {
    * @param headers - The headers for the request.
    * @returns The response from the POST request.
    */
-  postRequest(
-    url: string,
-    data: any,
-    headers: AxiosRequestHeaders,
-  ): Promise<AxiosResponse> {
+  postRequest(url: string, data: any, headers: AxiosRequestHeaders): Promise<AxiosResponse> {
     return axios.post(url, data, {
       headers,
       timeout: data?.timeout ? data.timeout + 5000 : undefined,
-    });
+    })
   }
 
   /**
@@ -212,17 +204,14 @@ export default class CodecrawlApp {
    * @param headers - The headers for the request.
    * @returns The response from the GET request.
    */
-  async getRequest(
-    url: string,
-    headers: AxiosRequestHeaders,
-  ): Promise<AxiosResponse> {
+  async getRequest(url: string, headers: AxiosRequestHeaders): Promise<AxiosResponse> {
     try {
-      return await axios.get(url, { headers });
+      return await axios.get(url, { headers })
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
-        return error.response as AxiosResponse;
+        return error.response as AxiosResponse
       } else {
-        throw error;
+        throw error
       }
     }
   }
@@ -233,17 +222,14 @@ export default class CodecrawlApp {
    * @param headers - The headers for the request.
    * @returns The response from the DELETE request.
    */
-  async deleteRequest(
-    url: string,
-    headers: AxiosRequestHeaders,
-  ): Promise<AxiosResponse> {
+  async deleteRequest(url: string, headers: AxiosRequestHeaders): Promise<AxiosResponse> {
     try {
-      return await axios.delete(url, { headers });
+      return await axios.delete(url, { headers })
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
-        return error.response as AxiosResponse;
+        return error.response as AxiosResponse
       } else {
-        throw error;
+        throw error
       }
     }
   }
@@ -255,21 +241,18 @@ export default class CodecrawlApp {
    */
   handleError(response: AxiosResponse, action: string): void {
     if ([400, 402, 402, 408, 409, 500].includes(response.status)) {
-      const errorMessage: string =
-        response.data.error || 'unknown error occured';
-      const details: any = response.data.details
-        ? `- ${JSON.stringify(response.data.details)}`
-        : '';
+      const errorMessage: string = response.data.error || 'unknown error occured'
+      const details: any = response.data.details ? `- ${JSON.stringify(response.data.details)}` : ''
       throw new CodecrawlError(
         `Failed to ${action}. Status code: ${response.status}. Error: ${errorMessage}${details}`,
         response.status,
-        response?.data?.details,
-      );
+        response?.data?.details
+      )
     } else {
       throw new CodecrawlError(
         `Unexpected error occurred while ${action}. Status code: ${response.status}.`,
-        response.status,
-      );
+        response.status
+      )
     }
   }
 
@@ -281,62 +264,55 @@ export default class CodecrawlApp {
    */
   async generateLLMsTxt(
     url: string,
-    params?: GenerateLLMsTextParams,
+    params?: GenerateLLMsTextParams
   ): Promise<GenerateLLMsTextStatusResponse | ErrorResponse> {
     try {
-      const response = await this.asyncGenerateLLMsText(url, params);
+      const response = await this.asyncGenerateLLMsText(url, params)
 
       if (!response.success || 'error' in response) {
         return {
           success: false,
           error: 'error' in response ? response.error : 'Unknown error',
-        };
+        }
       }
 
       if (!response.id) {
-        throw new CodecrawlError(
-          `Failed to start LLMs.txt generation. No job ID returned.`,
-          500,
-        );
+        throw new CodecrawlError(`Failed to start LLMs.txt generation. No job ID returned.`, 500)
       }
 
-      const jobId = response.id;
-      let generationStatus: any;
+      const jobId = response.id
+      let generationStatus: any
 
       while (true) {
-        generationStatus = await this.checkGenerateLLMsTextStatus(jobId);
+        generationStatus = await this.checkGenerateLLMsTextStatus(jobId)
 
         if ('error' in generationStatus && !generationStatus.success) {
-          return generationStatus;
+          return generationStatus
         }
 
         if (generationStatus.status === 'completed') {
-          return generationStatus;
+          return generationStatus
         }
 
         if (generationStatus.status === 'failed') {
           throw new CodecrawlError(
             `LLMs.txt generation failed. Status code: ${generationStatus.status}. Error: ${generationStatus.error}`,
-            generationStatus.statusCode,
-          );
+            generationStatus.statusCode
+          )
         }
 
         if (generationStatus.status !== 'processing') {
-          break;
+          break
         }
 
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 2000))
       }
       return {
         success: false,
         error: `LLMs.txt generation ended with unexpected status: ${generationStatus?.status ?? 'unknown'}`,
-      };
+      }
     } catch (error: any) {
-      throw new CodecrawlError(
-        error.message,
-        500,
-        error.response?.data?.details,
-      );
+      throw new CodecrawlError(error.message, 500, error.response?.data?.details)
     }
   }
 
@@ -348,33 +324,33 @@ export default class CodecrawlApp {
    */
   async asyncGenerateLLMsText(
     url: string,
-    params?: GenerateLLMsTextParams,
+    params?: GenerateLLMsTextParams
   ): Promise<GenerateLLMsTextResponse | ErrorResponse> {
-    const headers = this.prepareHeaders();
-    const jsonData: any = { url, ...params };
+    const headers = this.prepareHeaders()
+    const jsonData: any = { url, ...params }
     try {
       const response: AxiosResponse = await this.postRequest(
         `${this.apiUrl}/v1/llmstxt`,
         jsonData,
-        headers,
-      );
+        headers
+      )
 
       if (response.status === 200) {
-        return response.data;
+        return response.data
       } else {
-        this.handleError(response, 'start LLMs.txt generation');
+        this.handleError(response, 'start LLMs.txt generation')
       }
     } catch (error: any) {
       if (error.response?.data?.error) {
         throw new CodecrawlError(
           `Request failed with status code ${error.response.status}. Error: ${error.response.data.error} ${error.response.data.details ? ` - ${JSON.stringify(error.response.data.details)}` : ''}`,
-          error.response.status,
-        );
+          error.response.status
+        )
       } else {
-        throw new CodecrawlError(error.message, 500);
+        throw new CodecrawlError(error.message, 500)
       }
     }
-    return { success: false, error: 'Internal server error.' };
+    return { success: false, error: 'Internal server error.' }
   }
 
   /**
@@ -383,33 +359,33 @@ export default class CodecrawlApp {
    * @returns The current status and results of the generation operation.
    */
   async checkGenerateLLMsTextStatus(
-    id: string,
+    id: string
   ): Promise<GenerateLLMsTextStatusResponse | ErrorResponse> {
-    const headers = this.prepareHeaders();
+    const headers = this.prepareHeaders()
     try {
       const response: AxiosResponse = await this.getRequest(
         `${this.apiUrl}/v1/llmstxt/${id}`,
-        headers,
-      );
+        headers
+      )
 
       if (response.status === 200) {
-        return response.data;
+        return response.data
       } else if (response.status === 404) {
-        throw new CodecrawlError('LLMs.txt generation job not found', 404);
+        throw new CodecrawlError('LLMs.txt generation job not found', 404)
       } else {
-        this.handleError(response, 'check LLMs.txt generation status');
+        this.handleError(response, 'check LLMs.txt generation status')
       }
     } catch (error: any) {
       if (error.response?.data?.error) {
         throw new CodecrawlError(
           `Request failed with status code ${error.response.status}. Error: ${error.response.data.error} ${error.response.data.details ? ` - ${JSON.stringify(error.response.data.details)}` : ''}`,
-          error.response.status,
-        );
+          error.response.status
+        )
       } else {
-        throw new CodecrawlError(error.message, 500);
+        throw new CodecrawlError(error.message, 500)
       }
     }
-    return { success: false, error: 'Internal server error.' };
+    return { success: false, error: 'Internal server error.' }
   }
 
   /**
@@ -420,80 +396,73 @@ export default class CodecrawlApp {
    */
   async generateFileTree(
     url: string,
-    params?: GenerateFileTreeParams,
+    params?: GenerateFileTreeParams
   ): Promise<GenerateFileTreeStatusResponse | ErrorResponse> {
     try {
-      const response = await this.asyncGenerateFileTree(url, params);
+      const response = await this.asyncGenerateFileTree(url, params)
 
       if (!response.success || 'error' in response) {
         return {
           success: false,
           error:
-            'error' in response
-              ? response.error
-              : 'Unknown error starting file tree generation',
-        };
+            'error' in response ? response.error : 'Unknown error starting file tree generation',
+        }
       }
 
       if (!response.id) {
-        throw new CodecrawlError(
-          `Failed to start file tree generation. No job ID returned.`,
-          500,
-        );
+        throw new CodecrawlError(`Failed to start file tree generation. No job ID returned.`, 500)
       }
 
-      const jobId = response.id;
-      let generationStatus: any;
+      const jobId = response.id
+      let generationStatus: any
 
       while (true) {
-        generationStatus = await this.checkGenerateFileTreeStatus(jobId);
+        generationStatus = await this.checkGenerateFileTreeStatus(jobId)
 
         if ('error' in generationStatus && !generationStatus.success) {
-          return generationStatus; // Return the error response directly
+          return generationStatus // Return the error response directly
         }
 
         if (generationStatus.status === 'completed') {
-          return generationStatus;
+          return generationStatus
         }
 
         if (generationStatus.status === 'failed') {
           // Ensure statusCode is available, default if not
-          const statusCode = generationStatus.statusCode || 500;
-          const errorMessage =
-            generationStatus.error || 'Unknown error during generation';
+          const statusCode = generationStatus.statusCode || 500
+          const errorMessage = generationStatus.error || 'Unknown error during generation'
           throw new CodecrawlError(
             `File tree generation failed. Status code: ${statusCode}. Error: ${errorMessage}`,
-            statusCode,
-          );
+            statusCode
+          )
         }
 
         // Explicitly check for 'processing' before continuing the loop
         if (generationStatus.status !== 'processing') {
           // If status is neither completed, failed, nor processing, break and report error
-          break;
+          break
         }
 
         // Wait before polling again
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 2000))
       }
       // If loop exits unexpectedly
       return {
         success: false,
         error: `File tree generation ended with unexpected status: ${generationStatus?.status ?? 'unknown'}`,
-      };
+      }
     } catch (error: any) {
       // Handle errors thrown from asyncGenerateFileTree, checkGenerateFileTreeStatus, or CodecrawlError instances
       if (error instanceof CodecrawlError) {
         // Re-throw CodecrawlErrors to preserve status code and details
-        throw error;
+        throw error
       } else {
         // Wrap other errors
         throw new CodecrawlError(
-          error.message ||
-            'An unexpected error occurred during file tree generation',
+          error.message || 'An unexpected error occurred during file tree generation',
           500,
-          error.response?.data?.details, // Include details if available from Axios error
-        );
+          error.response?.data?.details // Include details if available from Axios error
+        )
       }
     }
   }
@@ -506,40 +475,39 @@ export default class CodecrawlApp {
    */
   async asyncGenerateFileTree(
     url: string,
-    params?: GenerateFileTreeParams,
+    params?: GenerateFileTreeParams
   ): Promise<GenerateFileTreeResponse | ErrorResponse> {
-    const headers = this.prepareHeaders();
-    const jsonData: any = { url, ...params };
+    const headers = this.prepareHeaders()
+    const jsonData: any = { url, ...params }
     try {
       const response: AxiosResponse = await this.postRequest(
         `${this.apiUrl}/v1/tree`,
         jsonData,
-        headers,
-      );
+        headers
+      )
 
       if (response.status === 200) {
-        return response.data as GenerateFileTreeResponse;
+        return response.data as GenerateFileTreeResponse
       } else {
-        this.handleError(response, 'start file tree generation');
+        this.handleError(response, 'start file tree generation')
         return {
           success: false,
           error: 'Failed to start file tree generation due to server error.',
-        };
+        }
       }
     } catch (error: any) {
       if (error instanceof CodecrawlError) {
-        throw error;
+        throw error
       } else if (error.response?.data?.error) {
         throw new CodecrawlError(
           `Request failed with status code ${error.response.status}. Error: ${error.response.data.error} ${error.response.data.details ? ` - ${JSON.stringify(error.response.data.details)}` : ''}`,
-          error.response.status,
-        );
+          error.response.status
+        )
       } else {
         throw new CodecrawlError(
-          error.message ||
-            'Network error or unexpected issue starting file tree generation.',
-          500,
-        );
+          error.message || 'Network error or unexpected issue starting file tree generation.',
+          500
+        )
       }
     }
   }
@@ -550,40 +518,36 @@ export default class CodecrawlApp {
    * @returns The current status and results of the generation operation.
    */
   async checkGenerateFileTreeStatus(
-    id: string,
+    id: string
   ): Promise<GenerateFileTreeStatusResponse | ErrorResponse> {
-    const headers = this.prepareHeaders();
+    const headers = this.prepareHeaders()
     try {
-      const response: AxiosResponse = await this.getRequest(
-        `${this.apiUrl}/v1/tree/${id}`,
-        headers,
-      );
+      const response: AxiosResponse = await this.getRequest(`${this.apiUrl}/v1/tree/${id}`, headers)
 
       if (response.status === 200) {
-        return response.data as GenerateFileTreeStatusResponse;
+        return response.data as GenerateFileTreeStatusResponse
       } else if (response.status === 404) {
-        throw new CodecrawlError('File tree generation job not found', 404);
+        throw new CodecrawlError('File tree generation job not found', 404)
       } else {
-        this.handleError(response, 'check file tree generation status');
+        this.handleError(response, 'check file tree generation status')
         return {
           success: false,
           error: 'Failed to check file tree status due to server error.',
-        };
+        }
       }
     } catch (error: any) {
       if (error instanceof CodecrawlError) {
-        throw error;
+        throw error
       } else if (error.response?.data?.error) {
         throw new CodecrawlError(
           `Request failed with status code ${error.response.status}. Error: ${error.response.data.error} ${error.response.data.details ? ` - ${JSON.stringify(error.response.data.details)}` : ''}`,
-          error.response.status,
-        );
+          error.response.status
+        )
       } else {
         throw new CodecrawlError(
-          error.message ||
-            'Network error or unexpected issue checking file tree status.',
-          500,
-        );
+          error.message || 'Network error or unexpected issue checking file tree status.',
+          500
+        )
       }
     }
   }

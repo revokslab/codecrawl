@@ -1,9 +1,9 @@
-import KSUID from 'ksuid';
+import KSUID from 'ksuid'
 
 export const generateId = (prefix?: string) => {
   if (!prefix) {
-    return KSUID.randomSync().string;
+    return KSUID.randomSync().string
   } else {
-    return `${prefix}_${KSUID.randomSync().string}`;
+    return `${prefix}_${KSUID.randomSync().string}`
   }
-};
+}

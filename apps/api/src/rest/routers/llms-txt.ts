@@ -1,157 +1,157 @@
-import { createRoute } from '@hono/zod-openapi';
+import { createRoute } from '@hono/zod-openapi'
 
 import {
   getGeneratedLLmsTxt,
   getGeneratedLlmsTxtExpiry,
   saveGeneratedLlmsTxt,
-} from '~/lib/generate-llms-txt/redis';
+} from '~/lib/generate-llms-txt/redis'
 import {
   llmsTxtRequestSchema,
   llmsTxtResponseSchema,
   llmsTxtStatusResponseSchema,
   llmsTxtStatusSchema,
-} from '~/schemas';
-import { getGenerateLlmsTxtQueue } from '~/services/queue-service';
-import { createRouter, generateId, validateResponse } from '~/utils';
+} from '~/schemas'
+import { getGenerateLlmsTxtQueue } from '~/services/queue-service'
+import { createRouter, generateId, validateResponse } from '~/utils'
 
-const llmsTxtRouter = createRouter();
+const llmsTxtRouter = createRouter()
 
-llmsTxtRouter.openapi(
-  createRoute({
-    method: 'post',
-    tags: ['LLMs.txt'],
-    path: '/',
-    summary: 'Generate LLMs.txt',
-    request: {
-      body: {
-        content: {
-          'application/json': {
-            schema: llmsTxtRequestSchema,
-          },
+// POST /llms-txt - Create generation job
+const createLlmsTxtRoute = createRoute({
+  method: 'post',
+  tags: ['LLMs.txt'],
+  path: '/',
+  summary: 'Generate LLMs.txt',
+  request: {
+    body: {
+      content: {
+        'application/json': {
+          schema: llmsTxtRequestSchema,
         },
       },
     },
-    responses: {
-      200: {
-        description: 'LLMs.txt generation job created',
-        content: {
-          'application/json': {
-            schema: llmsTxtResponseSchema,
-          },
+  },
+  responses: {
+    200: {
+      description: 'LLMs.txt generation job created',
+      content: {
+        'application/json': {
+          schema: llmsTxtResponseSchema,
         },
       },
     },
-  }),
-  async (c) => {
-    const generationId = generateId();
-    const body = await c.req.json();
+  },
+})
 
-    const jobData = {
-      request: body,
-      generationId,
-    };
+llmsTxtRouter.openapi(createLlmsTxtRoute, async (c) => {
+  const generationId = generateId()
+  const body = c.req.valid('json')
 
-    await saveGeneratedLlmsTxt(generationId, {
-      id: generationId,
-      createdAt: Date.now(),
-      status: 'processing',
-      url: body.url,
-      showFullText: body.showFullText,
-      generatedText: '',
-      fullText: '',
-    });
+  const jobData = {
+    request: body,
+    generationId,
+  }
 
-    await getGenerateLlmsTxtQueue().add(generationId, jobData, {
-      jobId: generationId,
-    });
+  await saveGeneratedLlmsTxt(generationId, {
+    id: generationId,
+    createdAt: Date.now(),
+    status: 'processing',
+    url: body.url,
+    showFullText: body.showFullText ?? false,
+    generatedText: '',
+    fullText: '',
+  })
 
+  await getGenerateLlmsTxtQueue().add(generationId, jobData, {
+    jobId: generationId,
+  })
+
+  return c.json(
+    validateResponse(
+      {
+        success: true,
+        id: generationId,
+      },
+      llmsTxtResponseSchema
+    )
+  )
+})
+
+// GET /llms-txt/:jobId - Get status
+const getLlmsTxtStatusRoute = createRoute({
+  method: 'get',
+  tags: ['LLMs.txt'],
+  path: '/{jobId}',
+  summary: 'Get LLMs.txt status',
+  request: {
+    params: llmsTxtStatusSchema,
+  },
+  responses: {
+    200: {
+      description: 'LLMs.txt status',
+      content: {
+        'application/json': {
+          schema: llmsTxtStatusResponseSchema,
+        },
+      },
+    },
+  },
+})
+
+llmsTxtRouter.openapi(getLlmsTxtStatusRoute, async (c) => {
+  const { jobId } = c.req.valid('param')
+
+  if (!jobId) {
     return c.json(
       validateResponse(
         {
-          success: true,
-          id: generationId,
+          success: false,
+          error: 'jobId is required',
         },
-        llmsTxtResponseSchema,
-      ),
-    );
-  },
-);
+        llmsTxtStatusResponseSchema
+      )
+    )
+  }
 
-llmsTxtRouter.openapi(
-  createRoute({
-    method: 'get',
-    tags: ['LLMs.txt'],
-    path: '/:jobId',
-    summary: 'Get LLMs.txt status',
-    request: {
-      params: llmsTxtStatusSchema,
-    },
-    responses: {
-      200: {
-        description: 'LLMs.txt status',
-        content: {
-          'application/json': {
-            schema: llmsTxtStatusResponseSchema,
-          },
-        },
-      },
-    },
-  }),
-  async (c) => {
-    const { jobId } = c.req.param();
+  const generation = await getGeneratedLLmsTxt(jobId)
 
-    if (!jobId) {
-      return c.json(
-        validateResponse(
-          {
-            success: false,
-            error: 'jobId is required',
-          },
-          llmsTxtStatusResponseSchema,
-        ),
-      );
-    }
-
-    const generation = await getGeneratedLLmsTxt(jobId);
-
-    if (!generation) {
-      return c.json(
-        validateResponse(
-          {
-            success: false,
-            error: 'llmsTxt generation job not found',
-          },
-          llmsTxtStatusResponseSchema,
-        ),
-      );
-    }
-
-    const showFullText = generation.showFullText ?? false;
-
-    const data = showFullText
-      ? {
-          llmstxt: generation.generatedText,
-          llmsfulltxt: generation.fullText,
-        }
-      : {
-          llmstxt: generation.generatedText,
-        };
-
-    const expiry = await getGeneratedLlmsTxtExpiry(jobId);
-
+  if (!generation) {
     return c.json(
       validateResponse(
         {
-          success: generation.status !== 'failed',
-          data,
-          status: generation.status,
-          error: generation.error ?? undefined,
-          expiresAt: expiry ? expiry.toISOString() : undefined,
+          success: false,
+          error: 'llmsTxt generation job not found',
         },
-        llmsTxtStatusResponseSchema,
-      ),
-    );
-  },
-);
+        llmsTxtStatusResponseSchema
+      )
+    )
+  }
 
-export { llmsTxtRouter };
+  const showFullText = generation.showFullText ?? false
+
+  const data = showFullText
+    ? {
+        llmstxt: generation.generatedText,
+        llmsfulltxt: generation.fullText,
+      }
+    : {
+        llmstxt: generation.generatedText,
+      }
+
+  const expiry = await getGeneratedLlmsTxtExpiry(jobId)
+
+  return c.json(
+    validateResponse(
+      {
+        success: generation.status !== 'failed',
+        data,
+        status: generation.status,
+        error: generation.error ?? undefined,
+        expiresAt: expiry ? expiry.toISOString() : undefined,
+      },
+      llmsTxtStatusResponseSchema
+    )
+  )
+})
+
+export { llmsTxtRouter }

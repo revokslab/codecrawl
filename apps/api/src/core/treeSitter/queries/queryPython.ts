@@ -29,4 +29,4 @@ export const queryPython = `
 
 (assignment
   left: (identifier) @name.definition.type_alias) @definition.type_alias
-`;
+`

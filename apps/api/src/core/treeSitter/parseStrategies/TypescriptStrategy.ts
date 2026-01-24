@@ -1,5 +1,5 @@
-import type { Node } from 'web-tree-sitter';
-import type { ParseContext, ParseStrategy } from './ParseStrategy';
+import type { Node } from 'web-tree-sitter'
+import type { ParseContext, ParseStrategy } from './ParseStrategy'
 
 enum CaptureType {
   Comment = 'comment',
@@ -14,47 +14,38 @@ enum CaptureType {
 }
 
 type ParseResult = {
-  content: string | null;
-  processedSignatures?: Set<string>;
-};
+  content: string | null
+  processedSignatures?: Set<string>
+}
 
 export class TypeScriptParseStrategy implements ParseStrategy {
   private static readonly FUNCTION_NAME_PATTERN =
-    /(?:export\s+)?(?:const|let|var)\s+([a-zA-Z0-9_$]+)\s*=/;
+    /(?:export\s+)?(?:const|let|var)\s+([a-zA-Z0-9_$]+)\s*=/
 
   parseCapture(
     capture: { node: Node; name: string },
     lines: string[],
     processedChunks: Set<string>,
-    context: ParseContext,
+    context: ParseContext
   ): string | null {
-    const { node, name } = capture;
-    const startRow = node.startPosition.row;
-    const endRow = node.endPosition.row;
+    const { node, name } = capture
+    const startRow = node.startPosition.row
+    const endRow = node.endPosition.row
 
     if (!lines[startRow]) {
-      return null;
+      return null
     }
 
-    const captureTypes = this.getCaptureType(name);
+    const captureTypes = this.getCaptureType(name)
 
     // Function capture
-    if (
-      captureTypes.has(CaptureType.Function) ||
-      captureTypes.has(CaptureType.Method)
-    ) {
-      return this.parseFunctionDefinition(
-        lines,
-        startRow,
-        endRow,
-        processedChunks,
-      ).content;
+    if (captureTypes.has(CaptureType.Function) || captureTypes.has(CaptureType.Method)) {
+      return this.parseFunctionDefinition(lines, startRow, endRow, processedChunks).content
     }
 
     // Class capture
     if (captureTypes.has(CaptureType.Class)) {
-      return this.parseClassDefinition(lines, startRow, endRow, processedChunks)
-        .content;
+      return this.parseClassDefinition(lines, startRow, endRow, processedChunks).content
     }
 
     // Type definition or import capture
@@ -64,8 +55,7 @@ export class TypeScriptParseStrategy implements ParseStrategy {
       captureTypes.has(CaptureType.Enum) ||
       captureTypes.has(CaptureType.Import)
     ) {
-      return this.parseTypeOrImport(lines, startRow, endRow, processedChunks)
-        .content;
+      return this.parseTypeOrImport(lines, startRow, endRow, processedChunks).content
     }
 
     // Comment capture
@@ -73,134 +63,121 @@ export class TypeScriptParseStrategy implements ParseStrategy {
       return lines
         .slice(startRow, endRow + 1)
         .join('\n')
-        .trim();
+        .trim()
     }
 
-    return null;
+    return null
   }
 
   private getFunctionName(lines: string[], startRow: number): string | null {
-    const line = lines[startRow];
-    const match = line.match(TypeScriptParseStrategy.FUNCTION_NAME_PATTERN);
-    return match?.[1] ?? null;
+    const line = lines[startRow]
+    const match = line.match(TypeScriptParseStrategy.FUNCTION_NAME_PATTERN)
+    return match?.[1] ?? null
   }
 
   private getCaptureType(name: string): Set<CaptureType> {
-    const types = new Set<CaptureType>();
+    const types = new Set<CaptureType>()
     for (const type of Object.values(CaptureType)) {
       if (name.includes(type)) {
-        types.add(type);
+        types.add(type)
       }
     }
-    return types;
+    return types
   }
 
   private parseFunctionDefinition(
     lines: string[],
     startRow: number,
     endRow: number,
-    processedChunks: Set<string>,
+    processedChunks: Set<string>
   ): ParseResult {
-    const functionName = this.getFunctionName(lines, startRow);
+    const functionName = this.getFunctionName(lines, startRow)
     if (functionName && processedChunks.has(`func:${functionName}`)) {
-      return { content: null };
+      return { content: null }
     }
 
-    const signatureEndRow = this.findSignatureEnd(lines, startRow, endRow);
-    const selectedLines = lines.slice(startRow, signatureEndRow + 1);
-    const cleanedSignature = this.cleanFunctionSignature(selectedLines);
+    const signatureEndRow = this.findSignatureEnd(lines, startRow, endRow)
+    const selectedLines = lines.slice(startRow, signatureEndRow + 1)
+    const cleanedSignature = this.cleanFunctionSignature(selectedLines)
 
     if (processedChunks.has(cleanedSignature)) {
-      return { content: null };
+      return { content: null }
     }
 
-    processedChunks.add(cleanedSignature);
+    processedChunks.add(cleanedSignature)
     if (functionName) {
-      processedChunks.add(`func:${functionName}`);
+      processedChunks.add(`func:${functionName}`)
     }
 
-    return { content: cleanedSignature };
+    return { content: cleanedSignature }
   }
 
-  private findSignatureEnd(
-    lines: string[],
-    startRow: number,
-    endRow: number,
-  ): number {
+  private findSignatureEnd(lines: string[], startRow: number, endRow: number): number {
     for (let i = startRow; i <= endRow; i++) {
-      const line = lines[i].trim();
-      if (
-        line.includes(')') &&
-        (line.endsWith('{') || line.endsWith('=>') || line.endsWith(';'))
-      ) {
-        return i;
+      const line = lines[i].trim()
+      if (line.includes(')') && (line.endsWith('{') || line.endsWith('=>') || line.endsWith(';'))) {
+        return i
       }
     }
-    return startRow;
+    return startRow
   }
 
   private cleanFunctionSignature(lines: string[]): string {
-    const result = [...lines];
-    const lastLineIndex = result.length - 1;
-    const lastLine = result[lastLineIndex];
+    const result = [...lines]
+    const lastLineIndex = result.length - 1
+    const lastLine = result[lastLineIndex]
 
     if (lastLine) {
       if (lastLine.includes('{')) {
-        result[lastLineIndex] = lastLine
-          .substring(0, lastLine.indexOf('{'))
-          .trim();
+        result[lastLineIndex] = lastLine.substring(0, lastLine.indexOf('{')).trim()
       } else if (lastLine.includes('=>')) {
-        result[lastLineIndex] = lastLine
-          .substring(0, lastLine.indexOf('=>'))
-          .trim();
+        result[lastLineIndex] = lastLine.substring(0, lastLine.indexOf('=>')).trim()
       }
     }
 
-    return result.join('\n').trim();
+    return result.join('\n').trim()
   }
 
   private parseClassDefinition(
     lines: string[],
     startRow: number,
     endRow: number,
-    processedChunks: Set<string>,
+    processedChunks: Set<string>
   ): ParseResult {
-    const selectedLines = [lines[startRow]];
+    const selectedLines = [lines[startRow]]
 
     if (startRow + 1 <= endRow) {
-      const nextLine = lines[startRow + 1].trim();
+      const nextLine = lines[startRow + 1].trim()
       if (nextLine.includes('extends') || nextLine.includes('implements')) {
-        selectedLines.push(nextLine);
+        selectedLines.push(nextLine)
       }
     }
 
-    const cleanedLines = selectedLines.map((line) =>
-      line.replace(/\{.*$/, '').trim(),
-    );
-    const definition = cleanedLines.join('\n').trim();
+    const cleanedLines = selectedLines.map((line) => line.replace(/\{.*$/, '').trim())
+    const definition = cleanedLines.join('\n').trim()
 
     if (processedChunks.has(definition)) {
-      return { content: null };
+      return { content: null }
     }
 
-    processedChunks.add(definition);
-    return { content: definition };
+    processedChunks.add(definition)
+    return { content: definition }
   }
 
   private parseTypeOrImport(
     lines: string[],
     startRow: number,
     endRow: number,
-    processedChunks: Set<string>,
+    processedChunks: Set<string>
   ): ParseResult {
-    const selectedLines = lines.slice(startRow, endRow + 1);
-    const definition = selectedLines.join('\n').trim();
+    const selectedLines = lines.slice(startRow, endRow + 1)
+    const definition = selectedLines.join('\n').trim()
 
     if (processedChunks.has(definition)) {
-      return { content: null };
+      return { content: null }
     }
 
-    processedChunks.add(definition);
-    return { content: definition };
+    processedChunks.add(definition)
+    return { content: definition }
   }
 }

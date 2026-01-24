@@ -70,4 +70,4 @@ export const queryTypescript = `
     left: [(identifier) @name.definition.function]
     right: (arrow_function)
 ) @definition.function
-`;
+`

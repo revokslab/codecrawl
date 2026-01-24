@@ -1,18 +1,18 @@
-import { Flex, Text } from '@radix-ui/themes';
-import { createFileRoute } from '@tanstack/react-router';
+import { Flex, Text } from '@radix-ui/themes'
+import { createFileRoute } from '@tanstack/react-router'
 
-import { seo } from '~/utils/seo';
-import { KeysTable } from '~/components/keys-table';
-import { CreateKeyModal } from '~/components/create-key-modal';
+import { seo } from '~/utils/seo'
+import { KeysTable } from '~/components/keys-table'
+import { CreateKeyModal } from '~/components/create-key-modal'
 
 export const Route = createFileRoute('/app/_app/keys')({
   component: RouteComponent,
   head(_ctx) {
     return {
       meta: [...seo({ title: 'API Keys | Codecrawl' })],
-    };
+    }
   },
-});
+})
 
 function RouteComponent() {
   return (
@@ -30,5 +30,5 @@ function RouteComponent() {
       </Flex>
       <KeysTable />
     </Flex>
-  );
+  )
 }

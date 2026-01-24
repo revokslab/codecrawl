@@ -1,22 +1,22 @@
-import { notFound } from '@tanstack/react-router';
-import { allPosts, allUpdates } from 'content-collections';
+import { notFound } from '@tanstack/react-router'
+import { allPosts, allUpdates } from 'content-collections'
 
 export function findPostBySlug(slug: string) {
-  const post = allPosts.find((post) => post._meta.path === slug);
+  const post = allPosts.find((post) => post._meta.path === slug)
   if (!post) {
-    throw notFound();
+    throw notFound()
   }
-  return post;
+  return post
 }
 
 export function findUpdateBySlug(slug: string) {
-  const update = allUpdates.find((update) => update._meta.path === slug);
+  const update = allUpdates.find((update) => update._meta.path === slug)
   if (!update) {
-    throw notFound();
+    throw notFound()
   }
-  return update;
+  return update
 }
 
 export function findPostsByCategory(category: string) {
-  return allPosts.filter((post) => post.category === category);
+  return allPosts.filter((post) => post.category === category)
 }

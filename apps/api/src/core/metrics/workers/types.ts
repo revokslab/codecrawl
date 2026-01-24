@@ -1,5 +1,5 @@
 export interface FileMetrics {
-  path: string;
-  charCount: number;
-  tokenCount: number;
+  path: string
+  charCount: number
+  tokenCount: number
 }

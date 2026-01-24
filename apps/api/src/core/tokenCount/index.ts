@@ -1,38 +1,36 @@
-import { type Tiktoken, type TiktokenEncoding, get_encoding } from 'tiktoken';
-import { logger } from '~/lib/logger';
+import { type Tiktoken, type TiktokenEncoding, get_encoding } from 'tiktoken'
+import { logger } from '~/lib/logger'
 
 export class TokenCounter {
-  private encoding: Tiktoken;
+  private encoding: Tiktoken
 
   constructor(encodingName: TiktokenEncoding) {
     // Setup encoding with the specified model
-    this.encoding = get_encoding(encodingName);
+    this.encoding = get_encoding(encodingName)
   }
 
   public countTokens(content: string, filePath?: string): number {
     try {
-      return this.encoding.encode(content).length;
+      return this.encoding.encode(content).length
     } catch (error) {
-      let message = '';
+      let message = ''
       if (error instanceof Error) {
-        message = error.message;
+        message = error.message
       } else {
-        message = String(error);
+        message = String(error)
       }
 
       if (filePath) {
-        logger.warn(
-          `Failed to count tokens. path: ${filePath}, error: ${message}`,
-        );
+        logger.warn(`Failed to count tokens. path: ${filePath}, error: ${message}`)
       } else {
-        logger.warn(`Failed to count tokens. error: ${message}`);
+        logger.warn(`Failed to count tokens. error: ${message}`)
       }
 
-      return 0;
+      return 0
     }
   }
 
   public free(): void {
-    this.encoding.free();
+    this.encoding.free()
   }
 }

@@ -24,4 +24,4 @@ export const querySolidity = `
 ; Modifier definitions
 (modifier_definition
   name: (identifier) @name.definition.modifier) @definition.modifier
-`;
+`

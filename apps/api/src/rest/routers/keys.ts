@@ -1,11 +1,11 @@
-import { createRouter } from '~/utils';
+import { createRouter } from '~/utils'
 
-const keysRouter = createRouter();
+const keysRouter = createRouter()
 
 keysRouter.get('/', (c) => {
   return c.json({
     message: 'Hello World',
-  });
-});
+  })
+})
 
-export { keysRouter };
+export { keysRouter }

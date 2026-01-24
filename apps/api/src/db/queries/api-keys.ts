@@ -1,18 +1,18 @@
-import { eq } from 'drizzle-orm';
+import { eq } from 'drizzle-orm'
 
-import type { Database } from '~/db';
-import { apiKeys } from '~/db/schema';
-import { encrypt, hash } from '~/lib/encryption';
-import { generateApiKey } from '~/utils/api-keys';
-import { generateId } from '~/utils/generate-id';
+import type { Database } from '~/db'
+import { apiKeys } from '~/db/schema'
+import { encrypt, hash } from '~/lib/encryption'
+import { generateApiKey } from '~/utils/api-keys'
+import { generateId } from '~/utils/generate-id'
 
 export type ApiKey = {
-  id: string;
-  name: string;
-  userId: string;
-  createdAt: string;
-  scopes: string[] | null;
-};
+  id: string
+  name: string
+  userId: string
+  createdAt: string
+  scopes: string[] | null
+}
 
 export async function getApiKeyByToken(db: Database, keyHash: string) {
   const [result] = await db
@@ -26,16 +26,16 @@ export async function getApiKeyByToken(db: Database, keyHash: string) {
     })
     .from(apiKeys)
     .where(eq(apiKeys.keyHash, keyHash))
-    .limit(1);
-  return result;
+    .limit(1)
+  return result
 }
 
 type UpsertApiKeyData = {
-  id?: string;
-  name: string;
-  userId: string;
-  scopes: string[];
-};
+  id?: string
+  name: string
+  userId: string
+  scopes: string[]
+}
 
 export async function upsertApiKey(db: Database, data: UpsertApiKeyData) {
   if (data.id) {
@@ -43,18 +43,18 @@ export async function upsertApiKey(db: Database, data: UpsertApiKeyData) {
       .update(apiKeys)
       .set({ name: data.name, scopes: data.scopes })
       .where(eq(apiKeys.id, data.id))
-      .returning({ keyHash: apiKeys.keyHash });
+      .returning({ keyHash: apiKeys.keyHash })
 
     // On update we don't return the key, but return keyHash for cache invalidation
     return {
       key: null,
       keyHash: result?.keyHash,
-    };
+    }
   }
 
-  const key = generateApiKey();
-  const keyEncrypted = encrypt(key);
-  const keyHash = hash(key);
+  const key = generateApiKey()
+  const keyEncrypted = encrypt(key)
+  const keyHash = hash(key)
 
   const [result] = await db
     .insert(apiKeys)
@@ -70,12 +70,12 @@ export async function upsertApiKey(db: Database, data: UpsertApiKeyData) {
       id: apiKeys.id,
       name: apiKeys.name,
       createdAt: apiKeys.createdAt,
-    });
+    })
 
   return {
     key,
     data: result,
-  };
+  }
 }
 
 export async function getApiKeysByUser(db: Database, userId: string) {
@@ -89,26 +89,26 @@ export async function getApiKeysByUser(db: Database, userId: string) {
     })
     .from(apiKeys)
     .where(eq(apiKeys.userId, userId))
-    .orderBy(apiKeys.createdAt);
+    .orderBy(apiKeys.createdAt)
 }
 
 type DeleteApiKeyParams = {
-  id: string;
-};
+  id: string
+}
 
 export async function deleteApiKey(db: Database, params: DeleteApiKeyParams) {
   const [result] = await db
     .delete(apiKeys)
     .where(eq(apiKeys.id, params.id))
-    .returning({ keyHash: apiKeys.keyHash });
+    .returning({ keyHash: apiKeys.keyHash })
 
   // Return keyHash for cache invalidation by calling code
-  return result?.keyHash;
+  return result?.keyHash
 }
 
 export async function updatedApiKeyLastUsedAt(db: Database, id: string) {
   return await db
     .update(apiKeys)
     .set({ lastUsedAt: new Date().toISOString() })
-    .where(eq(apiKeys.id, id));
+    .where(eq(apiKeys.id, id))
 }

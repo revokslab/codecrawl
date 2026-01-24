@@ -1,27 +1,27 @@
-import { Queue } from 'bullmq';
-import IORedis from 'ioredis';
-import { logger } from '~/lib/logger';
+import { Queue } from 'bullmq'
+import IORedis from 'ioredis'
+import { logger } from '~/lib/logger'
 
-export type QueueFunction = () => Queue<any, any, string, any, any, string>;
+export type QueueFunction = () => Queue<any, any, string, any, any, string>
 
-let crawlQueue: Queue;
-let generateLlmsTxtQueue: Queue;
-let billingQueue: Queue;
-let treeQueue: Queue;
+let crawlQueue: Queue
+let generateLlmsTxtQueue: Queue
+let billingQueue: Queue
+let treeQueue: Queue
 
 if (!process.env.REDIS_URL) {
-  throw new Error('REDIS_URL environment variable is missing...');
+  throw new Error('REDIS_URL environment variable is missing...')
 }
 
 export const redisConnection = new IORedis(process.env.REDIS_URL, {
   maxRetriesPerRequest: null,
-});
+})
 
-export const indexStoreQueueName = '{indexQueue}';
-export const treeQueueName = '{treeQueue}';
-export const generateLlmsTxtQueueName = '{generateLlmsTextQueue}';
-export const crawlQueueName = '{crawlQueue}';
-export const billingQueueName = '{billingQueue}';
+export const indexStoreQueueName = '{indexQueue}'
+export const treeQueueName = '{treeQueue}'
+export const generateLlmsTxtQueueName = '{generateLlmsTextQueue}'
+export const crawlQueueName = '{crawlQueue}'
+export const billingQueueName = '{billingQueue}'
 
 export function getCrawlQueue() {
   if (!crawlQueue) {
@@ -35,10 +35,10 @@ export function getCrawlQueue() {
           age: 10800, // 3 hours
         },
       },
-    });
-    logger.info('Codebase crawling queue created');
+    })
+    logger.info('Codebase crawling queue created')
   }
-  return crawlQueue;
+  return crawlQueue
 }
 
 export function getGenerateLlmsTxtQueue() {
@@ -53,10 +53,10 @@ export function getGenerateLlmsTxtQueue() {
           age: 90000, // 25 hours
         },
       },
-    });
-    logger.info('LLMs TXT generation queue created');
+    })
+    logger.info('LLMs TXT generation queue created')
   }
-  return generateLlmsTxtQueue;
+  return generateLlmsTxtQueue
 }
 
 export function getBillingQueue() {
@@ -71,10 +71,10 @@ export function getBillingQueue() {
           age: 90000, // 25 hours
         },
       },
-    });
-    logger.info('Billing queue created');
+    })
+    logger.info('Billing queue created')
   }
-  return billingQueue;
+  return billingQueue
 }
 
 export function getGenerateTreeQueue() {
@@ -89,8 +89,8 @@ export function getGenerateTreeQueue() {
           age: 90000, // 25 hours
         },
       },
-    });
-    logger.info('Tree generation queue created');
+    })
+    logger.info('Tree generation queue created')
   }
-  return treeQueue;
+  return treeQueue
 }

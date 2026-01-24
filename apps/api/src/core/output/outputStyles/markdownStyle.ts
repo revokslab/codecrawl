@@ -1,4 +1,4 @@
-import Handlebars from 'handlebars';
+import Handlebars from 'handlebars'
 
 export const getMarkdownTemplate = () => {
   return /* md */ `
@@ -9,111 +9,111 @@ export const getMarkdownTemplate = () => {
 {{{../markdownCodeBlockDelimiter}}}
 
 {{/each}}
-`;
-};
+`
+}
 
 Handlebars.registerHelper('getFileExtension', (filePath) => {
-  const extension = filePath.split('.').pop()?.toLowerCase();
+  const extension = filePath.split('.').pop()?.toLowerCase()
   switch (extension) {
     case 'js':
     case 'jsx':
-      return 'javascript';
+      return 'javascript'
     case 'ts':
     case 'tsx':
-      return 'typescript';
+      return 'typescript'
     case 'vue':
-      return 'vue';
+      return 'vue'
     case 'py':
-      return 'python';
+      return 'python'
     case 'rb':
-      return 'ruby';
+      return 'ruby'
     case 'java':
-      return 'java';
+      return 'java'
     case 'c':
     case 'cpp':
-      return 'cpp';
+      return 'cpp'
     case 'cs':
-      return 'csharp';
+      return 'csharp'
     case 'go':
-      return 'go';
+      return 'go'
     case 'rs':
-      return 'rust';
+      return 'rust'
     case 'php':
-      return 'php';
+      return 'php'
     case 'swift':
-      return 'swift';
+      return 'swift'
     case 'kt':
-      return 'kotlin';
+      return 'kotlin'
     case 'scala':
-      return 'scala';
+      return 'scala'
     case 'html':
-      return 'html';
+      return 'html'
     case 'css':
-      return 'css';
+      return 'css'
     case 'scss':
     case 'sass':
-      return 'scss';
+      return 'scss'
     case 'json':
-      return 'json';
+      return 'json'
     case 'json5':
-      return 'json5';
+      return 'json5'
     case 'xml':
-      return 'xml';
+      return 'xml'
     case 'yaml':
     case 'yml':
-      return 'yaml';
+      return 'yaml'
     case 'md':
-      return 'markdown';
+      return 'markdown'
     case 'sh':
     case 'bash':
-      return 'bash';
+      return 'bash'
     case 'sql':
-      return 'sql';
+      return 'sql'
     case 'dockerfile':
-      return 'dockerfile';
+      return 'dockerfile'
     case 'dart':
-      return 'dart';
+      return 'dart'
     case 'fs':
     case 'fsx':
-      return 'fsharp';
+      return 'fsharp'
     case 'r':
-      return 'r';
+      return 'r'
     case 'pl':
     case 'pm':
-      return 'perl';
+      return 'perl'
     case 'lua':
-      return 'lua';
+      return 'lua'
     case 'groovy':
-      return 'groovy';
+      return 'groovy'
     case 'hs':
-      return 'haskell';
+      return 'haskell'
     case 'ex':
     case 'exs':
-      return 'elixir';
+      return 'elixir'
     case 'erl':
-      return 'erlang';
+      return 'erlang'
     case 'clj':
     case 'cljs':
-      return 'clojure';
+      return 'clojure'
     case 'ps1':
-      return 'powershell';
+      return 'powershell'
     case 'vb':
-      return 'vb';
+      return 'vb'
     case 'coffee':
-      return 'coffeescript';
+      return 'coffeescript'
     case 'tf':
     case 'tfvars':
-      return 'hcl';
+      return 'hcl'
     case 'proto':
-      return 'protobuf';
+      return 'protobuf'
     case 'pug':
-      return 'pug';
+      return 'pug'
     case 'graphql':
     case 'gql':
-      return 'graphql';
+      return 'graphql'
     case 'toml':
-      return 'toml';
+      return 'toml'
     default:
-      return '';
+      return ''
   }
-});
+})

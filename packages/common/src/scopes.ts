@@ -1,10 +1,10 @@
 export const SCOPES = [
   'apis.all', // All API scopes
   'apis.read', // All read scopes
-] as const;
+] as const
 
-export type Scope = (typeof SCOPES)[number];
-export type ScopePreset = 'all_access' | 'read_only' | 'restricted';
+export type Scope = (typeof SCOPES)[number]
+export type ScopePreset = 'all_access' | 'read_only' | 'restricted'
 
 export const scopePresets = [
   {
@@ -22,7 +22,7 @@ export const scopePresets = [
     label: 'Restricted',
     description: 'restricted access to some resources',
   },
-];
+]
 
 export const scopesToName = (scopes: string[]) => {
   if (scopes.includes('apis.all')) {
@@ -30,7 +30,7 @@ export const scopesToName = (scopes: string[]) => {
       name: 'All access',
       description: 'full access to all resources',
       preset: 'all_access',
-    };
+    }
   }
 
   if (scopes.includes('apis.read')) {
@@ -38,29 +38,27 @@ export const scopesToName = (scopes: string[]) => {
       name: 'Read-only',
       description: 'read-only access to all resources',
       preset: 'read_only',
-    };
+    }
   }
 
   return {
     name: 'Restricted',
     description: 'restricted access to some resources',
     preset: 'restricted',
-  };
-};
+  }
+}
 
 export const expandScopes = (scopes: string[]): string[] => {
   if (scopes.includes('apis.all')) {
     // Return all scopes except any that start with "apis."
-    return SCOPES.filter((scope) => !scope.startsWith('apis.'));
+    return SCOPES.filter((scope) => !scope.startsWith('apis.'))
   }
 
   if (scopes.includes('apis.read')) {
     // Return all read scopes except any that start with "apis."
-    return SCOPES.filter(
-      (scope) => scope.endsWith('.read') && !scope.startsWith('apis.'),
-    );
+    return SCOPES.filter((scope) => scope.endsWith('.read') && !scope.startsWith('apis.'))
   }
 
   // For custom scopes, filter out any "apis." scopes
-  return scopes.filter((scope) => !scope.startsWith('apis.'));
-};
+  return scopes.filter((scope) => !scope.startsWith('apis.'))
+}

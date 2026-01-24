@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import type { CrawlOptions } from '@codecrawl/sdk';
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import type { CrawlOptions } from '@codecrawl/sdk'
 
 type PlaygroundConfigurableOptions = Pick<
   CrawlOptions,
@@ -20,24 +20,23 @@ type PlaygroundConfigurableOptions = Pick<
   | 'style'
   | 'parsableStyle'
   | 'compress'
->;
+>
 
 interface PlaygroundSettingsState extends PlaygroundConfigurableOptions {
-  githubUrl: string;
+  githubUrl: string
 }
 
 interface PlaygroundSettingsActions {
-  setGithubUrl: (url: string) => void;
-  setSettings: (settings: Partial<PlaygroundSettingsState>) => void;
-  resetSettings: () => void;
+  setGithubUrl: (url: string) => void
+  setSettings: (settings: Partial<PlaygroundSettingsState>) => void
+  resetSettings: () => void
   // Actions to get state values
-  getSettings: () => PlaygroundSettingsState;
-  getGithubUrl: () => string;
-  getCrawlOptions: () => PlaygroundConfigurableOptions;
+  getSettings: () => PlaygroundSettingsState
+  getGithubUrl: () => string
+  getCrawlOptions: () => PlaygroundConfigurableOptions
 }
 
-type PlaygroundSettingsStore = PlaygroundSettingsState &
-  PlaygroundSettingsActions;
+type PlaygroundSettingsStore = PlaygroundSettingsState & PlaygroundSettingsActions
 
 const initialPlaygroundSettingsState: PlaygroundSettingsState = {
   githubUrl: '',
@@ -58,7 +57,7 @@ const initialPlaygroundSettingsState: PlaygroundSettingsState = {
   style: 'markdown',
   parsableStyle: true,
   compress: false,
-};
+}
 
 export const usePlaygroundSettingsStore = create<PlaygroundSettingsStore>()(
   persist(
@@ -78,21 +77,18 @@ export const usePlaygroundSettingsStore = create<PlaygroundSettingsStore>()(
       getGithubUrl: (): string => get().githubUrl,
 
       getCrawlOptions: (): PlaygroundConfigurableOptions => {
-        const { githubUrl, ...crawlOptions } = get(); // Destructure to exclude githubUrl
+        const { githubUrl, ...crawlOptions } = get() // Destructure to exclude githubUrl
         // Clean up undefined optional properties before returning
         Object.keys(crawlOptions).forEach((key) => {
-          if (
-            crawlOptions[key as keyof PlaygroundConfigurableOptions] ===
-            undefined
-          ) {
-            delete crawlOptions[key as keyof PlaygroundConfigurableOptions];
+          if (crawlOptions[key as keyof PlaygroundConfigurableOptions] === undefined) {
+            delete crawlOptions[key as keyof PlaygroundConfigurableOptions]
           }
-        });
-        return crawlOptions;
+        })
+        return crawlOptions
       },
     }),
     {
       name: 'playground-settings-storage', // Name of the item in storage (must be unique)
-    },
-  ),
-);
+    }
+  )
+)

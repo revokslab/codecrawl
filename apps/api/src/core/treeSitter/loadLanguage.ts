@@ -1,30 +1,26 @@
-import fs from 'node:fs/promises';
-import { Language } from 'web-tree-sitter';
+import fs from 'node:fs/promises'
+import { Language } from 'web-tree-sitter'
 
 export async function loadLanguage(langName: string): Promise<Language> {
   if (!langName) {
-    throw new Error('Invalid language name');
+    throw new Error('Invalid language name')
   }
 
   try {
-    const wasmPath = await getWasmPath(langName);
-    return await Language.load(wasmPath);
+    const wasmPath = await getWasmPath(langName)
+    return await Language.load(wasmPath)
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : String(error);
-    throw new Error(`Failed to load language ${langName}: ${message}`);
+    const message = error instanceof Error ? error.message : String(error)
+    throw new Error(`Failed to load language ${langName}: ${message}`)
   }
 }
 
 async function getWasmPath(langName: string): Promise<string> {
-  const wasmPath = require.resolve(
-    `tree-sitter-wasms/out/tree-sitter-${langName}.wasm`,
-  );
+  const wasmPath = require.resolve(`tree-sitter-wasms/out/tree-sitter-${langName}.wasm`)
   try {
-    await fs.access(wasmPath);
-    return wasmPath;
+    await fs.access(wasmPath)
+    return wasmPath
   } catch {
-    throw new Error(
-      `WASM file not found for language ${langName}: ${wasmPath}`,
-    );
+    throw new Error(`WASM file not found for language ${langName}: ${wasmPath}`)
   }
 }

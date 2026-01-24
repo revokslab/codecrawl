@@ -1,7 +1,7 @@
-import { configDotenv } from 'dotenv';
-import * as winston from 'winston';
+import { configDotenv } from 'dotenv'
+import * as winston from 'winston'
 
-configDotenv();
+configDotenv()
 
 const logFormat = winston.format.printf(
   (info) =>
@@ -16,14 +16,14 @@ const logFormat = winston.format.printf(
                 name: value.name,
                 message: value.message,
                 stack: value.stack,
-              };
+              }
             } else {
-              return value;
+              return value
             }
           })
         : ''
-    }`,
-);
+    }`
+)
 
 export const logger = winston.createLogger({
   level: process.env.LOGGING_LEVEL?.toLowerCase() ?? 'debug',
@@ -35,9 +35,9 @@ export const logger = winston.createLogger({
           name: value.name,
           message: value.message,
           stack: value.stack,
-        };
+        }
       } else {
-        return value;
+        return value
       }
     },
   }),
@@ -55,12 +55,11 @@ export const logger = winston.createLogger({
         winston.format.metadata({
           fillExcept: ['message', 'level', 'timestamp'],
         }),
-        ...((process.env.NODE_ENV === 'production' &&
-          process.env.SENTRY_ENVIRONMENT === 'dev') ||
+        ...((process.env.NODE_ENV === 'production' && process.env.SENTRY_ENVIRONMENT === 'dev') ||
         process.env.ENV !== 'production'
           ? [winston.format.colorize(), logFormat]
-          : []),
+          : [])
       ),
     }),
   ],
-});
+})

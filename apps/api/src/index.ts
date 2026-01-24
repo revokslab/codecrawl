@@ -1,16 +1,16 @@
-import { Scalar } from '@scalar/hono-api-reference';
-import { cors } from 'hono/cors';
-import { secureHeaders } from 'hono/secure-headers';
+import { Scalar } from '@scalar/hono-api-reference'
+import { cors } from 'hono/cors'
+import { secureHeaders } from 'hono/secure-headers'
 
-import { auth } from '~/lib/auth';
-import { BASE_URL } from '~/lib/constants';
-import { logger } from '~/lib/logger';
-import { routers } from '~/rest/routers';
-import { createRouter } from '~/utils';
+import { auth } from '~/lib/auth'
+import { BASE_URL } from '~/lib/constants'
+import { logger } from '~/lib/logger'
+import { routers } from '~/rest/routers'
+import { createRouter } from '~/utils'
 
-const app = createRouter();
+const app = createRouter()
 
-app.use(secureHeaders());
+app.use(secureHeaders())
 
 app.use(
   '*',
@@ -32,8 +32,21 @@ app.use(
     ],
     exposeHeaders: ['Content-Length'],
     maxAge: 86400,
-  }),
-);
+  })
+)
+
+app.on(['POST', 'GET'], '/auth/*', (c) => {
+  return auth.handler(c.req.raw)
+})
+
+app.route('/v1', routers)
+
+app.openAPIRegistry.registerComponent('securitySchemes', 'token', {
+  type: 'http',
+  scheme: 'bearer',
+  description: 'Default authentication mechanism',
+  'x-api-key-example': 'CC_API_KEY',
+})
 
 app.doc('/openapi', {
   openapi: '3.1.0',
@@ -44,7 +57,7 @@ app.doc('/openapi', {
     contact: {
       name: 'Support',
       email: 'hello@codecrawl.com',
-      url: 'codecrawl.com',
+      url: 'https://codecrawl.com',
     },
     license: {
       name: 'AGPL-3.0 license',
@@ -58,44 +71,33 @@ app.doc('/openapi', {
     },
   ],
   security: [{ token: [] }],
-});
-
-// Register security scheme
-app.openAPIRegistry.registerComponent('securitySchemes', 'token', {
-  type: 'http',
-  scheme: 'bearer',
-  description: 'Default authenticaton mechanism',
-  'x-api-key-example': 'CC_API_KEY',
-});
+})
 
 app.get(
   '/',
-  Scalar({ url: '/openapi', pageTitle: 'Codecrawl API', theme: 'saturn' }),
-);
+  Scalar({
+    url: '/openapi',
+    pageTitle: 'Codecrawl API',
+    theme: 'saturn',
+    showSidebar: true,
+  })
+)
 
-app.on(['POST', 'GET'], '/auth/*', (c) => {
-  return auth.handler(c.req.raw);
-});
-
-app.route('/v1', routers);
-
-const DEFAULT_PORT = process.env.PORT ?? 4000;
+const DEFAULT_PORT = process.env.PORT ?? 4000
 
 // Graceful shutdown handling
 const shutdown = async (signal: string) => {
-  logger.info(`Received ${signal}, shutting down gracefully...`);
+  logger.info(`Received ${signal}, shutting down gracefully...`)
+  process.exit(0)
+}
 
-  process.exit(0);
-};
+process.on('SIGTERM', () => shutdown('SIGTERM'))
+process.on('SIGINT', () => shutdown('SIGINT'))
 
-process.on('SIGTERM', () => shutdown('SIGTERM'));
-process.on('SIGINT', () => shutdown('SIGINT'));
-
-logger.info(`Server starting on port ${DEFAULT_PORT}`);
-
-logger.info(`Worker ${process.pid} started`);
+logger.info(`Server starting on port ${DEFAULT_PORT}`)
+logger.info(`Worker ${process.pid} started`)
 
 export default {
   fetch: app.fetch,
   port: Number(DEFAULT_PORT),
-};
+}

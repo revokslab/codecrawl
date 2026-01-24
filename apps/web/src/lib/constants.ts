@@ -14,8 +14,8 @@ export const BLOG_CATEGORIES = [
     slug: 'engineering',
     gradient: 'from-purple-50 to-purple-100',
   },
-];
+]
 
-export const API_BASE_URL = 'http://localhost:4000/v1';
-export const isServer = typeof window === 'undefined';
-export const loginNextPathKey = '@code/next';
+export const API_BASE_URL = 'http://localhost:4000/v1'
+export const isServer = typeof window === 'undefined'
+export const loginNextPathKey = '@code/next'

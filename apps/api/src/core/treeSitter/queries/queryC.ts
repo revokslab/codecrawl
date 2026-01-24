@@ -10,4 +10,4 @@ export const queryC = `
 (type_definition declarator: (type_identifier) @name.definition.type) @definition.type
 
 (enum_specifier name: (type_identifier) @name.definition.type) @definition.type
-`;
+`

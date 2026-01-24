@@ -1,37 +1,37 @@
-import type { Node } from 'web-tree-sitter';
-import type { ParseContext, ParseStrategy } from './ParseStrategy';
+import type { Node } from 'web-tree-sitter'
+import type { ParseContext, ParseStrategy } from './ParseStrategy'
 
 export class VueParseStrategy implements ParseStrategy {
   parseCapture(
     capture: { node: Node; name: string },
     lines: string[],
     processedChunks: Set<string>,
-    context: ParseContext,
+    context: ParseContext
   ): string | null {
-    const { node, name } = capture;
-    const startRow = node.startPosition.row;
-    const endRow = node.endPosition.row;
+    const { node, name } = capture
+    const startRow = node.startPosition.row
+    const endRow = node.endPosition.row
 
     if (!lines[startRow]) {
-      return null;
+      return null
     }
 
     // Extract the content based on the capture type
-    const selectedLines = lines.slice(startRow, endRow + 1);
+    const selectedLines = lines.slice(startRow, endRow + 1)
     if (selectedLines.length < 1) {
-      return null;
+      return null
     }
 
-    const chunk = selectedLines.join('\n');
-    const normalizedChunk = chunk.trim();
+    const chunk = selectedLines.join('\n')
+    const normalizedChunk = chunk.trim()
 
     // Create a unique ID for this chunk
-    const chunkId = `${name}:${startRow}`;
+    const chunkId = `${name}:${startRow}`
     if (processedChunks.has(chunkId)) {
-      return null;
+      return null
     }
 
-    processedChunks.add(chunkId);
-    return chunk;
+    processedChunks.add(chunkId)
+    return chunk
   }
 }

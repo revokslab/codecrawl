@@ -8,5 +8,5 @@ export const getXmlTemplate = () => {
   
   {{/each}}
   </files>
-  `;
-};
+  `
+}

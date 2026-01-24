@@ -1,8 +1,8 @@
-import { betterAuth } from 'better-auth';
-import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { betterAuth } from 'better-auth'
+import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 
-import { db } from '~/db';
-import { isProd } from '~/lib/constants';
+import { db } from '~/db'
+import { isProd } from '~/lib/constants'
 
 export const auth = betterAuth({
   basePath: '/auth',
@@ -36,4 +36,4 @@ export const auth = betterAuth({
       ],
     },
   },
-});
+})

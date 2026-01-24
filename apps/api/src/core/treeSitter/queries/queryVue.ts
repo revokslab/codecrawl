@@ -8,4 +8,4 @@ export const queryVue = `
 (style_element) @style
 
 (interpolation) @interpolation
-`;
+`

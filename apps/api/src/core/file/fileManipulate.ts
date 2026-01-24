@@ -1,45 +1,45 @@
-import path from 'node:path';
-import strip from 'strip-comments';
+import path from 'node:path'
+import strip from 'strip-comments'
 
 export interface FileManipulator {
-  removeComments(content: string): string;
-  removeEmptyLines(content: string): string;
+  removeComments(content: string): string
+  removeEmptyLines(content: string): string
 }
 
 const rtrimLines = (content: string): string =>
   content
     .split('\n')
     .map((line) => line.trimEnd())
-    .join('\n');
+    .join('\n')
 
 class BaseManipulator implements FileManipulator {
   removeComments(content: string): string {
-    return content;
+    return content
   }
 
   removeEmptyLines(content: string): string {
     return content
       .split('\n')
       .filter((line) => line.trim() !== '')
-      .join('\n');
+      .join('\n')
   }
 }
 
 class StripCommentsManipulator extends BaseManipulator {
-  private language: string;
+  private language: string
 
   constructor(language: string) {
-    super();
-    this.language = language;
+    super()
+    this.language = language
   }
 
   removeComments(content: string): string {
     const result = strip(content, {
       language: this.language,
       preserveNewlines: true,
-    });
+    })
 
-    return rtrimLines(result);
+    return rtrimLines(result)
   }
 }
 
@@ -48,166 +48,144 @@ class CppManipulator extends BaseManipulator {
     let result = strip(content, {
       language: 'c',
       preserveNewlines: true,
-    });
+    })
 
     result = result
       .split('\n')
       .map((line) => {
-        const tripleSlashIndex = line.indexOf('///');
+        const tripleSlashIndex = line.indexOf('///')
         if (tripleSlashIndex !== -1) {
-          return line.substring(0, tripleSlashIndex).trimEnd();
+          return line.substring(0, tripleSlashIndex).trimEnd()
         }
-        return line;
+        return line
       })
-      .join('\n');
+      .join('\n')
 
-    return rtrimLines(result);
+    return rtrimLines(result)
   }
 }
 
 class PythonManipulator extends BaseManipulator {
   removeDocStrings(content: string): string {
-    if (!content) return '';
-    const lines = content.split('\n');
+    if (!content) return ''
+    const lines = content.split('\n')
 
-    let result = '';
+    let result = ''
 
-    let buffer = '';
-    let quoteType: '' | "'" | '"' = '';
-    let tripleQuotes = 0;
+    let buffer = ''
+    let quoteType: '' | "'" | '"' = ''
+    let tripleQuotes = 0
 
-    const doubleQuoteRegex =
-      /^\s*(?<!\\)(?:""")\s*(?:\n)?[\s\S]*?(?<!("""))(?<!\\)(?:""")/gm;
-    const singleQuoteRegex =
-      /^\s*(?<!\\)(?:''')\s*(?:\n)?[\s\S]*?(?<!('''))(?<!\\)(?:''')/gm;
+    const doubleQuoteRegex = /^\s*(?<!\\)(?:""")\s*(?:\n)?[\s\S]*?(?<!("""))(?<!\\)(?:""")/gm
+    const singleQuoteRegex = /^\s*(?<!\\)(?:''')\s*(?:\n)?[\s\S]*?(?<!('''))(?<!\\)(?:''')/gm
 
-    const sz = lines.length;
+    const sz = lines.length
     for (let i = 0; i < sz; i++) {
-      const line = lines[i] + (i !== sz - 1 ? '\n' : '');
-      buffer += line;
+      const line = lines[i] + (i !== sz - 1 ? '\n' : '')
+      buffer += line
       if (quoteType === '') {
-        const indexSingle = line.search(/(?<![\"])(?<!\\)'''(?![\"])/g);
-        const indexDouble = line.search(/(?<![\'])(?<!\\)"""(?![\'])/g);
-        if (
-          indexSingle !== -1 &&
-          (indexDouble === -1 || indexSingle < indexDouble)
-        ) {
-          quoteType = "'";
-        } else if (
-          indexDouble !== -1 &&
-          (indexSingle === -1 || indexDouble < indexSingle)
-        ) {
-          quoteType = '"';
+        const indexSingle = line.search(/(?<![\"])(?<!\\)'''(?![\"])/g)
+        const indexDouble = line.search(/(?<![\'])(?<!\\)"""(?![\'])/g)
+        if (indexSingle !== -1 && (indexDouble === -1 || indexSingle < indexDouble)) {
+          quoteType = "'"
+        } else if (indexDouble !== -1 && (indexSingle === -1 || indexDouble < indexSingle)) {
+          quoteType = '"'
         }
       }
       if (quoteType === "'") {
-        tripleQuotes += (line.match(/(?<![\"])(?<!\\)'''(?!["])/g) || [])
-          .length;
+        tripleQuotes += (line.match(/(?<![\"])(?<!\\)'''(?!["])/g) || []).length
       }
       if (quoteType === '"') {
-        tripleQuotes += (line.match(/(?<![\'])(?<!\\)"""(?![\'])/g) || [])
-          .length;
+        tripleQuotes += (line.match(/(?<![\'])(?<!\\)"""(?![\'])/g) || []).length
       }
 
       if (tripleQuotes % 2 === 0) {
-        const docstringRegex =
-          quoteType === '"' ? doubleQuoteRegex : singleQuoteRegex;
-        buffer = buffer.replace(docstringRegex, '');
-        result += buffer;
-        buffer = '';
-        tripleQuotes = 0;
-        quoteType = '';
+        const docstringRegex = quoteType === '"' ? doubleQuoteRegex : singleQuoteRegex
+        buffer = buffer.replace(docstringRegex, '')
+        result += buffer
+        buffer = ''
+        tripleQuotes = 0
+        quoteType = ''
       }
     }
 
-    result += buffer;
-    return result;
+    result += buffer
+    return result
   }
 
   removeHashComments(content: string): string {
-    const searchInPairs = (
-      pairs: [number, number][],
-      hashIndex: number,
-    ): boolean => {
-      return pairs.some(([start, end]) => hashIndex > start && hashIndex < end);
-    };
+    const searchInPairs = (pairs: [number, number][], hashIndex: number): boolean => {
+      return pairs.some(([start, end]) => hashIndex > start && hashIndex < end)
+    }
 
-    let result = '';
-    const pairs: [number, number][] = [];
-    let prevQuote = 0;
+    let result = ''
+    const pairs: [number, number][] = []
+    let prevQuote = 0
     while (prevQuote < content.length) {
       const openingQuote =
-        content.slice(prevQuote + 1).search(/(?<!\\)(?:"|'|'''|""")/g) +
-        prevQuote +
-        1;
-      if (openingQuote === prevQuote) break;
+        content.slice(prevQuote + 1).search(/(?<!\\)(?:"|'|'''|""")/g) + prevQuote + 1
+      if (openingQuote === prevQuote) break
 
-      let closingQuote = -1;
-      if (
-        content.startsWith('"""', openingQuote) ||
-        content.startsWith("'''", openingQuote)
-      ) {
-        const quoteType = content.slice(openingQuote, openingQuote + 3);
-        closingQuote = content.indexOf(quoteType, openingQuote + 3);
+      let closingQuote = -1
+      if (content.startsWith('"""', openingQuote) || content.startsWith("'''", openingQuote)) {
+        const quoteType = content.slice(openingQuote, openingQuote + 3)
+        closingQuote = content.indexOf(quoteType, openingQuote + 3)
       } else {
-        const quoteType = content[openingQuote];
-        closingQuote = content.indexOf(quoteType, openingQuote + 1);
+        const quoteType = content[openingQuote]
+        closingQuote = content.indexOf(quoteType, openingQuote + 1)
       }
 
-      if (closingQuote === -1) break;
-      pairs.push([openingQuote, closingQuote]);
-      prevQuote = closingQuote;
+      if (closingQuote === -1) break
+      pairs.push([openingQuote, closingQuote])
+      prevQuote = closingQuote
     }
-    let prevHash = 0;
+    let prevHash = 0
     while (prevHash < content.length) {
-      const hashIndex = content.slice(prevHash).search(/(?<!\\)#/g) + prevHash;
+      const hashIndex = content.slice(prevHash).search(/(?<!\\)#/g) + prevHash
       if (hashIndex === prevHash - 1) {
-        result += content.slice(prevHash);
-        break;
+        result += content.slice(prevHash)
+        break
       }
 
-      const isInsideString = searchInPairs(pairs, hashIndex);
-      const nextNewLine = content.indexOf('\n', hashIndex);
+      const isInsideString = searchInPairs(pairs, hashIndex)
+      const nextNewLine = content.indexOf('\n', hashIndex)
 
       if (!isInsideString) {
         if (nextNewLine === -1) {
-          result += content.slice(prevHash);
-          break;
+          result += content.slice(prevHash)
+          break
         }
-        result += `${content.slice(prevHash, hashIndex)}\n`;
+        result += `${content.slice(prevHash, hashIndex)}\n`
       } else {
         if (nextNewLine === -1) {
-          result += content.slice(prevHash);
-          break;
+          result += content.slice(prevHash)
+          break
         }
-        result += `${content.slice(prevHash, nextNewLine)}\n`;
+        result += `${content.slice(prevHash, nextNewLine)}\n`
       }
 
-      prevHash = nextNewLine + 1;
+      prevHash = nextNewLine + 1
     }
-    return result;
+    return result
   }
 
   removeComments(content: string): string {
-    let result = this.removeDocStrings(content);
-    result = this.removeHashComments(result);
-    return rtrimLines(result);
+    let result = this.removeDocStrings(content)
+    result = this.removeHashComments(result)
+    return rtrimLines(result)
   }
 }
 
 class CompositeManipulator extends BaseManipulator {
-  private manipulators: FileManipulator[];
+  private manipulators: FileManipulator[]
 
   constructor(...manipulators: FileManipulator[]) {
-    super();
-    this.manipulators = manipulators;
+    super()
+    this.manipulators = manipulators
   }
 
   removeComments(content: string): string {
-    return this.manipulators.reduce(
-      (acc, manipulator) => manipulator.removeComments(acc),
-      content,
-    );
+    return this.manipulators.reduce((acc, manipulator) => manipulator.removeComments(acc), content)
   }
 }
 
@@ -248,18 +226,16 @@ const manipulators: Record<string, FileManipulator> = {
   '.vue': new CompositeManipulator(
     new StripCommentsManipulator('html'),
     new StripCommentsManipulator('css'),
-    new StripCommentsManipulator('javascript'),
+    new StripCommentsManipulator('javascript')
   ),
   '.svelte': new CompositeManipulator(
     new StripCommentsManipulator('html'),
     new StripCommentsManipulator('css'),
-    new StripCommentsManipulator('javascript'),
+    new StripCommentsManipulator('javascript')
   ),
-};
+}
 
-export const getFileManipulator = (
-  filePath: string,
-): FileManipulator | null => {
-  const ext = path.extname(filePath);
-  return manipulators[ext] || null;
-};
+export const getFileManipulator = (filePath: string): FileManipulator | null => {
+  const ext = path.extname(filePath)
+  return manipulators[ext] || null
+}

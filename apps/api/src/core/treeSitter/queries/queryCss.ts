@@ -6,4 +6,4 @@ export const queryCss = `
 ) @definition.selector
 
 (at_rule) @definition.at_rule
-`;
+`

@@ -160,4 +160,4 @@ export const defaultIgnoreList = [
   // Essential Haskell-related entries
   '**/stack.yaml.lock',
   '**/cabal.project.freeze',
-];
+]

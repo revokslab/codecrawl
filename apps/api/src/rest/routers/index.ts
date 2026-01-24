@@ -1,22 +1,21 @@
-import { createRouter } from '~/utils';
+import { createRouter } from '~/utils'
 
-import { protectedMiddleware, publicMiddleware } from '../middlewares';
-import { fileTreeRouter } from './file-tree';
-import { keysRouter } from './keys';
-import { llmsTxtRouter } from './llms-txt';
+import { protectedMiddleware, publicMiddleware } from '../middlewares'
+import { keysRouter } from './keys'
+import { llmsTxtRouter } from './llms-txt'
 
-const routers = createRouter();
+const routers = createRouter()
 
 // Public routes (not authenticated)
 
-routers.use(...publicMiddleware);
+routers.use(...publicMiddleware)
 
 // Authenticated routes
 
-routers.use(...protectedMiddleware);
+routers.use(...protectedMiddleware)
 
-routers.route('/keys', keysRouter);
-routers.route('/llms-txt', llmsTxtRouter);
-routers.route('/file-tree', fileTreeRouter);
+routers.route('/keys', keysRouter)
+routers.route('/llms-txt', llmsTxtRouter)
+// routers.route('/file-tree', fileTreeRouter);
 
-export { routers };
+export { routers }

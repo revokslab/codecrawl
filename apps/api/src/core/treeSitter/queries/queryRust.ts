@@ -72,4 +72,4 @@ export const queryRust = `
 (impl_item
     type: (type_identifier) @name.reference.implementation
     !trait) @reference.implementation
-`;
+`
