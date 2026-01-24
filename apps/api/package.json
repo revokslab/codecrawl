@@ -17,7 +17,6 @@
   "license": "ISC",
   "dependencies": {
     "@codecrawl/common": "workspace:*",
-    "@hono/node-server": "^1.19.9",
     "@hono/zod-openapi": "^1.2.0",
     "@scalar/hono-api-reference": "^0.9.35",
     "ai": "^4.3.19",
@@ -27,8 +26,6 @@
     "better-auth": "^1.4.17",
     "bullmq": "^5.66.7",
     "date-fns": "^4.1.0",
-    "dotenv": "^16.6.1",
-    "dotenv-cli": "^8.0.0",
     "drizzle-orm": "^0.41.0",
     "fast-xml-parser": "^5.3.3",
     "git-url-parse": "^16.1.0",

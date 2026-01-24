@@ -1,6 +1,4 @@
-import { serve } from '@hono/node-server';
 import { Scalar } from '@scalar/hono-api-reference';
-import dotenv from 'dotenv';
 import { cors } from 'hono/cors';
 import { secureHeaders } from 'hono/secure-headers';
 
@@ -9,8 +7,6 @@ import { BASE_URL } from '~/lib/constants';
 import { logger } from '~/lib/logger';
 import { routers } from '~/rest/routers';
 import { createRouter } from '~/utils';
-
-dotenv.config();
 
 const app = createRouter();
 
@@ -99,8 +95,7 @@ logger.info(`Server starting on port ${DEFAULT_PORT}`);
 
 logger.info(`Worker ${process.pid} started`);
 
-serve({
+export default {
   fetch: app.fetch,
   port: Number(DEFAULT_PORT),
-  hostname: '0.0.0.0',
-});
+};

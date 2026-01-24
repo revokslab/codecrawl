@@ -1,5 +1,4 @@
 import type { Scope } from '@codecrawl/common/scopes';
-import type { HttpBindings } from '@hono/node-server';
 import type { Session } from 'better-auth';
 import type { OutputStyle } from './config/configSchema';
 
@@ -23,7 +22,7 @@ export type HonoVariables = {
   db: Database;
 };
 
-type Bindings = HttpBindings & {
+type Bindings = {
   /* ... */
 };
 
