@@ -17,3 +17,4 @@ export const BLOG_CATEGORIES = [
 ]
 
 export const API_BASE_URL = 'http://localhost:4000/v1'
+export const BASE_URL = import.meta.env.DEV ? 'http://localhost:3000' : 'https://crawl.revoks.dev'

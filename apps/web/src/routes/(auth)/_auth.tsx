@@ -1,4 +1,3 @@
-import { Flex } from '@radix-ui/themes'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/(auth)/_auth')({
@@ -7,13 +6,8 @@ export const Route = createFileRoute('/(auth)/_auth')({
 
 function RouteComponent() {
   return (
-    <Flex
-      align={'center'}
-      justify={'center'}
-      className='h-screen'
-      style={{ backgroundColor: 'var(--gray-1)' }}
-    >
+    <div className='flex min-h-screen flex-col items-center justify-center bg-linear-to-b from-background to-muted/30 p-4'>
       <Outlet />
-    </Flex>
+    </div>
   )
 }
