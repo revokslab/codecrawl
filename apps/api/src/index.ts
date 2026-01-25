@@ -2,6 +2,7 @@ import { Scalar } from '@scalar/hono-api-reference'
 import { cors } from 'hono/cors'
 import { secureHeaders } from 'hono/secure-headers'
 
+import { env } from '~/env-runtime'
 import { auth } from '~/lib/auth'
 import { BASE_URL } from '~/lib/constants'
 import { logger } from '~/lib/logger'
@@ -15,7 +16,7 @@ app.use(secureHeaders())
 app.use(
   '*',
   cors({
-    origin: '*',
+    origin: env.ALLOWED_API_ORIGINS.split(','),
     credentials: true,
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowHeaders: [
@@ -83,7 +84,7 @@ app.get(
   })
 )
 
-const DEFAULT_PORT = process.env.PORT ?? 4000
+const DEFAULT_PORT = env.PORT
 
 // Graceful shutdown handling
 const shutdown = async (signal: string) => {
